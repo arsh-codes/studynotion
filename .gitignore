@@ -1,0 +1,9 @@
+# Ignore environment variable files
+.env
+
+# Ignore Node modules directory
+node_modules/
+
+package.json
+
+package-lock.json

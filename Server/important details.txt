@@ -1,0 +1,12 @@
+NODE PACKAGES ADDED 
+npm init
+npm i node
+npm i express
+npm i nodemon
+npm i mongoose
+npm i dotenv
+npm i cookie-parser
+npm i jsonwebtoken
+npm i nodemailer
+npm i otp-generator
+npm i bcrypt
