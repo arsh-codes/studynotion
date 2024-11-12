@@ -44,6 +44,4 @@ const CourseSchema = nemongoose.Schema({
 });
 
 // Create a model based on the schema
-const Course = mongoose.model("Course", courseProgressSchema);
-
-module.exports = Course;
+module.exports = mongoose.model("Course", courseProgressSchema);

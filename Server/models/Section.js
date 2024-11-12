@@ -13,6 +13,6 @@ const sectionSchema = nemongoose.Schema({
 });
 
 // Create a model based on the schema
-const Section = mongoose.model("Section", sectionSchema);
+module.exports = mongoose.model("Section", sectionSchema);
 
-module.exports = Section;
+
