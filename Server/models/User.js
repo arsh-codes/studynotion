@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    token: {
+        type: String,
+    },
+    resetPasswordTokenExpires: { type: Date },
     accountType: {
         type: String,
         required: true,
@@ -51,5 +55,3 @@ const userSchema = new mongoose.Schema({
 
 // Create a model based on the schema
 module.exports = mongoose.model("User", userSchema);
-
-
