@@ -11,4 +11,4 @@ npm i nodemailer
 npm i otp-generator
 npm i bcrypt
 
-Controllers, Models, and Route - file names should be in PascalNotation.
+Controllers, Models, and Route - file names should be in PascalNotation
