@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 
-// Define the CourseProgress schema
-const CourseSchema = nemongoose.Schema({
+// Define the Course schema
+const CourseSchema = new mongoose.Schema({
     courseName: {
         type: String,
+        required: true,
     },
+
     courseDescription: {
         type: String,
+        required: true,
     },
     instructor: {
         type: mongoose.Schema.Types.ObjectId,
@@ -15,33 +18,42 @@ const CourseSchema = nemongoose.Schema({
     },
     whatYouWillLearn: {
         type: String,
+        required: true,
     },
-    courseContent: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Section",
-    },
+    courseContent: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Section",
+        },
+    ],
     ratingAndReview: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "RatingAndReview",
         },
     ],
-    price: { type: Number },
+    price: {
+        type: Number,
+        required: true,
+    },
     thumbnail: {
         type: String,
+        required: true,
     },
-    tag: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag",
-    },
+    category: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Category",
+        },
+    ],
+    tags: { type: String },
     studentsEnrolled: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: true,
         },
     ],
 });
 
 // Create a model based on the schema
-module.exports = mongoose.model("Course", courseProgressSchema);
+module.exports = mongoose.model("Course", CourseSchema);

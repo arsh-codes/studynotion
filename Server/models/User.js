@@ -43,10 +43,10 @@ const userSchema = new mongoose.Schema({
         ref: "Profile",
         required: true,
     },
-    courses: {
+    courses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
-    },
+    }],
     couseProgress: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "CourseProgress",

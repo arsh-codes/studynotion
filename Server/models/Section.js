@@ -5,11 +5,11 @@ const sectionSchema = nemongoose.Schema({
     sectionName: {
         type: string,
     },
-    subSection: {
+    subSection:[ {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "SubSection",
-    },
+    }],
 });
 
 // Create a model based on the schema
