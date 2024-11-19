@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
-const Profile = require("../models/Profile");
+const AdditionalDetails = require("../models/AdditionalDetails");
 const Otp = require("../models/Otp");
 require("dotenv").config();
 
@@ -75,8 +75,8 @@ exports.signUp = async (req, res) => {
         // Hash the user's password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create an associated profile for the user
-        const profile = await Profile.create({
+        // Create an associated additionalDetails for the user
+        const additionalDetails = await additionalDetails.create({
             gender: null,
             dateOfBirth: null,
             contactNumber: null,
@@ -90,7 +90,7 @@ exports.signUp = async (req, res) => {
             email,
             password: hashedPassword,
             accountType,
-            additionalDetails: profile._id,
+            additionalDetails: additionalDetails._id,
             image: `https://api.dicebear.com/9.x/initials/svg?seed=${firstName} ${lastName}`,
         });
 

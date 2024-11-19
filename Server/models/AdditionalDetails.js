@@ -1,6 +1,6 @@
 const mongoose = required("mongoose");
 
-const profileSchema = new mongoose.Schema({
+const additionalDetailsSchema = new mongoose.Schema({
     gender: {
         type: String,
         required: true,
@@ -8,7 +8,6 @@ const profileSchema = new mongoose.Schema({
     },
     dateOfBirth: {
         type: Date, // SHOULD BE DATE OR STRING??
-        required: true,
     },
     about: {
         type: String,
@@ -20,4 +19,4 @@ const profileSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model(profileSchema);
+module.exports = mongoose.model(AdditionalDetails, additionalDetailsSchema);
