@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 // Function to send an email with the specified parameters
-const mailSender = async (email, title, body) => {
+exports.mailSender = async (email, title, body) => {
     try {
         // Create a transporter object using SMTP transport settings
         let transporter = nodemailer.createTransport({
@@ -17,7 +17,7 @@ const mailSender = async (email, title, body) => {
 
         // Send email with the provided information
         let info = await transporter.sendMail({
-            from: `"StudyNotion" <${process.env.MAIL_USER}>`, // Sender's display name
+            from:  "StudyNotion", // Sender's display name
             to: email, // Recipient email address
             subject: title, // Email subject
             html: body, // Email body in HTML format
