@@ -1,22 +1,25 @@
-const mongoose = required("mongoose");
+const mongoose = require("mongoose"); // Fixed incorrect "required" import
 
+// Define the schema for additional details
 const additionalDetailsSchema = new mongoose.Schema({
     gender: {
         type: String,
         required: true,
         trim: true,
+        enum: ["Male", "Female", "Other"], // Restricts values to predefined options
     },
     dateOfBirth: {
-        type: Date, // SHOULD BE DATE OR STRING??
+        type: Date, // Date type is suitable for better date manipulation
     },
     about: {
         type: String,
-        trim: true, // Automatically trims leading and trailing whitespaces
+        trim: true,
     },
     contactNumber: {
-        type: Number,
+        type: String, // String for better formatting (e.g., international numbers)
         required: true,
     },
 });
 
-module.exports = mongoose.model(AdditionalDetails, additionalDetailsSchema);
+// Export the schema as a Mongoose model
+module.exports = mongoose.model("AdditionalDetails", additionalDetailsSchema); // Corrected model name to a string

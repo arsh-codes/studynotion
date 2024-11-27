@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
 
-// Define the Course schema
+// Define the schema for the Course model
 const CourseSchema = new mongoose.Schema({
     courseName: {
         type: String,
         required: true,
-    },
+        trim: true,
 
+    },
     courseDescription: {
         type: String,
         required: true,
+        trim: true,
+
     },
     instructor: {
         type: mongoose.Schema.Types.ObjectId,
@@ -19,6 +22,8 @@ const CourseSchema = new mongoose.Schema({
     whatYouWillLearn: {
         type: String,
         required: true,
+        trim: true,
+
     },
     courseContent: [
         {
@@ -27,33 +32,42 @@ const CourseSchema = new mongoose.Schema({
         },
     ],
     ratingAndReview: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "RatingAndReview",
-        },
+        { type: mongoose.Schema.Types.ObjectId, ref: "RatingAndReview" },
     ],
     price: {
         type: Number,
         required: true,
+        default: 0,
     },
     thumbnail: {
         type: String,
         required: true,
+        trim: true,
     },
-    category: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Category",
-        },
-    ],
-    tags: { type: String },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        required: true,
+    },
+    tag: {
+        type: String,
+        trim: true,
+    },
     studentsEnrolled: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-        },
+        { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     ],
+    instructions: {
+        type: String,
+        trim: true,
+    },
+    status: {
+        type: String,
+        enum: ["Draft", "Published"], 
+        default: "Draft",
+    },
+}, {
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
-// Create a model based on the schema
+// Export the Course model based on the schema
 module.exports = mongoose.model("Course", CourseSchema);

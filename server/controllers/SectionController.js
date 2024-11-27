@@ -13,17 +13,24 @@ exports.createSection = async (req, res) => {
             });
         }
 
+        // Check if the course exists
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found.",
+            });
+        }
+
         // Create a new section
         const newSection = await Section.create({ sectionName });
 
-        // Update the course to include the new section
-        const updatedCourse = await Course.findByIdAndUpdate(
-            courseId, // Find the course by its ID
-            { $push: { courseContent: newSection._id } }, // Add the new section
-            { new: true } // Return the updated course
-        )
-            .populate("courseContent") // Populate courseContent
-            .populate({ path: "courseContent.subSection" }); // Populate subSection within courseContent if exists
+        // Add the new section to the course
+        course.courseContent.push(newSection._id);
+        const updatedCourse = await course.save();
+        
+        // Populate the course with the new section and any sub-sections
+        await updatedCourse.populate("courseContent").populate({ path: "courseContent.subSection" }).execPopulate();
 
         // Respond with success
         return res.status(200).json({
@@ -32,10 +39,11 @@ exports.createSection = async (req, res) => {
             updatedCourse,
         });
     } catch (error) {
-        console.error("Error creating section:", error.message);
+        console.error("Error creating section:", error);
         return res.status(500).json({
             success: false,
             message: "An error occurred while creating the section.",
+            error: process.env.NODE_ENV === "development" ? error.message : "Internal Server Error",
         });
     }
 };
@@ -54,9 +62,7 @@ exports.updateSection = async (req, res) => {
 
         // Update the section by its ID
         const updatedSection = await Section.findByIdAndUpdate(
-            sectionId, // Find the section by its ID
-            { sectionName }, // Update the section name
-            { new: true } // Return the updated section
+            sectionId, { sectionName }, { new: true }
         );
 
         if (!updatedSection) {
@@ -73,10 +79,11 @@ exports.updateSection = async (req, res) => {
             updatedSection,
         });
     } catch (error) {
-        console.error("Error updating section:", error.message);
+        console.error("Error updating section:", error);
         return res.status(500).json({
             success: false,
             message: "An error occurred while updating the section.",
+            error: process.env.NODE_ENV === "development" ? error.message : "Internal Server Error",
         });
     }
 };
@@ -102,25 +109,24 @@ exports.deleteSection = async (req, res) => {
             });
         }
 
-        // Remove the section from the course's courseContent array
-        const updatedCourse = await Course.findByIdAndUpdate(
-            courseId, // Find the course by its ID
-            { $pull: { courseContent: sectionId } }, // Remove the section ID from courseContent
-            { new: true } // Return the updated course
-        )
-            .populate("courseContent") // Populate courseContent for response
-            .populate({ path: "courseContent.subSection" }); // Populate subSection if exists
-
         // Check if the course exists
-        if (!updatedCourse) {
+        const course = await Course.findById(courseId);
+        if (!course) {
             return res.status(404).json({
                 success: false,
                 message: "Course not found.",
             });
         }
 
+        // Remove the section from the course's courseContent array
+        course.courseContent.pull(sectionId);
+        const updatedCourse = await course.save();
+
         // Delete the section itself
         await Section.findByIdAndDelete(sectionId);
+
+        // Populate the course with updated sections
+        await updatedCourse.populate("courseContent").populate({ path: "courseContent.subSection" }).execPopulate();
 
         // Respond with success
         return res.status(200).json({
@@ -129,10 +135,11 @@ exports.deleteSection = async (req, res) => {
             updatedCourse,
         });
     } catch (error) {
-        console.error("Error deleting section:", error.message);
+        console.error("Error deleting section:", error);
         return res.status(500).json({
             success: false,
             message: "An error occurred while deleting the section.",
+            error: process.env.NODE_ENV === "development" ? error.message : "Internal Server Error",
         });
     }
 };

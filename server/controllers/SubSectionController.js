@@ -17,6 +17,15 @@ exports.createSubSection = async (req, res) => {
             });
         }
 
+        // Check if section exists
+        const section = await Section.findById(sectionId);
+        if (!section) {
+            return res.status(404).json({
+                success: false,
+                message: "Section not found.",
+            });
+        }
+
         // Upload video file to Cloudinary
         const uploadResult = await uploadImageToCloudinary(
             videoFile,
@@ -38,19 +47,9 @@ exports.createSubSection = async (req, res) => {
             videoUrl: uploadResult.secure_url,
         });
 
-        // Update the Section with the new SubSection
-        const updatedSection = await Section.findByIdAndUpdate(
-            sectionId, // Find section by ID
-            { $push: { subSections: newSubSection._id } }, // Add the new subsection ID
-            { new: true } // Return the updated section
-        );
-
-        if (!updatedSection) {
-            return res.status(404).json({
-                success: false,
-                message: "Section not found. SubSection was created but not linked.",
-            });
-        }
+        // Add the new SubSection to the Section
+        section.subSections.push(newSubSection._id);
+        await section.save();
 
         // Respond with success
         return res.status(201).json({
@@ -59,11 +58,11 @@ exports.createSubSection = async (req, res) => {
             subSection: newSubSection,
         });
     } catch (error) {
-        console.error("Error creating subsection:", error.message);
+        console.error("Error creating SubSection:", error);
         return res.status(500).json({
             success: false,
-            message: "An error occurred while creating the SubSection.",
-            error: error.message,
+            message: "Error occurred while creating the SubSection.",
+            error: process.env.NODE_ENV === "development" ? error.message : "Internal Server Error",
         });
     }
 };
@@ -77,7 +76,7 @@ exports.updateSubSection = async (req, res) => {
         if (!subSectionId || (!title && !timeDuration && !description)) {
             return res.status(400).json({
                 success: false,
-                message: "SubSection ID and at least one field to update are required.",
+                message: "SubSection ID and at least one field (title, timeDuration, description) are required to update.",
             });
         }
 
@@ -85,8 +84,8 @@ exports.updateSubSection = async (req, res) => {
         const updatedSubSection = await SubSection.findByIdAndUpdate(
             subSectionId,
             { title, timeDuration, description },
-            { new: true } // Return the updated SubSection
-        );
+            { new: true }
+        ).exec();
 
         if (!updatedSubSection) {
             return res.status(404).json({
@@ -101,10 +100,10 @@ exports.updateSubSection = async (req, res) => {
             subSection: updatedSubSection,
         });
     } catch (error) {
-        console.error("Error updating subsection:", error.message);
+        console.error("Error updating SubSection:", error);
         return res.status(500).json({
             success: false,
-            message: "An error occurred while updating the SubSection.",
+            message: "Error occurred while updating the SubSection.",
             error: error.message,
         });
     }
@@ -123,39 +122,40 @@ exports.deleteSubSection = async (req, res) => {
             });
         }
 
-        // Remove the SubSection from the Section
-        const updatedSection = await Section.findByIdAndUpdate(
-            sectionId,
-            { $pull: { subSections: subSectionId } }, // Remove SubSection reference
-            { new: true } // Return updated Section
-        );
-
-        if (!updatedSection) {
+        // Check if section exists
+        const section = await Section.findById(sectionId);
+        if (!section) {
             return res.status(404).json({
                 success: false,
-                message: "Section not found. Cannot remove SubSection.",
+                message: "Section not found.",
             });
         }
 
-        // Delete the SubSection
-        const deletedSubSection = await SubSection.findByIdAndDelete(subSectionId);
-
-        if (!deletedSubSection) {
+        // Check if subSection exists
+        const subSection = await SubSection.findById(subSectionId);
+        if (!subSection) {
             return res.status(404).json({
                 success: false,
                 message: "SubSection not found.",
             });
         }
 
+        // Remove the SubSection from the Section
+        section.subSections.pull(subSectionId);
+        await section.save();
+
+        // Delete the SubSection
+        await SubSection.findByIdAndDelete(subSectionId);
+
         return res.status(200).json({
             success: true,
             message: "SubSection deleted successfully.",
         });
     } catch (error) {
-        console.error("Error deleting subsection:", error.message);
+        console.error("Error deleting SubSection:", error);
         return res.status(500).json({
             success: false,
-            message: "An error occurred while deleting the SubSection.",
+            message: "Error occurred while deleting the SubSection.",
             error: error.message,
         });
     }

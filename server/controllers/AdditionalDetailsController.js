@@ -1,6 +1,8 @@
 const AdditionalDetails = require("../models/AdditionalDetails");
 const User = require("../models/User");
 const Course = require("../models/Course");
+
+// Update user profile details
 exports.updateProfile = async (req, res) => {
     try {
         const { gender, dateOfBirth, about, contactNumber } = req.body;
@@ -10,8 +12,7 @@ exports.updateProfile = async (req, res) => {
         if (!userId || !gender || !contactNumber) {
             return res.status(400).json({
                 success: false,
-                message:
-                    "Gender and contact number are required to update your profile.",
+                message: "Gender and contact number are required to update your profile.",
             });
         }
 
@@ -34,9 +35,7 @@ exports.updateProfile = async (req, res) => {
         }
 
         // Find the additionalDetails by ID
-        const additionalDetails = await AdditionalDetails.findById(
-            additionalDetailsId
-        );
+        const additionalDetails = await AdditionalDetails.findById(additionalDetailsId);
         if (!additionalDetails) {
             return res.status(404).json({
                 success: false,
@@ -63,15 +62,13 @@ exports.updateProfile = async (req, res) => {
         console.error(`Error updating profile for user ${req.user.id}:`, error);
         return res.status(500).json({
             success: false,
-            message:
-                "We encountered an issue while updating your profile. Please try again later.",
+            message: "We encountered an issue while updating your profile. Please try again later.",
             error: error.message,
         });
     }
 };
-const AdditionalDetails = require("../models/AdditionalDetails");
-const User = require("../models/User");
 
+// Delete user account along with associated data
 exports.deleteAccount = async (req, res) => {
     try {
         // Extract user ID from the authenticated request 
@@ -88,13 +85,14 @@ exports.deleteAccount = async (req, res) => {
             });
         }
 
-        const courses = user.courses;
-
-        for (let course of courses) {
-            const courseDetails = Course.findByIdAndUpdate(
-                { course },
-                { $pull: { userId } }
-            );
+        // Delete the user from the associated courses
+        if (Array.isArray(user.courses) && user.courses.length > 0) {
+            // Remove the user from each course's "userId" field
+            for (let courseId of user.courses) {
+                await Course.findByIdAndUpdate(courseId, {
+                    $pull: { userId: userId },  // Assuming "userId" is the field storing user references in the course model
+                });
+            }
         }
 
         // Get associated additional details ID
@@ -111,15 +109,13 @@ exports.deleteAccount = async (req, res) => {
         // Return success response
         return res.status(200).json({
             success: true,
-            message:
-                "Your account has been deleted successfully. We hope to see you again!",
+            message: "Your account has been deleted successfully. We hope to see you again!",
         });
     } catch (error) {
-        console.error("Error deleting account for user:", userId, error);
+        console.error("Error deleting account for user:", req.user.id, error);
         return res.status(500).json({
             success: false,
-            message:
-                "We encountered an error while trying to delete your account. Please try again later.",
+            message: "We encountered an error while trying to delete your account. Please try again later.",
             error: error.message,
         });
     }

@@ -1,11 +1,13 @@
 exports.passwordUpdatedTemplate = (email, name) => {
-	return `<!DOCTYPE html>
-    <html>
+    return `<!DOCTYPE html>
+    <html lang="en">
     
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Password Update Confirmation</title>
         <style>
+            /* Basic styling for email */
             body {
                 background-color: #ffffff;
                 font-family: Arial, sans-serif;
@@ -16,7 +18,7 @@ exports.passwordUpdatedTemplate = (email, name) => {
                 padding: 0;
             }
     
-    
+            /* Container setup for centering */
             .container {
                 max-width: 600px;
                 margin: 0 auto;
@@ -24,30 +26,36 @@ exports.passwordUpdatedTemplate = (email, name) => {
                 text-align: center;
             }
     
+            /* Logo styling */
             .logo {
                 max-width: 200px;
                 margin-bottom: 20px;
             }
     
+            /* Message styling */
             .message {
                 font-size: 18px;
                 font-weight: bold;
                 margin-bottom: 20px;
             }
     
+            /* Body content styling */
             .body {
                 font-size: 16px;
                 margin-bottom: 20px;
             }
     
+            /* Highlighted text styling */
+            .highlight {
+                font-weight: bold;
+                color: #FF5733;
+            }
+    
+            /* Support section styling */
             .support {
                 font-size: 14px;
                 color: #999999;
                 margin-top: 20px;
-            }
-    
-            .highlight {
-                font-weight: bold;
             }
         </style>
     
@@ -55,17 +63,17 @@ exports.passwordUpdatedTemplate = (email, name) => {
     
     <body>
         <div class="container">
-            <a href="https://studynotion-edtech-project.vercel.app"><img class="logo"
-                    src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo"></a>
+            <a href="https://studynotion-edtech-project.vercel.app">
+                <img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo">
+            </a>
             <div class="message">Password Update Confirmation</div>
             <div class="body">
                 <p>Hey ${name},</p>
-                <p>Your password has been successfully updated for the email <span class="highlight">${email}</span>.
-                </p>
+                <p>Your password has been successfully updated for the email <span class="highlight">${email}</span>.</p>
                 <p>If you did not request this password change, please contact us immediately to secure your account.</p>
             </div>
-            <div class="support">If you have any questions or need further assistance, please feel free to reach out to us
-                at
+            <div class="support">
+                If you have any questions or need further assistance, please feel free to reach out to us at 
                 <a href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!
             </div>
         </div>

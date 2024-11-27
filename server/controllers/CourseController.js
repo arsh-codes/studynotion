@@ -1,6 +1,6 @@
-// Import the Course, Tag, and User models, and the image uploader utility
 const Course = require("../models/Course");
 const Category = require("../models/Category");
+const Tag = require("../models/Tag"); // Assuming you have a Tag model
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
@@ -35,12 +35,21 @@ exports.createCourse = async (req, res) => {
             });
         }
 
-        // Fetch the tag by tagName and ensure it exists
+        // Fetch the category by categoryName and ensure it exists
         const categoryDetails = await Category.findOne({ categoryName: category });
         if (!categoryDetails) {
             return res.status(404).json({
                 success: false,
                 message: "Category not found.",
+            });
+        }
+
+        // Fetch the tag by tagName and ensure it exists
+        const tagDetails = await Tag.findOne({ tagName: tag });
+        if (!tagDetails) {
+            return res.status(404).json({
+                success: false,
+                message: "Tag not found.",
             });
         }
 
@@ -55,23 +64,23 @@ exports.createCourse = async (req, res) => {
             courseName,
             courseDescription,
             price,
-            category:categoryDetails._id,
+            category: categoryDetails._id,
             whatYouWillLearn,
-            tag,
+            tag: tagDetails._id,
             thumbnail: thumbnailUploadResult.secure_url,
-            instructor: req.user._id,
+            instructor: req.user._id, // Instructor is the logged-in user
         });
 
         // Update instructor with the new course ID
-        await User.findOneAndUpdate(
-            { _id: instructorDetails._id },
+        await User.findByIdAndUpdate(
+            req.user._id,
             { $push: { courses: course._id } },
             { new: true }
         );
 
         // Update tag with the new course ID
-        await Category.findOneAndUpdate(
-            { _id: tagDetails._id },
+        await Tag.findByIdAndUpdate(
+            tagDetails._id,
             { $push: { courses: course._id } },
             { new: true }
         );
@@ -87,6 +96,7 @@ exports.createCourse = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "An error occurred while creating the course.",
+            error: error.message, // Include error message for debugging
         });
     }
 };
@@ -100,8 +110,6 @@ exports.showAllCourses = async (req, res) => {
             .populate("tag") // Populate the 'tag' field with the full tag data
             .exec();
 
-        console.log(allCourses);
-
         // Respond with success and return all courses
         return res.status(200).json({
             success: true,
@@ -113,6 +121,7 @@ exports.showAllCourses = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "An error occurred while retrieving courses.",
+            error: error.message, // Include error message for debugging
         });
     }
 };

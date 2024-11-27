@@ -12,21 +12,24 @@ exports.mailSender = async (email, title, body) => {
                 user: process.env.MAIL_USER, // Sender's email username
                 pass: process.env.MAIL_PASSWORD, // Sender's email password
             },
-            debug: true, // Enable detailed logging for debugging
+            // debug: true, // Avoid logging sensitive information like email/password (commented out for production)
         });
 
         // Send email with the provided information
         let info = await transporter.sendMail({
-            from:  "StudyNotion", // Sender's display name
+            from: process.env.MAIL_USER, // Sender's email (use actual sender's email from environment variable)
             to: email, // Recipient email address
             subject: title, // Email subject
             html: body, // Email body in HTML format
         });
 
-        console.log("📝 -> mailSender -> info=", info); // Log email info upon success
+        // Log email info upon success for tracking purposes, but do not expose sensitive data
+        console.log("📝 -> mailSender -> Email sent successfully:", info.response);
+
         return info;
     } catch (error) {
-        console.error("Error while sending mail:", error); // Log error if sending fails
+        // Improved error handling with a specific message for debugging
+        console.error("Error while sending mail:", error.message);
+        throw new Error("Failed to send email. Please try again later."); // Return user-friendly message
     }
 };
- 

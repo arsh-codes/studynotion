@@ -1,179 +1,122 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const User = require("../models/User");
 const AdditionalDetails = require("../models/AdditionalDetails");
-const Otp = require("../models/Otp");
-require("dotenv").config();
+const User = require("../models/User");
+const Course = require("../models/Course");
 
-exports.signUp = async (req, res) => {
+// Update user profile details
+exports.updateProfile = async (req, res) => {
     try {
-        // Extract fields from the request body
-        const {
-            firstName,
-            lastName,
-            email,
-            password,
-            confirmPassword,
-            accountType,
-            otp,
-        } = req.body;
+        const { gender, dateOfBirth, about, contactNumber } = req.body;
+        const userId = req.user.id; // Assuming userId is added by login middleware
 
-        // Check for missing required fields
-        if (
-            !firstName ||
-            !lastName ||
-            !email ||
-            !password ||
-            !confirmPassword ||
-            !accountType ||
-            !otp
-        ) {
+        // Validate required inputs
+        if (!userId || !gender || !contactNumber) {
             return res.status(400).json({
                 success: false,
-                message:
-                    "Required fields are missing. Please complete all fields and try again.",
+                message: "Gender and contact number are required to update your profile.",
             });
         }
 
-        // Ensure passwords match
-        if (password !== confirmPassword) {
-            return res.status(400).json({
+        // Find the user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
                 success: false,
-                message: "Passwords don't match.",
+                message: "No user found with the given ID.",
             });
         }
 
-        // Check if a user with the same email already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({
+        // Get the additionalDetails ID from the user's additionalDetails field
+        const additionalDetailsId = user.additionalDetails;
+        if (!additionalDetailsId) {
+            return res.status(404).json({
                 success: false,
-                message: "An account with this email address already exists.",
+                message: "Profile details are not associated with this user.",
             });
         }
 
-        // Retrieve the latest OTP entry from the database
-        const latestOtpInDb = await Otp.find({ email })
-            .sort({ createdAt: -1 })
-            .limit(1);
-
-        // Validate OTP
-        if (!latestOtpInDb || latestOtpInDb.length === 0) {
-            return res.status(400).json({
+        // Find the additionalDetails by ID
+        const additionalDetails = await AdditionalDetails.findById(additionalDetailsId);
+        if (!additionalDetails) {
+            return res.status(404).json({
                 success: false,
-                message:
-                    "No OTP found for the provided email address. Please check and try again.",
-            });
-        } else if (otp !== latestOtpInDb[0].otp) {
-            return res.status(400).json({
-                success: false,
-                message:
-                    "The provided OTP does not match. Please verify and try again.",
+                message: "Profile details could not be found.",
             });
         }
 
-        // Hash the user's password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // Update the additional details fields
+        additionalDetails.contactNumber = contactNumber;
+        additionalDetails.gender = gender;
+        if (dateOfBirth) additionalDetails.dateOfBirth = dateOfBirth;
+        if (about) additionalDetails.about = about;
 
-        // Create an associated additionalDetails for the user
-        const additionalDetails = await additionalDetails.create({
-            gender: null,
-            dateOfBirth: null,
-            contactNumber: null,
-            about: null,
-        });
+        // Save the updated details
+        const updatedAdditionalDetails = await additionalDetails.save();
 
-        // Create a new user
-        const user = await User.create({
-            firstName,
-            lastName,
-            email,
-            password: hashedPassword,
-            accountType,
-            additionalDetails: additionalDetails._id,
-            image: `https://api.dicebear.com/9.x/initials/svg?seed=${firstName} ${lastName}`,
-        });
-
-        // Send a success response
+        // Respond with success
         return res.status(200).json({
             success: true,
-            message: "Registration successful. Your account has been created.",
-            user,
+            message: "Your profile has been updated successfully.",
+            additionalDetails: updatedAdditionalDetails,
         });
     } catch (error) {
-        // Send an error response if an exception occurs
-        res.status(500).json({
+        console.error(`Error updating profile for user ${req.user.id}:`, error);
+        return res.status(500).json({
             success: false,
-            message:
-                "An error occurred during registration. Please try again later.",
-            error,
+            message: "We encountered an issue while updating your profile. Please try again later.",
+            error: error.message,
         });
     }
 };
 
-exports.login = async (req, res) => {
+// Delete user account along with associated data
+exports.deleteAccount = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        // Extract user ID from the authenticated request 
+        const userId = req.user.id;
 
-        // Validate that both fields are provided
-        if (!email || !password) {
-            return res.status(400).json({
-                success: false,
-                message: "Both email and password are required for login.",
-            });
-        }
+        // Find the user in the database
+        const user = await User.findById(userId);
 
         // Check if the user exists
-        const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({
                 success: false,
-                message:
-                    "No account found with this email. Please register to create an account.",
+                message: "The requested user account was not found.",
             });
         }
 
-        // Verify the password
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (!isPasswordCorrect) {
-            return res.status(401).json({
-                success: false,
-                message: "The password entered is incorrect. Please try again.",
-            });
+        // Delete the user from the associated courses
+        if (Array.isArray(user.courses) && user.courses.length > 0) {
+            // Loop through the courses and remove the user from each course's "userId" field
+            for (let courseId of user.courses) {
+                await Course.findByIdAndUpdate(courseId, {
+                    $pull: { users: userId },  // Assuming "users" is the field storing user references in the course model
+                });
+            }
         }
 
-        // Create the JWT payload
-        const payloadForJwt = {
-            email: user.email,
-            id: user._id,
-            accountType: user.accountType,
-        };
+        // Get associated additional details ID
+        const additionalDetailsId = user.additionalDetails;
 
-        // Generate the token
-        const token = jwt.sign(payloadForJwt, process.env.JWT_SECRET_KEY, {
-            expiresIn: "2h",
-        });
+        // Delete additional details if they exist
+        if (additionalDetailsId) {
+            await AdditionalDetails.findByIdAndDelete(additionalDetailsId);
+        }
 
-        // Assign the token to the user object temporarily
-        user.token = token;
-        user.password = undefined; // Remove password from response for security
+        // Delete the user account
+        await User.findByIdAndDelete(userId);
 
-        // Set cookie options and send response
-        const cookieOptions = {
-            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days expiration
-            httpOnly: true,
-        };
-        res.cookie("token", token, cookieOptions).status(200).json({
+        // Return success response
+        return res.status(200).json({
             success: true,
-            message: "Login successful. Welcome back!",
-            token,
-            user,
+            message: "Your account has been deleted successfully. We hope to see you again!",
         });
     } catch (error) {
+        console.error("Error deleting account for user:", req.user.id, error);
         return res.status(500).json({
             success: false,
-            message: "An error occurred during login. Please try again later.",
-            error,
+            message: "We encountered an error while trying to delete your account. Please try again later.",
+            error: error.message,
         });
     }
 };

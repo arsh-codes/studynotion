@@ -2,15 +2,16 @@ const { instance } = require("../utils/razorpay");
 const mailsender = require("../utils/mailSender");
 const Course = require("../models/Course");
 const User = require("../models/User");
-const courseEnrollmentEmail = require("../mail/templates/courseEnrollmentTemplate");
+const courseEnrollmentTemplate = require("../mail/templates/courseEnrollmentTemplate");
+const crypto = require("crypto"); // Ensure to import the crypto module
 require("dotenv").config();
+
+// Capture Payment and Create Razorpay Payment Link
 exports.capturePayment = async (req, res) => {
     try {
-        // Extract course ID and user ID
         const { courseId } = req.body;
         const userId = req.user.id;
 
-        // Validate if courseId is provided
         if (!courseId) {
             return res.status(400).json({
                 success: false,
@@ -18,7 +19,6 @@ exports.capturePayment = async (req, res) => {
             });
         }
 
-        // Fetch user details
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({
@@ -27,7 +27,6 @@ exports.capturePayment = async (req, res) => {
             });
         }
 
-        // Fetch course details
         const course = await Course.findById(courseId);
         if (!course) {
             return res.status(404).json({
@@ -36,7 +35,6 @@ exports.capturePayment = async (req, res) => {
             });
         }
 
-        // Check if the user is already enrolled in the course
         if (course.studentsEnrolled.includes(userId)) {
             return res.status(409).json({
                 success: false,
@@ -44,10 +42,9 @@ exports.capturePayment = async (req, res) => {
             });
         }
 
-        // Create Razorpay payment link
         try {
             const paymentLinkOptions = {
-                amount: course.price * 100, // Convert course price to the smallest currency unit (paisa in this case)
+                amount: course.price * 100, // Convert price to paisa (smallest unit)
                 currency: "INR",
                 notes: {
                     userName: `${user.firstName} ${user.lastName}`,
@@ -58,10 +55,7 @@ exports.capturePayment = async (req, res) => {
                 },
             };
 
-            const paymentResponse =
-                instance.paymentLink.create(paymentLinkOptions);
-
-            // Return success response with payment link details
+            const paymentResponse = await instance.paymentLink.create(paymentLinkOptions); // Awaiting the Razorpay response
             return res.status(200).json({
                 success: true,
                 message: "Payment link created successfully.",
@@ -70,9 +64,7 @@ exports.capturePayment = async (req, res) => {
                 paymentResponse,
             });
         } catch (error) {
-            console.error(
-                `Error creating Razorpay payment link: ${error.message}`
-            );
+            console.error(`Error creating Razorpay payment link: ${error.message}`);
             return res.status(500).json({
                 success: false,
                 message:
@@ -88,15 +80,14 @@ exports.capturePayment = async (req, res) => {
         });
     }
 };
+
+// Verify Razorpay Payment and Enroll User in Course
 exports.verifyPayment = async (req, res) => {
     try {
         const razorpaySignature = req.headers["x-razorpay-signature"];
 
         // Verify Razorpay signature using HMAC
-        const hmac = crypto.createHmac(
-            "sha256",
-            process.env.WEBHOOK_SECRET_KEY
-        );
+        const hmac = crypto.createHmac("sha256", process.env.WEBHOOK_SECRET_KEY);
         hmac.update(JSON.stringify(req.body));
         const digest = hmac.digest("hex");
 
@@ -107,22 +98,17 @@ exports.verifyPayment = async (req, res) => {
             });
         }
 
-        // Extract payment details from Razorpay payload
-        const { userId, courseId, userName, courseName, userEmail } =
-            req.body.payload.payment.entity.notes;
+        const { userId, courseId, userName, courseName, userEmail } = req.body.payload.payment.entity.notes;
 
         if (!userId || !courseId) {
-            // Validate necessary fields
             return res.status(400).json({
                 success: false,
-                message:
-                    "Invalid payment details. Missing user or course information.",
+                message: "Invalid payment details. Missing user or course information.",
             });
         }
 
-        // Update course and user data
         const course = await Course.findByIdAndUpdate(
-            courseId, // FIXED: Corrected query format
+            courseId,
             { $push: { studentsEnrolled: userId } },
             { new: true }
         );
@@ -135,7 +121,7 @@ exports.verifyPayment = async (req, res) => {
         }
 
         const user = await User.findByIdAndUpdate(
-            userId, // FIXED: Corrected query format
+            userId,
             { $push: { courses: courseId } },
             { new: true }
         );

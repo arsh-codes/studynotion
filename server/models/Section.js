@@ -1,18 +1,22 @@
 const mongoose = require("mongoose");
 
-// Define the CourseProgress schema
-const sectionSchema = nemongoose.Schema({
+// Define the Section schema
+const sectionSchema = new mongoose.Schema({
     sectionName: {
-        type: string,
+        type: String, 
+        required: true, 
+        trim: true, 
     },
-    subSection:[ {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "SubSection",
-    }],
+    subSection: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: "SubSection",
+        },
+    ],
+}, {
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
 });
 
-// Create a model based on the schema
+// Create and export the Section model
 module.exports = mongoose.model("Section", sectionSchema);
-
-

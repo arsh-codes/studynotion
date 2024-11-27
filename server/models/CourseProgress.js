@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Define the CourseProgress schema
-const courseProgressSchema = nemongoose.Schema({
+const courseProgressSchema = new mongoose.Schema({
     course: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
@@ -13,6 +13,8 @@ const courseProgressSchema = nemongoose.Schema({
             ref: "SubSection",
         },
     ],
+}, {
+    timestamps: true, // Adds `createdAt` and `updatedAt` fields automatically
 });
 
 // Create a model based on the schema
