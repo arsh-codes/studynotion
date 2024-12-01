@@ -1,3 +1,8 @@
+// This file contains the following controllers.
+// createSection
+// updateSection
+// deleteSection
+
 const Section = require("../models/Section");
 const Course = require("../models/Course");
 
@@ -28,9 +33,12 @@ exports.createSection = async (req, res) => {
         // Add the new section to the course
         course.courseContent.push(newSection._id);
         const updatedCourse = await course.save();
-        
+
         // Populate the course with the new section and any sub-sections
-        await updatedCourse.populate("courseContent").populate({ path: "courseContent.subSection" }).execPopulate();
+        await updatedCourse
+            .populate("courseContent")
+            .populate({ path: "courseContent.subSection" })
+            .execPopulate();
 
         // Respond with success
         return res.status(200).json({
@@ -43,7 +51,10 @@ exports.createSection = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "An error occurred while creating the section.",
-            error: process.env.NODE_ENV === "development" ? error.message : "Internal Server Error",
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : "Internal Server Error",
         });
     }
 };
@@ -62,7 +73,9 @@ exports.updateSection = async (req, res) => {
 
         // Update the section by its ID
         const updatedSection = await Section.findByIdAndUpdate(
-            sectionId, { sectionName }, { new: true }
+            sectionId,
+            { sectionName },
+            { new: true }
         );
 
         if (!updatedSection) {
@@ -83,7 +96,10 @@ exports.updateSection = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "An error occurred while updating the section.",
-            error: process.env.NODE_ENV === "development" ? error.message : "Internal Server Error",
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : "Internal Server Error",
         });
     }
 };
@@ -126,7 +142,10 @@ exports.deleteSection = async (req, res) => {
         await Section.findByIdAndDelete(sectionId);
 
         // Populate the course with updated sections
-        await updatedCourse.populate("courseContent").populate({ path: "courseContent.subSection" }).execPopulate();
+        await updatedCourse
+            .populate("courseContent")
+            .populate({ path: "courseContent.subSection" })
+            .execPopulate();
 
         // Respond with success
         return res.status(200).json({
@@ -139,7 +158,10 @@ exports.deleteSection = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "An error occurred while deleting the section.",
-            error: process.env.NODE_ENV === "development" ? error.message : "Internal Server Error",
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : "Internal Server Error",
         });
     }
 };

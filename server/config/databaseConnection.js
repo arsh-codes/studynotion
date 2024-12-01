@@ -14,7 +14,7 @@ if (!URL) {
 }
 
 // Define an asynchronous function to connect to the MongoDB database
-async function dbConnector() {
+async function databaseConnector() {
     try {
         // Attempt to connect to the MongoDB database with additional options for compatibility
         await mongoose.connect(URL);
@@ -32,5 +32,5 @@ async function dbConnector() {
     }
 }
 
-// Export the dbConnector function for use in other modules
-module.exports = dbConnector;
+// Export the databaseConnector function for use in other modules
+module.exports = databaseConnector;

@@ -1,3 +1,8 @@
+// This file contains the following controllers.
+// createSubSection
+// updateSubSection
+// deleteSubSection
+
 const SubSection = require("../models/SubSection");
 const Section = require("../models/Section");
 const { uploadImageToCloudinary } = require("../utils/cloudinaryUploader");
@@ -10,10 +15,17 @@ exports.createSubSection = async (req, res) => {
         const { videoFile } = req.files;
 
         // Validate inputs
-        if (!sectionId || !title || !timeDuration || !description || !videoFile) {
+        if (
+            !sectionId ||
+            !title ||
+            !timeDuration ||
+            !description ||
+            !videoFile
+        ) {
             return res.status(400).json({
                 success: false,
-                message: "All fields (sectionId, title, timeDuration, description, videoFile) are required.",
+                message:
+                    "All fields (sectionId, title, timeDuration, description, videoFile) are required.",
             });
         }
 
@@ -54,7 +66,8 @@ exports.createSubSection = async (req, res) => {
         // Respond with success
         return res.status(201).json({
             success: true,
-            message: "SubSection created successfully and linked to the section.",
+            message:
+                "SubSection created successfully and linked to the section.",
             subSection: newSubSection,
         });
     } catch (error) {
@@ -62,7 +75,10 @@ exports.createSubSection = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Error occurred while creating the SubSection.",
-            error: process.env.NODE_ENV === "development" ? error.message : "Internal Server Error",
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : "Internal Server Error",
         });
     }
 };
@@ -76,7 +92,8 @@ exports.updateSubSection = async (req, res) => {
         if (!subSectionId || (!title && !timeDuration && !description)) {
             return res.status(400).json({
                 success: false,
-                message: "SubSection ID and at least one field (title, timeDuration, description) are required to update.",
+                message:
+                    "SubSection ID and at least one field (title, timeDuration, description) are required to update.",
             });
         }
 

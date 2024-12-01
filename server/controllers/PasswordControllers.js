@@ -1,4 +1,10 @@
-const bcrypt = require("bcryptjs");
+// This file contains the following controllers.
+// changePassword
+// resetPassword
+// resetPasswordMailSender
+ 
+
+const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const crypto = require("crypto"); // Import crypto module for generating reset tokens
@@ -12,7 +18,8 @@ exports.changePassword = async (req, res) => {
         if (!oldPassword || !newPassword || !confirmPassword || !email) {
             return res.status(400).json({
                 success: false,
-                message: "All fields (oldPassword, newPassword, confirmPassword, email) are required.",
+                message:
+                    "All fields (oldPassword, newPassword, confirmPassword, email) are required.",
             });
         }
 
@@ -34,7 +41,10 @@ exports.changePassword = async (req, res) => {
         }
 
         // Check if the old password matches the stored password
-        const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+        const isOldPasswordCorrect = await bcrypt.compare(
+            oldPassword,
+            user.password
+        );
         if (!isOldPasswordCorrect) {
             return res.status(401).json({
                 success: false,
@@ -78,7 +88,9 @@ exports.resetPasswordMailSender = async (req, res) => {
 
         // Check if email is provided
         if (!email) {
-            return res.status(400).json({ success: false, message: "Email is required" });
+            return res
+                .status(400)
+                .json({ success: false, message: "Email is required" });
         }
 
         // Check if the user exists
@@ -124,13 +136,15 @@ exports.resetPasswordMailSender = async (req, res) => {
         // Respond to the user
         return res.status(200).json({
             success: true,
-            message: "Password reset link has been successfully sent to your email.",
+            message:
+                "Password reset link has been successfully sent to your email.",
         });
     } catch (error) {
         console.error("Error while sending reset password link:", error);
         return res.status(500).json({
             success: false,
-            message: "An unexpected error occurred while processing the password reset request",
+            message:
+                "An unexpected error occurred while processing the password reset request",
             error: error.message,
         });
     }
@@ -162,7 +176,8 @@ exports.resetPassword = async (req, res) => {
         if (user.resetPasswordTokenExpires < Date.now()) {
             return res.status(400).json({
                 success: false,
-                message: "Token has expired. Please request a new password reset.",
+                message:
+                    "Token has expired. Please request a new password reset.",
             });
         }
 
@@ -187,7 +202,8 @@ exports.resetPassword = async (req, res) => {
         console.error("Error while resetting password:", error);
         return res.status(500).json({
             success: false,
-            message: "An unexpected error occurred while processing the password reset request.",
+            message:
+                "An unexpected error occurred while processing the password reset request.",
             error: error.message,
         });
     }

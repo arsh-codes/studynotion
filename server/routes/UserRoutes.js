@@ -1,25 +1,49 @@
+// Import the required modules
 const express = require("express");
 const router = express.Router();
 
-const { signUp, logIn } = require("../controllers/AuthenticationController");
-const { auth } = require("../middlewares/authenticate");
-const { isStudent, isAdmin, isInstructor } = require("../middlewares/authorization");
+// Import the required controllers and middleware functions
+const {
+    login,
+    signup,
+    sendOtp,
+} = require("../controllers/AuthenticationControllers");
+const {
+    changePassword,
+    resetPasswordMailSender,
+    resetPassword,
+} = require("../controllers/PasswordControllers");
+const { auth } = require("../middlewares/authorizationMiddleware");
 
-// Public routes
-router.get("/login", logIn);
-router.post("/signup", signUp);
+// ********************************************************************************************************
+//                                      Authentication Routes
+// ********************************************************************************************************
 
-// Protected routes with role-based authorization
-router.get("/student", auth, isStudent, (req, res) => {
-    res.json({ success: true, message: "Student Dashboard" });
-});
+// Route for user login
+router.post("/login", login);
 
-router.get("/admin", auth, isAdmin, (req, res) => {
-    res.json({ success: true, message: "Admin Dashboard" });
-});
+// Route for user signup
+router.post("/signup", signup);
 
-router.get("/instructor", auth, isInstructor, (req, res) => {
-    res.json({ success: true, message: "Instructor Dashboard" });
-});
+// Route for sending OTP to the user's email
+router.post("/sendotp", sendOtp);
 
+// ********************************************************************************************************
+//                                      Password Reset Routes
+// ********************************************************************************************************
+
+// Route for generating a reset password token
+router.post("/reset-password-token", resetPasswordMailSender);
+
+// Route for resetting user's password after token verification
+router.post("/reset-password", resetPassword);
+
+// ********************************************************************************************************
+//                                      Change Password Route
+// ********************************************************************************************************
+
+// Route for changing the user's password (requires authentication)
+router.post("/changepassword", auth, changePassword);
+
+// Export the router for use in the main application
 module.exports = router;

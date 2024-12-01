@@ -1,8 +1,13 @@
+// This file contains the following controllers.
+// createCourse
+// getAllCourses
+// getCourseDetails
+
 const Course = require("../models/Course");
 const Category = require("../models/Category");
-const Tag = require("../models/Tag"); // Assuming you have a Tag model
+const Tag = require("../models/Tag");
 const User = require("../models/User");
-const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { uploadImageToCloudinary } = require("../utils/cloudinaryUploader");
 
 // Controller function to create a new Course
 exports.createCourse = async (req, res) => {
@@ -36,7 +41,9 @@ exports.createCourse = async (req, res) => {
         }
 
         // Fetch the category by categoryName and ensure it exists
-        const categoryDetails = await Category.findOne({ categoryName: category });
+        const categoryDetails = await Category.findOne({
+            categoryName: category,
+        });
         if (!categoryDetails) {
             return res.status(404).json({
                 success: false,
@@ -102,7 +109,7 @@ exports.createCourse = async (req, res) => {
 };
 
 // Controller function to retrieve all Courses
-exports.showAllCourses = async (req, res) => {
+exports.getAllCourses = async (req, res) => {
     try {
         // Fetch all Courses
         const allCourses = await Course.find({})
@@ -122,6 +129,50 @@ exports.showAllCourses = async (req, res) => {
             success: false,
             message: "An error occurred while retrieving courses.",
             error: error.message, // Include error message for debugging
+        });
+    }
+};
+
+// Controller function to retrieve details of a single course
+exports.getCourseDetails = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+
+        // Check if courseId is provided
+        if (!courseId) {
+            return res.status(400).json({
+                success: false,
+                message: "Course ID is required to fetch course details.",
+            });
+        }
+
+        // Fetch course details by ID
+        const courseDetails = await Course.findById(courseId)
+            .populate("instructor", "name email") // Populate instructor with selected fields
+            .populate("category", "categoryName") // Populate category with selected fields
+            .populate("tag", "tagName") // Populate tag with selected fields
+            .exec();
+
+        // Check if the course exists
+        if (!courseDetails) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found.",
+            });
+        }
+
+        // Respond with course details
+        return res.status(200).json({
+            success: true,
+            message: "Course details retrieved successfully.",
+            course: courseDetails,
+        });
+    } catch (error) {
+        //FIXED: Added error handling for course retrieval
+        console.error("Error fetching course details:", error.message);
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred while retrieving the course details.",
         });
     }
 };

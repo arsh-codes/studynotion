@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 // Middleware for token authorization
-exports.authorization = async (req, res, next) => {
+exports.auth = async (req, res, next) => {
     try {
         // Retrieve the token from request body, cookies, or Authorization header
         const token =
@@ -21,8 +21,11 @@ exports.authorization = async (req, res, next) => {
         // Verify and decode the token
         try {
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-            console.log("📝 -> exports.authorization= -> decodedToken=", decodedToken)
- 
+            console.log(
+                "📝 -> exports.authorization= -> decodedToken=",
+                decodedToken
+            );
+
             // Attach the decoded token's data to the request object
             req.user = decodedToken;
 

@@ -1,5 +1,7 @@
 NODE PACKAGES ADDED 
 npm init
-npm install node express nodemon mongoose dotenv cookie-parser jsonwebtoken nodemailer otp-generator bcrypt razorpay cors
+npm install node express nodemon mongoose dotenv cookie-parser jsonwebtoken nodemailer otp-generator bcrypt razorpay cors express-fileupload
 
 Controllers, Models, and Route - file names should be in PascalNotation
+
+port number 3000 for frontend 4000 for backend
