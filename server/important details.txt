@@ -1,7 +1,27 @@
-NODE PACKAGES ADDED 
+# - Frontend (React app) will run on port 3000.
+# - Backend (Express API) will run on port 4000.
+
+# Initialize a new Node.js project
 npm init
+
+# Install core dependencies for server setup, routing, and environment configuration:
 npm install node express nodemon mongoose dotenv cookie-parser jsonwebtoken nodemailer otp-generator bcrypt razorpay cors express-fileupload cloudinary
 
-Controllers, Models, and Route - file names should be in PascalNotation
+# Brief explanation of each package:
+# 1. node: JavaScript runtime for executing your application.
+# 2. express: Framework to handle routing and middleware.
+# 3. nodemon: Tool for automatically restarting the server during development.
+# 4. mongoose: MongoDB ODM for connecting and interacting with MongoDB.
+# 5. dotenv: Loads environment variables from a .env file.
+# 6. cookie-parser: Middleware to handle cookies in requests.
+# 7. jsonwebtoken: Used for generating and verifying JWT tokens.
+# 8. nodemailer: Used for sending emails (e.g., OTP or notifications).
+# 9. otp-generator: A package for generating one-time passwords (OTPs).
+# 10. bcrypt: Hashing library for secure password storage.
+# 11. razorpay: For integrating Razorpay payment gateway.
+# 12. cors: A package for enabling Cross-Origin Resource Sharing (CORS) in your app.
+# 13. express-fileupload: Middleware for handling file uploads in Express.js.
+# 14. cloudinary: For managing image uploads and transformations via Cloudinary.
 
-port number 3000 for frontend 4000 for backend
+
+
