@@ -1,7 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
-const databaseConnector = require("../server/config/databaseConnection.js");
+const databaseConnector = require("../server/config/databaseConnector.js");
 const cors = require("cors");
 const fileupload = require("express-fileupload");
 
@@ -10,7 +10,6 @@ const profileRoutes = require("../server/routes/ProfileRoutes.js");
 const courseRoutes = require("../server/routes/CourseRoutes.js");
 const paymentRoutes = require("../server/routes/PaymentRoutes.js");
 const userRoutes = require("./routes/UserRoutes.js");
-const cloudinaryConnector = require("../server/config/cloudinaryConnection.js");
 
 // Load environment variables from a .env file into process.env
 dotenv.config(); // Ensures sensitive data like database credentials are securely loaded from the .env file
@@ -25,17 +24,17 @@ const PORT = process.env.PORT || 4000; // Ensures flexibility in setting the por
 app.use(express.json()); // Parses incoming JSON payloads
 app.use(cookieParser()); // Parses cookies sent with requests
 app.use(
-  cors({
-    origin: "http://localhost:3000", // Allow requests from this origin (frontend app)
-    credentials: true, // Enable credentials (cookies, authorization headers)
-  })
+    cors({
+        origin: "http://localhost:3000", // Allow requests from this origin (frontend app)
+        credentials: true, // Enable credentials (cookies, authorization headers)
+    })
 ); // Added CORS middleware to handle cross-origin requests
 
 app.use(
-  fileupload({
-    useTempFiles: true, // Use temporary files for uploads
-    tempFileDir: "/tempFileDir", // Temporary directory for storing uploaded files
-  })
+    fileupload({
+        useTempFiles: true, // Use temporary files for uploads
+        tempFileDir: "/tempFileDir", // Temporary directory for storing uploaded files
+    })
 ); // Added middleware to handle file uploads
 
 // Connect to the database
@@ -49,14 +48,14 @@ app.use("/api/v1/auth", userRoutes); // Authentication routes
 
 // Default route to check server status
 app.get("/", (req, res) => {
-  // FIXED: Corrected parameter order (req, res)
-  return res.json({
-    success: true,
-    message: "Server is up and running!", // Added a default success message
-  });
+    // FIXED: Corrected parameter order (req, res)
+    return res.json({
+        success: true,
+        message: "Server is up and running!", // Added a default success message
+    });
 });
 
 // Start the server and log the success message
 app.listen(PORT, () => {
-  console.log(`Server started successfully on port ${PORT}`); // Logs server start message
+    console.log(`Server started successfully on port ${PORT}`); // Logs server start message
 });

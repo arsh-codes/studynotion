@@ -1,6 +1,6 @@
 NODE PACKAGES ADDED 
 npm init
-npm install node express nodemon mongoose dotenv cookie-parser jsonwebtoken nodemailer otp-generator bcrypt razorpay cors express-fileupload
+npm install node express nodemon mongoose dotenv cookie-parser jsonwebtoken nodemailer otp-generator bcrypt razorpay cors express-fileupload cloudinary
 
 Controllers, Models, and Route - file names should be in PascalNotation
 

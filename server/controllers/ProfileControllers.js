@@ -1,4 +1,4 @@
-const AdditionalDetails = require("../models/AdditionalDetails");
+const Profile = require("../models/Profile");
 const User = require("../models/User");
 const Course = require("../models/Course");
 // This file contains the following controllers.
@@ -33,25 +33,25 @@ exports.updateProfile = async (req, res) => {
         }
 
         // Find and update additional details
-        const additionalDetails = await AdditionalDetails.findById(user.additionalDetails);
-        if (!additionalDetails) {
+        const profile = await Profile.findById(user.Profile);
+        if (!profile) {
             return res.status(404).json({
                 success: false,
                 message: "Profile details could not be found.",
             });
         }
 
-        additionalDetails.contactNumber = contactNumber;
-        additionalDetails.gender = gender;
-        if (dateOfBirth) additionalDetails.dateOfBirth = dateOfBirth;
-        if (about) additionalDetails.about = about;
+        profile.contactNumber = contactNumber;
+        profile.gender = gender;
+        if (dateOfBirth) profile.dateOfBirth = dateOfBirth;
+        if (about) profile.about = about;
 
-        const updatedDetails = await additionalDetails.save();
+        const updatedDetails = await profile.save();
 
         return res.status(200).json({
             success: true,
             message: "Your profile has been updated successfully.",
-            additionalDetails: updatedDetails,
+            Profile: updatedDetails,
         });
     } catch (error) {
         console.error(`Error updating profile for user ${req.user.id}:`, error);
@@ -83,8 +83,8 @@ exports.deleteAccount = async (req, res) => {
         }
 
         // Delete associated additional details
-        if (user.additionalDetails) {
-            await AdditionalDetails.findByIdAndDelete(user.additionalDetails);
+        if (user.Profile) {
+            await Profile.findByIdAndDelete(user.Profile);
         }
 
         // Delete user account
@@ -108,7 +108,7 @@ exports.getAllUserDetails = async (req, res) => {
     try {
         const userId = req.user.id;
 
-        const user = await User.findById(userId).populate("additionalDetails");
+        const user = await User.findById(userId).populate("Profile");
         if (!user) {
             return res.status(404).json({
                 success: false,
