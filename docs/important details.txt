@@ -1,9 +1,13 @@
 # - Frontend (React app) will run on port 3000.
-# - Backend (Express API) will run on port 4000.
+Frontend dependencies
 
+
+
+
+# - Backend (Express API) will run on port 4000.
+Bakend dependencies
 # Initialize a new Node.js project
 npm init
-
 # Install core dependencies for server setup, routing, and environment configuration:
 npm install node express nodemon mongoose dotenv cookie-parser jsonwebtoken nodemailer otp-generator bcrypt razorpay cors express-fileupload cloudinary
 
