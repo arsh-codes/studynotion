@@ -121,16 +121,21 @@ exports.signup = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({
                 success: false,
-                message: "User already exists. Please sign in to continue.",
+                message: "User already exists. Please logIn to continue.",
             });
         }
 
-        // Find the most recent OTP for the email
+        // Query the database to find OTP entries associated with the provided email
         const response = await Otp.find({ email })
+            // Sort the OTP records by their creation date in descending order (most recent first)
             .sort({ createdAt: -1 })
+            // Limit the query to only return the most recent OTP record (1 record)
             .limit(1);
-        console.log(response);
-        
+
+        // Log the result of the query to the console
+        console.log("Latest OTP in database: ", response);
+
+        //    If no matching records are found, response will be an empty array.
         if (response.length === 0) {
             // OTP not found for the email
             return res.status(400).json({
@@ -138,7 +143,9 @@ exports.signup = async (req, res) => {
                 message:
                     "No OTP found for the provided email address. Please request a new OTP.",
             });
-        } else if (otp !== response[0].otp) {
+        }
+        // response will contain most recent OTP entry for the provided email at [0].
+        if (otp !== response[0].otp) {
             // Invalid OTP
             return res.status(400).json({
                 success: false,
@@ -149,11 +156,7 @@ exports.signup = async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create the user
-        let approved = "";
-        approved === "Instructor" ? (approved = false) : (approved = true);
-
-        // Create the Additional Profile For User
+        // Create the Dummy Profile For User which will be modified later using update profile
         const dummyProfile = await Profile.create({
             gender: null,
             dateOfBirth: null,
@@ -166,16 +169,15 @@ exports.signup = async (req, res) => {
             email,
             contactNumber,
             password: hashedPassword,
-            accountType: accountType,
-            approved: approved,
+            accountType,
             additionalDetails: dummyProfile._id,
-            image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
+            image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName}%20${lastName}`,
         });
 
         return res.status(200).json({
             success: true,
-            user,
             message: "User registered successfully",
+            user,
         });
     } catch (error) {
         console.error(error);
@@ -202,56 +204,64 @@ exports.login = async (req, res) => {
         }
 
         // Find user with provided email
-        const user = await User.findOne({ email }).populate(
-            "additionalDetails"
-        );
+        const user = await User.findOne({ email })
+            .populate("additionalDetails")
+            .populate(courses);
 
         // If user not found with provided email
         if (!user) {
             // Return 401 Unauthorized status code with error message
             return res.status(401).json({
                 success: false,
-                message: `User is not Registered with Us Please SignUp to Continue`,
+                message: `User is not Registered with us. Please SignUp to Continue`,
             });
         }
 
-        // Generate JWT token and Compare Password
-        if (await bcrypt.compare(password, user.password)) {
-            const token = jwt.sign(
-                {
-                    email: user.email,
-                    id: user._id,
-                    accountType: user.accountType,
-                },
-                process.env.JWT_SECRET_KEY,
-                {
-                    expiresIn: "24h",
-                }
-            );
-
-            // Save token to user document in database
-            user.token = token;
-            user.password = undefined;
-            // Set cookie for token and return success response
-            const options = {
-                expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-                httpOnly: true,
-            };
-            res.cookie("token", token, options).status(200).json({
-                success: true,
-                token,
-                user,
-                message: `User Login Success`,
-            });
-        } else {
+        // Verify Password
+        if (!(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({
                 success: false,
                 message: `Password is incorrect`,
             });
         }
+        // Generate JWT token
+        const token = jwt.sign(
+            {
+                email: user.email,
+                id: user._id,
+                accountType: user.accountType,
+            },
+            process.env.JWT_SECRET_KEY,
+            {
+                expiresIn: "24h",
+            }
+        );
+
+        // Save token to user document in database
+        user.token = token;
+
+        // Save the user document to the database, storing the token
+        await user.save();
+
+        user.password = undefined; // Set the password field to undefined to ensure that the password is not returned in the response
+
+        // Set cookie for token and return success response
+        const options = {
+            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Set the cookie expiration time to 3 days
+            httpOnly: true, // Set the cookie to be accessible only through HTTP requests, preventing client-side JavaScript access for security
+        };
+
+        // Set the JWT token as an HTTP-only cookie
+        res.cookie("token", token, options) // Set the 'token' named cookie with the generated JWT token and options
+            .status(200)
+            .json({
+                success: true,
+                token,
+                user, // user object (without the password)
+                message: `User Login Success`,
+            });
     } catch (error) {
         console.error(error);
-        // Return 500 Internal Server Error status code with error message
         return res.status(500).json({
             success: false,
             message: `Login Failure Please Try Again`,
