@@ -17,8 +17,8 @@
 5. **Tags in Course Creation**  
    - **Update the Course Creation Controller**: Convert tags from a comma-separated string into an array.
 
-6. **Folder Structure Best Practices**  
-   - Once the backend files are completed, make sure to use an AI tool to maintain a good folder structure as a best practice.
+
+remove otp , password reset token from response after done with API testing.
 
 ---
 
@@ -33,6 +33,8 @@
 3. **HTML and CSS for User Emails**  
    - Designed and applied HTML/CSS templates for emails sent to users.
 
----
+4. **Folder Structure Best Practices**  
+   - Once the backend files are completed, make sure to use an AI tool to maintain a good folder structure as a best practice.
+
 
  

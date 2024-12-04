@@ -1,7 +1,9 @@
-// This file contains the following controllers.
-// createCourse
-// getAllCourses
-// getCourseDetails
+// This file includes the following controllers:
+//
+// 1. createCourse      
+// 2. getAllCourses     
+// 3. getCourseDetails  
+
 
 const Course = require("../models/Course");
 const Category = require("../models/Category");

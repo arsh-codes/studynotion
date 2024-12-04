@@ -1,7 +1,8 @@
-// This file contains the following controllers.
-// createRatingAndReview
-// getAverageRating
-// getAllRatingsAndReviews
+// This file includes the following controllers:
+//
+// 1. createRatingAndReview 
+// 2. getAverageRating 
+// 3. getAllRatingsAndReviews
 
 const RatingAndReview = require("../models/RatingAndReview");
 const Course = require("../models/Course");
@@ -19,12 +20,10 @@ exports.createRatingAndReview = async (req, res) => {
         }
 
         if (rating < 1 || rating > 5) {
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    message: "Rating must be between 1 and 5",
-                });
+            return res.status(400).json({
+                success: false,
+                message: "Rating must be between 1 and 5",
+            });
         }
 
         if (review.trim().length < 10) {
@@ -37,12 +36,10 @@ exports.createRatingAndReview = async (req, res) => {
 
         const course = await Course.findById(courseId);
         if (!course.studentsEnrolled.includes(userId)) {
-            return res
-                .status(403)
-                .json({
-                    success: false,
-                    message: "User is not enrolled in this course",
-                });
+            return res.status(403).json({
+                success: false,
+                message: "User is not enrolled in this course",
+            });
         }
 
         const existingReview = await RatingAndReview.findOne({
@@ -50,12 +47,10 @@ exports.createRatingAndReview = async (req, res) => {
             user: userId,
         });
         if (existingReview) {
-            return res
-                .status(409)
-                .json({
-                    success: false,
-                    message: "User already reviewed this course",
-                });
+            return res.status(409).json({
+                success: false,
+                message: "User already reviewed this course",
+            });
         }
 
         const ratingAndReview = await RatingAndReview.create({

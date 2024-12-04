@@ -1,11 +1,11 @@
-const emailVerificationOtpTemplate = (otp) => {
+const passwordResetLinkTemplate = (url) => {
     return `<!DOCTYPE html>
     <html lang="en">
     
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>OTP Verification Email</title>
+        <title>Password Reset Link</title>
         <style>
             /* Basic email styling */
             body {
@@ -45,7 +45,7 @@ const emailVerificationOtpTemplate = (otp) => {
                 margin-bottom: 20px;
             }
     
-            /* Highlighted OTP styling */
+            /* Highlighted link styling */
             .highlight {
                 font-weight: bold;
                 font-size: 24px;
@@ -79,14 +79,12 @@ const emailVerificationOtpTemplate = (otp) => {
             <a href="https://studynotion-edtech-project.vercel.app">
                 <img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo">
             </a>
-            <div class="message">OTP Verification Email</div>
+            <div class="message">Password Reset Request</div>
             <div class="body">
                 <p>Dear User,</p>
-                <p>Thank you for registering with StudyNotion. To complete your registration, please use the following OTP 
-                    (One-Time Password) to verify your account:</p>
-                <h2 class="highlight">${otp}</h2>
-                <p>This OTP is valid for 5 minutes. If you did not request this verification, please disregard this email. 
-                   Once your account is verified, you will have access to our platform and its features.</p>
+                <p>We received a request to reset your password. To reset your password, please click the link below:</p>
+                <a href="${url}" class="cta">Reset Your Password</a>
+                <p>This link will expire in 15 minutes. If you did not request a password reset, please disregard this email.</p>
             </div>
             <div class="support">
                 If you have any questions or need assistance, please feel free to reach out to us at 
@@ -97,4 +95,4 @@ const emailVerificationOtpTemplate = (otp) => {
     
     </html>`;
 };
-module.exports = emailVerificationOtpTemplate;
+module.exports = passwordResetLinkTemplate;

@@ -1,8 +1,8 @@
 // This file includes the following controllers:
 //
-// 1. createCategory       - Handles the creation of new categories.
-// 2. showAllCategories    - Retrieves and displays all categories.
-// 3. categoryPageDetails  - Provides detailed information about a specific category.
+// 1. createCategory       
+// 2. showAllCategories    
+// 3. categoryPageDetails   
 
 const Category = require("../models/Category");
 

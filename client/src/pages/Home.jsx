@@ -1,6 +1,6 @@
 import { FaArrowRight } from "react-icons/fa";
 import React from "react";
-
+import HighlightText from "../components/HomePage/HighlightText";
 const Home = () => {
   return (
     <div>
@@ -19,7 +19,8 @@ const Home = () => {
         </div>
         <div class="flex w-[913px] flex-col items-center gap-4">
           <span class="text-center text-[36px] font-semibold leading-[44px]">
-            Empower Your Future with Coding Skills
+            Empower Your Future with
+            <HighlightText text="Coding Skills"></HighlightText>
           </span>
           <span class="text-center text-base font-medium text-[#838894]">
             With our online coding courses, you can learn at your own pace, from

@@ -1,32 +1,23 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
-
-
-
-
-/** @type {import('tailwindcss').Config} */
 module.exports = {
+  // Content paths to scan for class names
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+
   theme: {
+    // Custom font families
     fontFamily: {
-      inter: ["Inter", "sans-serif"],
-      "edu-sa": ["Edu SA Beginner", "cursive"],
-      mono: ["Roboto Mono", "monospace"],
+      inter: ["Inter", "sans-serif"], // Inter font family for general text
+      "edu-sa": ["Edu SA Beginner", "cursive"], // Custom font for specific elements
+      mono: ["Roboto Mono", "monospace"], // Monospace font for code or technical text
     },
+
+    // Custom colors with different shades
     colors: {
-      white: "#fff",
-      black: "#000",
-      transparent: "#ffffff00",
+      white: "#fff", // White color
+      black: "#000", // Black color
+      transparent: "#ffffff00", // Transparent color
       richblack: {
+        // Shades of rich black
         5: "#F1F2FF",
         25: "#DBDDEA",
         50: "#C5C7D4",
@@ -41,6 +32,7 @@ module.exports = {
         900: "#000814",
       },
       richblue: {
+        // Shades of rich blue
         5: "#ECF5FF",
         25: "#C6D6E1",
         50: "#A0B7C3",
@@ -55,6 +47,7 @@ module.exports = {
         900: "#001B22",
       },
       blue: {
+        // Shades of blue
         5: "#EAF5FF",
         25: "#B4DAEC",
         50: "#7EC0D9",
@@ -69,6 +62,7 @@ module.exports = {
         900: "#001B1D",
       },
       caribbeangreen: {
+        // Shades of Caribbean Green
         5: "#C1FFFD",
         25: "#83F1DE",
         50: "#44E4BF",
@@ -83,6 +77,7 @@ module.exports = {
         900: "#001B0D",
       },
       brown: {
+        // Shades of brown
         5: "#FFF4C4",
         25: "#FFE395",
         50: "#FFD166",
@@ -97,6 +92,7 @@ module.exports = {
         900: "#291100",
       },
       pink: {
+        // Shades of pink
         5: "#FFF1F1",
         25: "#FBC7D1",
         50: "#F79CB0",
@@ -111,6 +107,7 @@ module.exports = {
         900: "#340019",
       },
       yellow: {
+        // Shades of yellow
         5: "#FFF970",
         25: "#FFE83D",
         50: "#FFD60A",
@@ -125,6 +122,7 @@ module.exports = {
         900: "#251400",
       },
       "pure-greys": {
+        // Shades of pure greys
         5: "#F9F9F9",
         25: "#E2E2E2",
         50: "#CCCCCC",
@@ -139,12 +137,15 @@ module.exports = {
         900: "#141414",
       },
     },
+
     extend: {
+      // Custom max-width values for layout
       maxWidth: {
-        maxContent: "1260px",
-        maxContentTab: "650px"
+        maxContent: "1260px", // Maximum width for larger content
+        maxContentTab: "650px", // Maximum width for content on smaller screens/tablets
       },
     },
   },
+
   plugins: [],
 };

@@ -1,4 +1,4 @@
-exports.courseEnrollmentTemplate = (userName, courseName) => {
+const courseEnrollmentTemplate = (userName, courseName) => {
     return `<!DOCTYPE html>
     <html lang="en">
     
@@ -93,3 +93,5 @@ exports.courseEnrollmentTemplate = (userName, courseName) => {
     
     </html>`;
 };
+
+module.exports = courseEnrollmentTemplate;

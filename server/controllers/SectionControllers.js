@@ -1,7 +1,9 @@
-// This file contains the following controllers.
-// createSection
-// updateSection
-// deleteSection
+// This file includes the following controllers:
+//
+// 1. createSection 
+// 2. updateSection
+// 3. deleteSection
+
 
 const Section = require("../models/Section");
 const Course = require("../models/Course");

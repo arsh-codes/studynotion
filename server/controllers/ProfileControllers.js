@@ -1,15 +1,14 @@
+// This file includes the following controllers:
+// 1. updateProfile  
+// 2. deleteAccount  
+// 3. getAllUserDetails  
+// 4. updateDisplayPicture  
+// 5. getEnrolledCourses
+
 const Profile = require("../models/Profile");
 const User = require("../models/User");
 const Course = require("../models/Course");
-// This file contains the following controllers.
-// deleteProfile
-// updateProfile
-// getAllUserDetails
-// updateDisplayPicture
-// getEnrolledCourses
- 
 
- 
 exports.updateProfile = async (req, res) => {
     try {
         const { gender, dateOfBirth, about, contactNumber } = req.body;
@@ -19,7 +18,8 @@ exports.updateProfile = async (req, res) => {
         if (!userId || !gender || !contactNumber) {
             return res.status(400).json({
                 success: false,
-                message: "Gender and contact number are required to update your profile.",
+                message:
+                    "Gender and contact number are required to update your profile.",
             });
         }
 
@@ -57,12 +57,12 @@ exports.updateProfile = async (req, res) => {
         console.error(`Error updating profile for user ${req.user.id}:`, error);
         return res.status(500).json({
             success: false,
-            message: "We encountered an issue while updating your profile. Please try again later.",
+            message:
+                "We encountered an issue while updating your profile. Please try again later.",
         });
     }
 };
 
- 
 exports.deleteAccount = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -74,17 +74,18 @@ exports.deleteAccount = async (req, res) => {
                 message: "The requested user account was not found.",
             });
         }
-
         // Remove user from courses
-        if (Array.isArray(user.courses)) {
+        if (Array.isArray(user.courses) && user.courses.length > 0) {
+            // Loop through each courseId in the user's courses array.
             for (const courseId of user.courses) {
+                // The $pull operator removes the specified value (userId) from the array field 'userId' in the course document.
                 await Course.findByIdAndUpdate(courseId, { $pull: { userId } });
             }
         }
 
         // Delete associated additional details
-        if (user.Profile) {
-            await Profile.findByIdAndDelete(user.Profile);
+        if (user.additionalDetails) {
+            await Profile.findByIdAndDelete(user.additionalDetails);
         }
 
         // Delete user account
@@ -92,18 +93,19 @@ exports.deleteAccount = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Your account has been deleted successfully. We hope to see you again!",
+            message:
+                "Your account has been deleted successfully. We hope to see you again!",
         });
     } catch (error) {
         console.error(`Error deleting account for user ${req.user.id}:`, error);
         return res.status(500).json({
             success: false,
-            message: "We encountered an error while trying to delete your account. Please try again later.",
+            message:
+                "We encountered an error while trying to delete your account. Please try again later.",
         });
     }
 };
 
- 
 exports.getAllUserDetails = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -130,7 +132,6 @@ exports.getAllUserDetails = async (req, res) => {
     }
 };
 
- 
 exports.updateDisplayPicture = async (req, res) => {
     try {
         const { displayPicture } = req.body;
@@ -159,15 +160,18 @@ exports.updateDisplayPicture = async (req, res) => {
             message: "Display picture updated successfully.",
         });
     } catch (error) {
-        console.error(`Error updating display picture for user ${req.user.id}:`, error);
+        console.error(
+            `Error updating display picture for user ${req.user.id}:`,
+            error
+        );
         return res.status(500).json({
             success: false,
-            message: "Unable to update display picture. Please try again later.",
+            message:
+                "Unable to update display picture. Please try again later.",
         });
     }
 };
 
- 
 exports.getEnrolledCourses = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -189,7 +193,8 @@ exports.getEnrolledCourses = async (req, res) => {
         console.error(`Error fetching courses for user ${req.user.id}:`, error);
         return res.status(500).json({
             success: false,
-            message: "Unable to fetch enrolled courses. Please try again later.",
+            message:
+                "Unable to fetch enrolled courses. Please try again later.",
         });
     }
 };

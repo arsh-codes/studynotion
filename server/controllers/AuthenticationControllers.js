@@ -1,8 +1,8 @@
 // This file includes the following controllers:
-//
-// 1. sendOtp - Handles sending OTP for email verification.
-// 2. signup  - Manages user registration process.
-// 3. login   - Manages user authentication and login.
+// 1. sendOtp  
+// 2. signup  
+// 3. login
+
 
 //External Dependencies
 const bcrypt = require("bcrypt");
@@ -66,7 +66,6 @@ exports.sendOtp = async (req, res) => {
         // Store the generated OTP in the database along with the associated email address which expires in 5 minutes after creation).
         // Additionally, a pre-save middleware is defined in the model that triggers the sending of the verification email before the OTP is saved to the database.
         const newOtpEntry = await Otp.create({ email, otp });
-        console.log("OTP object in DB:", newOtpEntry);
 
         res.status(200).json({
             success: true,
@@ -133,7 +132,6 @@ exports.signup = async (req, res) => {
             .limit(1);
 
         // Log the result of the query to the console
-        console.log("Latest OTP in database: ", response);
 
         //    If no matching records are found, response will be an empty array.
         if (response.length === 0) {
@@ -204,9 +202,9 @@ exports.login = async (req, res) => {
         }
 
         // Find user with provided email
-        const user = await User.findOne({ email })
-            .populate("additionalDetails")
-            .populate(courses);
+        const user = await User.findOne({ email }).populate(
+            "additionalDetails"
+        );
 
         // If user not found with provided email
         if (!user) {

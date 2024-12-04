@@ -20,16 +20,13 @@ exports.auth = async (req, res, next) => {
 
         // Verify and decode the token
         try {
+            // jwt.verify() checks validity of token using key and returns the payload of the JWT.
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-            console.log(
-                "📝 -> exports.authorization= -> decodedToken=",
-                decodedToken
-            );
 
-            // Attach the decoded token's data to the request object
+            //Decoded data is kept in req.user to allow access to user information directly from the request.
             req.user = decodedToken;
 
-            // Proceed to the next middleware
+            // Passing control to the next middleware or route handler.
             next();
         } catch (error) {
             // Handle invalid or expired token error
@@ -40,7 +37,6 @@ exports.auth = async (req, res, next) => {
             });
         }
     } catch (error) {
-        // Handle unexpected errors during the token validation process
         return res.status(500).json({
             success: false,
             message: "An error occurred while validating the token.",

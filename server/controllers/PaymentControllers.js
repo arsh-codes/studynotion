@@ -1,6 +1,7 @@
-// This file contains the following controllers.
-// capturePayment
-// verifySignature
+// This file includes the following controllers:
+//
+// 1. capturePayment 
+// 2. verifySignature 
 
 const { instance } = require("../utils/razorpay");
 const mailsender = require("../utils/mailSender");

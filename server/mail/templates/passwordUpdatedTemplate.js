@@ -1,4 +1,4 @@
-exports.passwordUpdatedTemplate = (email, name) => {
+const passwordUpdatedTemplate = (email, name) => {
     return `<!DOCTYPE html>
     <html lang="en">
     
@@ -81,3 +81,4 @@ exports.passwordUpdatedTemplate = (email, name) => {
     
     </html>`;
 };
+module.exports = passwordUpdatedTemplate;

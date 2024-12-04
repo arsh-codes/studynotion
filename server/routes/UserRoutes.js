@@ -10,7 +10,7 @@ const {
 } = require("../controllers/AuthenticationControllers");
 const {
     changePassword,
-    resetPasswordMailSender,
+    resetPasswordTokenMail,
     resetPassword,
 } = require("../controllers/PasswordControllers");
 const { auth } = require("../middlewares/authorizationMiddleware");
@@ -33,17 +33,17 @@ router.post("/sendotp", sendOtp);
 // ********************************************************************************************************
 
 // Route for generating a reset password token
-router.post("/reset-password-token", resetPasswordMailSender);
+router.post("/resetPasswordTokenMail", resetPasswordTokenMail);
 
 // Route for resetting user's password after token verification
-router.post("/reset-password", resetPassword);
+router.post("/resetPassword", resetPassword);
 
 // ********************************************************************************************************
 //                                      Change Password Route
 // ********************************************************************************************************
 
 // Route for changing the user's password (requires authentication)
-router.post("/changepassword", auth, changePassword);
+router.post("/changePassword", auth, changePassword);
 
 // Export the router for use in the main application
 module.exports = router;

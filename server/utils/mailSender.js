@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 // Function to send an email with the specified parameters
-exports.mailSender = async (email, title, body) => {
+const mailSender = async (email, title, body) => {
     try {
         // Create a transporter object using SMTP transport settings
         // Transport in a method to send the email from your application to the recipient's email inbox.
@@ -23,7 +23,6 @@ exports.mailSender = async (email, title, body) => {
             html: body, // Email body in HTML format
         });
 
-        // Log email info upon success for tracking purposes, but do not expose sensitive data by logging mailSenderResponse as whole.
         console.log(" Email sent successfully.");
 
         return mailSenderResponse;
@@ -33,3 +32,4 @@ exports.mailSender = async (email, title, body) => {
         throw new Error("Failed to send email. Please try again later."); // Return user-friendly message
     }
 };
+module.exports = mailSender;
