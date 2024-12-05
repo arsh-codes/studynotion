@@ -1,12 +1,15 @@
- 
-### **Pending Tasks**  
+### **Pending Tasks**
 
 1. **Frontend Validation**  
    - Ensure the "password" and "confirm password" fields match on the frontend.  
    - *Note:* Already implemented in the backend.
 
 2. **Reset Password Security**  
-   - Restrict reset password links to single use, even if the validity period is not expired.
+   - Restrict reset password links to single use, even if the validity period is not expired.  
+   - Ensure the `resetPasswordUrl` is updated consistently:  
+     ```javascript
+     const resetPasswordUrl = `http://localhost:3000/reset-password/${token}`;
+     ```
 
 3. **OTP Verification for Account Deletion**  
    - Require OTP verification before allowing a user to delete their account.
@@ -15,26 +18,22 @@
    - Schedule account deletion 5 days after the user submits a delete request.
 
 5. **Tags in Course Creation**  
-   - **Update the Course Creation Controller**: Convert tags from a comma-separated string into an array.
+   - **Update the Course Creation Controller:** Convert tags from a comma-separated string into an array.
 
+---6. Password Validation
+Add validation for password strength using libraries like validator or custom regex.
 
-remove otp , password reset token from response after done with API testing.
-
----
-
-### **Completed Tasks**  
+### **Completed Tasks**
 
 1. **User Check During Signup**  
    - Added a check to verify if a user already exists before proceeding to the OTP page.
 
 2. **Account Deletion Cleanup**  
-   - Removed the user from the "enrolled students" list in the `Course` model when their account is deleted.
+   - Removed the user from the "enrolled students" list in the `Course` model when their account is deleted.  
+   - Removed sensitive fields like OTP and password reset token from API responses after testing.
 
 3. **HTML and CSS for User Emails**  
    - Designed and applied HTML/CSS templates for emails sent to users.
 
 4. **Folder Structure Best Practices**  
-   - Once the backend files are completed, make sure to use an AI tool to maintain a good folder structure as a best practice.
-
-
- 
+   - Reviewed backend files and optimized folder structure using an AI tool as a best practice.

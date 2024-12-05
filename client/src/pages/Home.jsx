@@ -1,6 +1,9 @@
 import { FaArrowRight } from "react-icons/fa";
 import React from "react";
+import CTAButton from "../components/HomePage/CTAButton";
 import HighlightText from "../components/HomePage/HighlightText";
+import bannerVideo from "../assets/media/bannerVideo.mp4";
+
 const Home = () => {
   return (
     <div>
@@ -30,18 +33,19 @@ const Home = () => {
           </span>
         </div>
         <div class="flex gap-6">
-          <div class="flex items-center gap-2 rounded-lg bg-[#ffd60a] px-6 py-3">
-            <span class="text-center text-base font-medium text-[#000814]">
-              Learn More
-            </span>
-          </div>
-          <div class="flex items-center gap-2 rounded-lg bg-[#161d29] px-6 py-3">
-            <span class="text-center text-base font-medium text-[#f1f2ff]">
-              Book a Demo
-            </span>
-          </div>
+          <CTAButton primaryButton={true}>Learn More</CTAButton>
+          <CTAButton primaryButton={false}>Book a Demo</CTAButton>
+        </div>
+        <div className="h-[515px] w-[1035px]">
+          <video autoPlay muted loop className="h-full w-full">
+            <source src={bannerVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
+      {/* Code Section 1 */}
+      {/* Code Section 2 */}
+
       {/* Section 2 */}
       {/* Section 3 */}
       {/* Section 4 */}

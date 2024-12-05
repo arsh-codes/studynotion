@@ -31,30 +31,29 @@ exports.resetPasswordTokenMail = async (req, res) => {
         }
 
         // Generate a unique reset password token
-        const token = crypto.randomUUID();
-        const resetTokenExpiration = Date.now() + 5 * 60 * 1000; // Token expires in 5 minutes
+        const resetPasswordToken = crypto.randomUUID();
+        const resetPasswordTokenExpires = Date.now() + 5 * 60 * 1000; // Token expires in 5 minutes
 
         // Update the user with the reset password token and expiration time
         await User.findOneAndUpdate(
             { email },
             {
-                resetPasswordToken: token,
-                resetPasswordTokenExpires: resetTokenExpiration,
-            },
-            { new: true }
+                resetPasswordToken,
+                resetPasswordTokenExpires,
+            } 
         );
 
         // Create the password reset URL
-        const resetPasswordUrl = `http://localhost:3000/reset-password/${token}`;
+        const resetPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${resetPasswordToken}`;
 
         // Send the password reset link to the user's email
-        const emailSent = await mailSender(
+        const mailSenderResponse = await mailSender(
             email,
             "Password Reset Link",
             passwordResetLinkTemplate(resetPasswordUrl)
         );
 
-        if (!emailSent) {
+        if (!mailSenderResponse) {
             return res.status(500).json({
                 success: false,
                 message: "Error occurred while sending the reset password URL",
@@ -89,7 +88,7 @@ exports.resetPassword = async (req, res) => {
                 success: false,
                 message: "Passwords do not match. Please try again.",
             });
-        }
+        } 
 
         // Find user by reset token
         const user = await User.findOne({ resetPasswordToken: token });
