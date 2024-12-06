@@ -3,6 +3,7 @@
 1. **Frontend Validation**  
    - Ensure the "password" and "confirm password" fields match on the frontend.  
    - *Note:* Already implemented in the backend.
+   password and email validation in frontend before sending request
 
 2. **Reset Password Security**  
    - Restrict reset password links to single use, even if the validity period is not expired.  
