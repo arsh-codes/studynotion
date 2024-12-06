@@ -1,8 +1,8 @@
 // This file includes the following controllers:
-// 1. updateProfile  
-// 2. deleteAccount  
-// 3. getAllUserDetails  
-// 4. updateDisplayPicture  
+// 1. updateProfile
+// 2. deleteAccount
+// 3. getUserDetails
+// 4. updateDisplayPicture
 // 5. getEnrolledCourses
 
 const Profile = require("../models/Profile");
@@ -15,7 +15,7 @@ exports.updateProfile = async (req, res) => {
         const userId = req.user.id; // Assuming userId is added by authentication middleware
 
         // Validate required inputs
-        if (!userId || !gender || !contactNumber) {
+        if (!gender || !contactNumber) {
             return res.status(400).json({
                 success: false,
                 message:
@@ -28,12 +28,12 @@ exports.updateProfile = async (req, res) => {
         if (!user) {
             return res.status(404).json({
                 success: false,
-                message: "No user found with the given ID.",
+                message: "The requested user account was not found.",
             });
         }
 
         // Find and update additional details
-        const profile = await Profile.findById(user.Profile);
+        const profile = await Profile.findById(user.additionalDetails);
         if (!profile) {
             return res.status(404).json({
                 success: false,
@@ -41,6 +41,7 @@ exports.updateProfile = async (req, res) => {
             });
         }
 
+        // Update profile fields with provided values
         profile.contactNumber = contactNumber;
         profile.gender = gender;
         if (dateOfBirth) profile.dateOfBirth = dateOfBirth;
@@ -51,10 +52,11 @@ exports.updateProfile = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Your profile has been updated successfully.",
-            Profile: updatedDetails,
+            profile: updatedDetails, // Fixed: Changed key 'Profile' to lowercase 'profile' for consistency with convention
         });
     } catch (error) {
-        console.error(`Error updating profile for user ${req.user.id}:`, error);
+        console.log("📝 -> exports.updateProfile -> error=", error);
+
         return res.status(500).json({
             success: false,
             message:
@@ -97,7 +99,6 @@ exports.deleteAccount = async (req, res) => {
                 "Your account has been deleted successfully. We hope to see you again!",
         });
     } catch (error) {
-        console.error(`Error deleting account for user ${req.user.id}:`, error);
         return res.status(500).json({
             success: false,
             message:
@@ -106,17 +107,26 @@ exports.deleteAccount = async (req, res) => {
     }
 };
 
-exports.getAllUserDetails = async (req, res) => {
+exports.getUserDetails = async (req, res) => {
     try {
         const userId = req.user.id;
 
-        const user = await User.findById(userId).populate("Profile");
+        // Attempt to retrieve the user and populate necessary fields
+        const user = await User.findById(userId)
+            .populate("additionalDetails")
+            .populate("courses") // Populate enrolled courses
+            .populate("courseProgress");
+
+        // Check if the user exists
         if (!user) {
             return res.status(404).json({
                 success: false,
-                message: "User not found.",
+                message:
+                    "The requested user does not exist. Please verify the user ID.",
             });
         }
+        //Explicitly omitting the password for security purposes
+        user.password = undefined;
 
         return res.status(200).json({
             success: true,
@@ -124,7 +134,6 @@ exports.getAllUserDetails = async (req, res) => {
             user,
         });
     } catch (error) {
-        console.error(`Error fetching details for user ${req.user.id}:`, error);
         return res.status(500).json({
             success: false,
             message: "Unable to fetch user details. Please try again later.",
@@ -160,10 +169,6 @@ exports.updateDisplayPicture = async (req, res) => {
             message: "Display picture updated successfully.",
         });
     } catch (error) {
-        console.error(
-            `Error updating display picture for user ${req.user.id}:`,
-            error
-        );
         return res.status(500).json({
             success: false,
             message:
@@ -190,7 +195,6 @@ exports.getEnrolledCourses = async (req, res) => {
             courses: user.courses,
         });
     } catch (error) {
-        console.error(`Error fetching courses for user ${req.user.id}:`, error);
         return res.status(500).json({
             success: false,
             message:

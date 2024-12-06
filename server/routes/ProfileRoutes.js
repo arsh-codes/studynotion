@@ -9,7 +9,7 @@ const { auth } = require("../middlewares/authorizationMiddleware");
 const {
     deleteAccount,
     updateProfile,
-    getAllUserDetails,
+    getUserDetails,
     updateDisplayPicture,
     getEnrolledCourses,
 } = require("../controllers/ProfileControllers");
@@ -25,7 +25,7 @@ router.delete("/deleteAccount", auth, deleteAccount);
 router.put("/updateProfile", auth, updateProfile);
 
 // Fetch all user details
-router.get("/getUserDetails", auth, getAllUserDetails);
+router.get("/getUserDetails", auth, getUserDetails);
 
 // Get the list of enrolled courses
 router.get("/getEnrolledCourses", auth, getEnrolledCourses);

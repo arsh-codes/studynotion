@@ -5,10 +5,10 @@ const profileSchema = new mongoose.Schema({
     gender: {
         type: String,
         trim: true,
-        enum: ["Male", "Female", "Other"], // Restricts values to predefined options
+        enum: ["male", "female", "other"], // Restricts values to predefined options
     },
     dateOfBirth: {
-        type: Date, // Date type is suitable for better date manipulation
+        type: String,
     },
     about: {
         type: String,
