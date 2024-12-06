@@ -9,11 +9,7 @@ const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const crypto = require("crypto"); // Import crypto module for generating reset tokens
 const passwordResetLinkTemplate = require("../mail/templates/passwordResetLinkTemplate");
-<<<<<<< HEAD
-=======
-const passwordUpdatedTemplate = require("../mail/templates/passwordUpdatedTemplate");
-
->>>>>>> d2a6700 (Password controllers working fine)
+const passwordUpdatedTemplate = require("../mail/templates/passwordUpdatedTemplate")
 // Function to send password reset link to the user's email
 exports.resetPasswordTokenMail = async (req, res) => {
     try {
@@ -37,7 +33,7 @@ exports.resetPasswordTokenMail = async (req, res) => {
 
         // Generate a unique reset password token
         const resetPasswordToken = crypto.randomUUID();
-        const resetPasswordTokenExpires = Date.now() + 5 * 60 * 1000; // Token expires in 5 minutes
+        const resetPasswordTokenExpires = Date.now() + 15 * 60 * 1000; // Token expires in 15 minutes
 
         // Update the user with the reset password token and expiration time
         await User.findOneAndUpdate(
@@ -45,11 +41,7 @@ exports.resetPasswordTokenMail = async (req, res) => {
             {
                 resetPasswordToken,
                 resetPasswordTokenExpires,
-<<<<<<< HEAD
             } 
-=======
-            }
->>>>>>> d2a6700 (Password controllers working fine)
         );
 
         // Create the password reset URL
@@ -73,11 +65,7 @@ exports.resetPasswordTokenMail = async (req, res) => {
             success: true,
             message:
                 "Password reset link has been successfully sent to your email.",
-<<<<<<< HEAD
-            token,
-=======
-            resetPasswordToken,
->>>>>>> d2a6700 (Password controllers working fine)
+                resetPasswordToken,
         });
     } catch (error) {
         console.error("Error while sending reset password link:", error);
@@ -93,11 +81,7 @@ exports.resetPasswordTokenMail = async (req, res) => {
 // Function to reset the user's password using the reset token
 exports.resetPassword = async (req, res) => {
     try {
-<<<<<<< HEAD
-        const { token, newPassword, confirmPassword } = req.body;
-=======
         const { resetPasswordToken, newPassword, confirmPassword } = req.body;
->>>>>>> d2a6700 (Password controllers working fine)
 
         // Ensure passwords match
         if (newPassword !== confirmPassword) {
@@ -105,17 +89,10 @@ exports.resetPassword = async (req, res) => {
                 success: false,
                 message: "Passwords do not match. Please try again.",
             });
-<<<<<<< HEAD
-        } 
-
-        // Find user by reset token
-        const user = await User.findOne({ resetPasswordToken: token });
-=======
         }
 
         // Find user by reset token
         const user = await User.findOne({ resetPasswordToken });
->>>>>>> d2a6700 (Password controllers working fine)
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -163,16 +140,6 @@ exports.resetPassword = async (req, res) => {
 // Change password function (for users who remember their old password)
 exports.changePassword = async (req, res) => {
     try {
-<<<<<<< HEAD
-        const { oldPassword, newPassword, confirmPassword, email } = req.body;
-
-        // Check for missing fields
-        if (!oldPassword || !newPassword || !confirmPassword || !email) {
-            return res.status(400).json({
-                success: false,
-                message:
-                    "All fields (oldPassword, newPassword, confirmPassword, email) are required.",
-=======
         const { oldPassword, newPassword, confirmPassword } = req.body;
         const userId = req.user.id;
         // Check for missing fields
@@ -181,7 +148,6 @@ exports.changePassword = async (req, res) => {
                 success: false,
                 message:
                     "All fields (oldPassword, newPassword, confirmPassword) are required.",
->>>>>>> d2a6700 (Password controllers working fine)
             });
         }
 
@@ -194,21 +160,13 @@ exports.changePassword = async (req, res) => {
         }
 
         // Find the user by email
-<<<<<<< HEAD
-        const user = await User.findOne({ email });
-=======
         const user = await User.findById(userId);
->>>>>>> d2a6700 (Password controllers working fine)
         if (!user) {
             return res.status(404).json({
                 success: false,
                 message: "User not found.",
             });
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> d2a6700 (Password controllers working fine)
         // Check if the old password matches the stored password
         const isOldPasswordCorrect = await bcrypt.compare(
             oldPassword,
@@ -220,10 +178,6 @@ exports.changePassword = async (req, res) => {
                 message: "The old password is incorrect.",
             });
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> d2a6700 (Password controllers working fine)
         // Hash the new password
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
@@ -233,15 +187,9 @@ exports.changePassword = async (req, res) => {
 
         // Send a confirmation email
         await mailSender(
-<<<<<<< HEAD
-            email,
-            "Password Changed Successfully",
-            `<p>Your password has been successfully changed.</p>`
-=======
             user.email,
             "Security Alert: Your Password Was Changed ",
             passwordUpdatedTemplate(user.email, user.firstName)
->>>>>>> d2a6700 (Password controllers working fine)
         );
 
         // Respond with success
