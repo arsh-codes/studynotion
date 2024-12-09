@@ -5,10 +5,10 @@ const CTAButton = ({ primaryButton, children, linkTo }) => {
   return (
     <Link to={linkTo}>
       <div
-        className={`flex shadow-md items-center gap-2 rounded-lg ${
+        className={`flex items-center rounded-lg text-center text-base font-medium shadow-md ${
           primaryButton
-            ? "bg-[#ffd60a] text-[#000814]"
-            : "bg-[#161d29] text-[#f1f2ff]"
+            ? "bg-yellow-50 text-richblack-900"
+            : "bg-richblack-800 text-richblack-5"
         } px-6 py-3`}
       >
         {children}

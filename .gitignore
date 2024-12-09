@@ -30,3 +30,5 @@ lerna-debug.log*
 *.njsproj                # Node.js project files
 *.sln                    # Visual Studio solution files
 *.sw?                    # Swap files
+
+sampleCode/
