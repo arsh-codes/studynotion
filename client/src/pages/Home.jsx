@@ -45,18 +45,19 @@ const Home = () => (
           </div>
         </div>
 
-       {/* Background light eclipse for video */}
-<div className="absolute top-48 z-0">
-  <img src={Video1Eclipse} alt="Eclipse shade behind video" />
-</div>
+        {/* Background light eclipse for video */}
+        <div className="absolute top-48 z-0">
+          <img src={Video1Eclipse} alt="Eclipse shade behind video" />
+        </div>
 
-{/* Video */}
-<div className="relative z-10 mx-auto mt-14 h-[515px] w-[1035px] shadow-lg">
-  <video autoPlay muted loop className="h-full w-full">
-    <source src={homeSection1Video} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
+        {/* Video */}
+        <div className="relative z-10 mx-auto mt-14 h-[515px] w-[1035px] shadow-lg">
+          <video autoPlay muted loop className="h-full w-full">
+            <source src={homeSection1Video} type="video/mp4" />
+            {/* Adding fallback text within the video tag for browsers that do not support the video element */}
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
         <CodeSection
           position="flex-row"
