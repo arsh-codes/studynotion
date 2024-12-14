@@ -1,4 +1,3 @@
-import React from "react";
 import HighlightText from "./HighlightText";
 import CtaButton from "./CtaButton";
 import Logo1 from "../../../assets/homePageSkillsSectionLogos/Logo1.svg";
@@ -60,7 +59,10 @@ const SkillsSection = () => {
           {skillBadgesData.map((element, index) => (
             <div className="relative flex gap-6 px-3 py-4" key={index}>
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white p-1 shadow">
-                <img src={element.logo} alt={`Logo for ${element.heading} skill`} />
+                <img
+                  src={element.logo}
+                  alt={`Logo for ${element.heading} skill`}
+                />
               </div>
               <div className="flex flex-col">
                 <h4 className="text-lg font-semibold leading-6 text-richblack-800">
@@ -71,9 +73,9 @@ const SkillsSection = () => {
                 </p>
               </div>
               {/* Add dotted line if not the last element */}
-              {index !== skillBadgesData.length - 1 && (
+              {index !== skillBadgesData.length - 1 ? (
                 <div className="absolute h-[0px] w-[42px] origin-top-left translate-x-6 translate-y-14 rotate-90 border border-dotted border-richblack-50"></div>
-              )}
+              ) : null}
             </div>
           ))}
         </div>
