@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const databaseConnector = require("../server/config/databaseConnector.js");
+const cloudinaryConnector = require("../server/config/cloudinaryConnector.js");
 const cors = require("cors");
 const fileupload = require("express-fileupload");
 
@@ -33,13 +34,13 @@ app.use(
 app.use(
     fileupload({
         useTempFiles: true, // Use temporary files for uploads
-        tempFileDir: "/tempFileDir", // Temporary directory for storing uploaded files
+        tempFileDir: "./tempFileDirectory", // Temporary directory for storing uploaded files
     })
 ); // Added middleware to handle file uploads
 
 // Connect to the database
 databaseConnector(); // Establishes connection to the database
-
+cloudinaryConnector();
 // Set up application routes
 app.use("/api/v1/profile", profileRoutes); // Profile-related routes
 app.use("/api/v1/courses", courseRoutes); // Course-related routes
@@ -54,7 +55,6 @@ app.get("/", (req, res) => {
         message: "Server is up and running!", // Added a default success message
     });
 });
-
 // Start the server and log the success message
 app.listen(PORT, () => {
     console.log(`Server started successfully on port ${PORT}`); // Logs server start message

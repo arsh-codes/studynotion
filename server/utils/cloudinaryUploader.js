@@ -1,11 +1,14 @@
 const cloudinary = require("cloudinary").v2;
+const fs = require("fs"); // File System module for handling files
 
 // Function to upload a file to Cloudinary with customizable options
-exports.uploadToCloudinary = async (file, folder, height, quality) => {
+const uploadToCloudinary = async (file, folderName, height, quality) => {
+    console.log("📝 -> uploadToCloudinary -> file=", file);
+
     try {
         // Initialize the options object with the provided folder
         const options = {
-            folder,
+            folder: folderName,
             resource_type: "auto", // Automatically determine resource type (image, video, etc.)
         };
 
@@ -14,12 +17,19 @@ exports.uploadToCloudinary = async (file, folder, height, quality) => {
         if (quality && !isNaN(quality)) options.quality = quality;
 
         // Upload the file to Cloudinary
-        const result = await cloudinary.uploader.upload(file, options);
-        
+        const uploadResponse = await cloudinary.uploader.upload(file, options);
+
+        // Delete the temp file after upload
+        await fs.promises.unlink(file);
+
         // Return the upload result (contains URL, public_id, etc.)
-        return result;
+        return uploadResponse;
     } catch (error) {
-        console.error("Error uploading file to Cloudinary:", error.message); // Log the error message for clarity
-        throw new Error("File upload failed: " + error.message); // Pass the error message to the thrown error
+        console.error("Error uploading file to Cloudinary:", error.message);
+        throw new Error(
+            "File upload failed: Please check the file and try again."
+        );
     }
 };
+
+module.exports = uploadToCloudinary;

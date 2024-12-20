@@ -1,6 +1,6 @@
 const cloudinary = require("cloudinary").v2;
 
-exports.cloudinaryConnector = () => {
+const cloudinaryConnector = () => {
     try {
         // Configure Cloudinary with environment variables
         cloudinary.config({
@@ -21,3 +21,4 @@ exports.cloudinaryConnector = () => {
         );
     }
 };
+module.exports = cloudinaryConnector;

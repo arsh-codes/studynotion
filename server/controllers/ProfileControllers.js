@@ -8,6 +8,7 @@
 const Profile = require("../models/Profile");
 const User = require("../models/User");
 const Course = require("../models/Course");
+const cloudinaryUploader = require("../utils/cloudinaryUploader");
 
 exports.updateProfile = async (req, res) => {
     try {
@@ -55,8 +56,7 @@ exports.updateProfile = async (req, res) => {
             profile: updatedDetails, // Fixed: Changed key 'Profile' to lowercase 'profile' for consistency with convention
         });
     } catch (error) {
-        console.log("📝 -> exports.updateProfile -> error=", error);
-
+        console.error(`Error in updateProfile: ${error.message}`);
         return res.status(500).json({
             success: false,
             message:
@@ -99,6 +99,7 @@ exports.deleteAccount = async (req, res) => {
                 "Your account has been deleted successfully. We hope to see you again!",
         });
     } catch (error) {
+        console.error(`Error in deleteAccount: ${error.message}`);
         return res.status(500).json({
             success: false,
             message:
@@ -134,25 +135,27 @@ exports.getUserDetails = async (req, res) => {
             user,
         });
     } catch (error) {
+        console.error("Error in getUserDetails:", error);
         return res.status(500).json({
             success: false,
             message: "Unable to fetch user details. Please try again later.",
         });
     }
 };
-
 exports.updateDisplayPicture = async (req, res) => {
     try {
-        const { displayPicture } = req.body;
+        const { displayPicture } = req.files;
         const userId = req.user.id;
 
+        // Ensure display picture is provided
         if (!displayPicture) {
             return res.status(400).json({
                 success: false,
-                message: "Display picture URL is required.",
+                message: "Display picture is required.",
             });
         }
 
+        // Fetch the user by ID
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({
@@ -161,7 +164,16 @@ exports.updateDisplayPicture = async (req, res) => {
             });
         }
 
-        user.displayPicture = displayPicture;
+        // Use the temporary file path for uploading to Cloudinary
+        const imageUploadResponse = await cloudinaryUploader(
+            displayPicture.tempFilePath, // File is in tempFilePath
+            process.env.CLOUDINARY_FOLDER_NAME, // Folder name in Cloudinary
+            1000, // Height
+            80 // Quality
+        );
+
+        // Update the user's image URL in the database
+        user.image = imageUploadResponse.secure_url;
         await user.save();
 
         return res.status(200).json({
@@ -169,6 +181,7 @@ exports.updateDisplayPicture = async (req, res) => {
             message: "Display picture updated successfully.",
         });
     } catch (error) {
+        console.error("Error in updateDisplayPicture:", error);
         return res.status(500).json({
             success: false,
             message:
@@ -195,6 +208,7 @@ exports.getEnrolledCourses = async (req, res) => {
             courses: user.courses,
         });
     } catch (error) {
+        console.error("Error in getEnrolledCourses:", error);
         return res.status(500).json({
             success: false,
             message:

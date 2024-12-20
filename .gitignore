@@ -32,3 +32,4 @@ lerna-debug.log*
 *.sw?                    # Swap files
 
 sampleCode/
+tempFileDirectory/
