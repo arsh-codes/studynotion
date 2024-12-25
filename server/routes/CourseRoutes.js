@@ -15,7 +15,7 @@ const {
 const {
     showAllCategories,
     createCategory,
-    categoryPageDetails,
+    getCategoryPageDetails,
 } = require("../controllers/CategoryControllers");
 
 // Sections Controllers Import
@@ -75,7 +75,7 @@ router.post("/getCourseDetails", getCourseDetails); // Get details for a specifi
 // Category management by admin
 router.post("/createCategory", auth, isAdmin, createCategory); // Create a category
 router.get("/showAllCategories", showAllCategories); // List all categories
-router.post("/getCategoryPageDetails", categoryPageDetails); // Get details for a category page
+router.get("/getCategoryPageDetails", getCategoryPageDetails); // Get details for a category page
 
 // ********************************************************************************************************
 //                                      Rating and Review routes

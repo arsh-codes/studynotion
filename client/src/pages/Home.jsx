@@ -1,6 +1,3 @@
-import { FaArrowRight } from "react-icons/fa";
-
-import CtaButton from "../components/core/HomePage/CtaButton";
 import HighlightText from "../components/core/HomePage/HighlightText";
 import homeSec2Bg from "../assets/media/homeSec2Bg.svg";
 
@@ -11,7 +8,7 @@ import SkillsSection from "../components/core/HomePage/SkillsSection";
 import SwissKnifeSection from "../components/core/HomePage/SwissKnifeSection";
 import InstructorSection from "../components/core/HomePage/InstructorSection";
 import ReviewsSection from "../components/core/HomePage/ReviewsSection";
-
+import Footer from "../components/core/HomePage/Footer";
 const Home = () => (
   // Wrapper
   <div className="relative flex h-full w-full flex-col">
@@ -74,6 +71,7 @@ const Home = () => (
       <InstructorSection />
       <ReviewsSection />
     </section>
+    <Footer />
   </div>
 );
 

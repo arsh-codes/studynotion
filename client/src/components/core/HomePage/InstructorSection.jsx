@@ -11,7 +11,7 @@ const InstructorSection = () => {
         <img
           className="relative object-cover"
           src={instructorImage}
-          alt="Instructor teaching students" 
+          alt="Instructor teaching students"
         />
       </div>
       {/* Right text container */}
@@ -26,7 +26,9 @@ const InstructorSection = () => {
         </p>
         <div className="pt-12">
           <CtaButton primaryButton={true} linkTo="/signup">
-            Start Teaching Today <FaArrowRight className="h-4 w-4" />
+            <div className="flex items-center gap-1">
+              Start Teaching Today <FaArrowRight />
+            </div>
           </CtaButton>
         </div>
       </div>

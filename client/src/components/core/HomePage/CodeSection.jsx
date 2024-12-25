@@ -1,7 +1,7 @@
 import CtaButton from "./CtaButton";
 import { FaArrowRight } from "react-icons/fa";
 import { TypeAnimation } from "react-type-animation";
-
+import PropTypes from "prop-types";
 const CodeSection = ({
   position,
   backgroundGradient,
@@ -73,6 +73,22 @@ const CodeSection = ({
       </section>
     </div>
   );
+};
+CodeSection.propTypes = {
+  position: PropTypes.string,
+  backgroundGradient: PropTypes.node,
+  heading: PropTypes.node.isRequired,
+  subHeading: PropTypes.string.isRequired,
+  ctaButton1: PropTypes.shape({
+    primaryButton: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired,
+  }).isRequired,
+  ctaButton2: PropTypes.shape({
+    primaryButton: PropTypes.bool.isRequired,
+    text: PropTypes.string.isRequired,
+  }).isRequired,
+  codeColor: PropTypes.string,
+  codeToAnimate: PropTypes.string.isRequired,
 };
 
 export default CodeSection;
