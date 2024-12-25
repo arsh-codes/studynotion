@@ -26,13 +26,15 @@ exports.createCategory = async (req, res) => {
             });
         }
         // Create category in the database with the provided details
-        const categoryDetails = await Category.create({
+        const newCategory = {
             categoryName: name,
-            categoryDescription: description,
-        });
+        };
+        if (description) {
+            newCategory.categoryDescription = description;
+        }
+        const categoryDetails = await Category.create(newCategory);
 
-        console.log("Category created successfully:", categoryDetails); // Log created category details
-
+        console.log("Category created successfully:", categoryDetails);
         return res.status(201).json({
             success: true,
             message: "Category created successfully.",
@@ -60,7 +62,7 @@ exports.showAllCategories = async (req, res) => {
             data: allCategories,
         });
     } catch (error) {
-        console.error(`Error fetching categories: ${error.message}`); 
+        console.error(`Error fetching categories: ${error.message}`);
         return res.status(500).json({
             success: false,
             message:

@@ -2,9 +2,7 @@ const cloudinary = require("cloudinary").v2;
 const fs = require("fs"); // File System module for handling files
 
 // Function to upload a file to Cloudinary with customizable options
-const uploadToCloudinary = async (file, folderName, height, quality) => {
-    console.log("📝 -> uploadToCloudinary -> file=", file);
-
+const cloudinaryUploader = async (file, folderName, height, quality) => {
     try {
         // Initialize the options object with the provided folder
         const options = {
@@ -32,4 +30,4 @@ const uploadToCloudinary = async (file, folderName, height, quality) => {
     }
 };
 
-module.exports = uploadToCloudinary;
+module.exports = cloudinaryUploader;

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 // Define the schema for the Tag model
 const TagSchema = new mongoose.Schema({
-    name: {
+    tagName: {
         type: String,
         required: true,
         trim: true,

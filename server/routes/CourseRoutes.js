@@ -18,6 +18,9 @@ const {
     getCategoryPageDetails,
 } = require("../controllers/CategoryControllers");
 
+// Tags Controllers Import
+const { createTag, showAllTags } = require("../controllers/TagControllers");
+
 // Sections Controllers Import
 const {
     createSection,
@@ -69,12 +72,14 @@ router.get("/getAllCourses", getAllCourses); // Retrieve all registered courses
 router.post("/getCourseDetails", getCourseDetails); // Get details for a specific course
 
 // ********************************************************************************************************
-//                                      Category routes (Admin only)
+//                                      Category and tag routes
 // ********************************************************************************************************
 
 // Category management by admin
 router.post("/createCategory", auth, isAdmin, createCategory); // Create a category
 router.get("/showAllCategories", showAllCategories); // List all categories
+router.post("/createTag", auth, isAdmin, createTag); // Create a tag
+router.get("/showAllTags", showAllTags); // List all Tags
 router.get("/getCategoryPageDetails", getCategoryPageDetails); // Get details for a category page
 
 // ********************************************************************************************************
