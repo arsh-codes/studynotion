@@ -9,9 +9,11 @@ import SwissKnifeSection from "../components/core/HomePage/SwissKnifeSection";
 import InstructorSection from "../components/core/HomePage/InstructorSection";
 import ReviewsSection from "../components/core/HomePage/ReviewsSection";
 import Footer from "../components/core/HomePage/Footer";
+import Navbar from "../components/common/Navbar";
 const Home = () => (
   // Wrapper
   <div className="relative flex h-full w-full flex-col">
+  
     {/*Section 1 Black background*/}
     <section className="bg-richblack-900">
       <HeroSection />

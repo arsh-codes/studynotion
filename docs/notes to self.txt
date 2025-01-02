@@ -21,6 +21,7 @@
 5. **Tags in Course Creation**  
    - **Update the Course Creation Controller:** Convert tags from a comma-separated string into an array.
 
+add that course can only be published after getting at least one admin's aproval.
 ---6. Password Validation
 Add validation for password strength using libraries like validator or custom regex.
 7. add an ascii art of studynotion to be shown at top in console once it is hosted. 

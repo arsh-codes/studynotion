@@ -6,10 +6,9 @@ export default function MyFooter() {
   return (
     <section className="flex flex-col items-center justify-center bg-richblack-800">
       {/* wrapper */}
-      <div className="mx-auto w-11/12 px-28 py-12">
+      <div className="mx-auto flex w-11/12 flex-col gap-8 px-28 py-12">
         {/* top container */}
-        <div className="relative mx-auto flex h-fit gap-12">
-          {" "}
+        <div className="relative flex gap-12">
           {/* left section */}
           <section className="flex w-1/2 justify-evenly">
             {/* left column 1 */}
@@ -64,14 +63,15 @@ export default function MyFooter() {
               <FooterLinkGroup title="Community" />
             </div>
           </section>
-          <div className="absolute left-1/2 h-0 w-1/2 origin-top-left rotate-90 border border-richblack-700 my-auto"></div>
+          {/* <div className="absolute left-1/2 my-auto h-0 w-1/2 origin-top-left rotate-90 border border-richblack-700"></div> */}
+
           {/* right section */}
-          <section className="flex w-1/2 justify-evenly">
-            {" "}
+          <section className="flex w-1/2 justify-evenly border-l border-richblack-600">
             <FooterLinkGroup title="Subjects" />
             <FooterLinkGroup title="Languages" />
           </section>
         </div>
+
         {/* bottom container */}
         <div className="flex w-11/12 items-center justify-between border-t border-richblack-600 py-4">
           <div className="cursor-pointer text-sm text-richblack-400 hover:text-richblack-50">

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { HomePageExploreCourses } from "../../../data/homePageExploreCourses";
 import { FaUserGroup } from "react-icons/fa6";
 import { PiTreeStructureFill } from "react-icons/pi";
+import { useEffect } from "react";
 const tabNames = [
   "Free",
   "New to coding",
@@ -24,6 +25,9 @@ export default function ExploreCoursesSection() {
     setSelectedTab(tab);
     setLinkedCourses(HomePageExploreCourses[index]?.courses || []);
   };
+useEffect(() => {
+  setSelectedCourse()
+}, [selectedTab])
 
   return (
     <div className="relative">
