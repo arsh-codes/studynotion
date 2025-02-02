@@ -24,7 +24,7 @@ export default function Navbar() {
   ];
 
   return (
-    <section className="border-b border-solid border-richblack-700 bg-richblack-900">
+    <section className="border-richblack-700 bg-richblack-900 border-b border-solid">
       <div className="mx-auto flex h-fit w-11/12 justify-evenly gap-1 px-28 py-3">
         <Link to="/">
           <img className="h-8" src={logo} alt="Logo" />
@@ -36,10 +36,16 @@ export default function Navbar() {
               <li
                 key={index}
                 className={`text-center text-base font-normal ${
-                  link.path === location.pathname ? "text-yellow-50" : "text-richblack-25"
+                  link.path === location.pathname
+                    ? "text-yellow-50"
+                    : "text-richblack-25"
                 }`}
               >
-                {link.path ? <Link to={link.path}>{link.title}</Link> : link.title}
+                {link.path ? (
+                  <Link to={link.path}>{link.title}</Link>
+                ) : (
+                  link.title
+                )}
               </li>
             ))}
           </ul>
