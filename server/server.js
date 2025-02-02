@@ -49,7 +49,6 @@ app.use("/api/v1/auth", userRoutes); // Authentication routes
 
 // Default route to check server status
 app.get("/", (req, res) => {
-    // FIXED: Corrected parameter order (req, res)
     return res.json({
         success: true,
         message: "Server is up and running!", // Added a default success message
