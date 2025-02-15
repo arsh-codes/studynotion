@@ -25,26 +25,27 @@ export default function ExploreCoursesSection() {
     setSelectedTab(tab);
     setLinkedCourses(HomePageExploreCourses[index]?.courses || []);
   };
-useEffect(() => {
-  setSelectedCourse()
-}, [selectedTab])
+  useEffect(() => {
+    setSelectedCourse();
+  }, [selectedTab]);
 
   return (
-    <div className="relative">
+    <section className="relative mx-auto w-11/12 px-4 py-8 select-none md:px-28">
       <div className="h-[28rem]"></div>
-      <div className="absolute -top-0 mx-auto flex w-11/12 select-none flex-col items-center justify-center gap-20 px-28">
+      <div className="absolute -top-0 right-1 left-1 flex flex-col items-center gap-8 md:gap-20">
         {/* Title and Subtitle */}
-        <div className="flex flex-col items-center justify-center gap-2">
-          <h3 className="text-4xl font-semibold leading-[44px] text-richblack-5">
+        <div className="flex flex-col items-center gap-2">
+          <h3 className="text-richblack-5 text-3xl font-semibold md:text-4xl md:leading-[44px]">
             Unlock the
             <HighlightText text="Power of Code" />
           </h3>
-          <p className="text-center font-medium text-richblack-300">
+
+          <p className="text-richblack-300 text-center text-base font-medium text-balance md:text-lg">
             Learn to Build Anything You Can Imagine
           </p>
         </div>
         {/* Tabs */}
-        <div className="flex gap-9 rounded-full bg-richblack-800 p-1">
+        <div className="bg-richblack-800 flex w-fit flex-col rounded-md p-2 md:flex-row md:gap-9 md:rounded-full">
           {tabNames.map((tab, index) => (
             <div
               key={index}
@@ -59,35 +60,34 @@ useEffect(() => {
             </div>
           ))}
         </div>
-        eeeee
         {/* Cards */}
-        <div className="flex gap-9">
+        <div className="flex flex-col gap-8 lg:flex-row">
           {linkedCourses.map((course, index) => (
             <div
               key={index}
-              className={`relative flex h-72 w-1/3 flex-col gap-3 px-6 pb-[52px] pt-8 ${
+              className={`relative flex h-fit flex-col gap-3 px-6 pt-8 pb-[52px] lg:w-1/3 ${
                 selectedCourse === course
-                  ? "bg-pure-greys-5 shadow-[12px_12px_0px_0px_rgba(255,214,10,1.00)]"
+                  ? "bg-pure-grey-5 shadow-[12px_12px_0px_0px_rgba(255,214,10,1.00)]"
                   : "bg-richblack-800 hover:scale-105 hover:shadow-xl"
               } shadow-lg transition-transform duration-300`}
               onClick={() => setSelectedCourse(course)}
             >
               <div
-                className={`text-xl font-semibold leading-7 ${selectedCourse === course ? "text-richblack-800" : "text-richblack-25"} `}
+                className={`text-xl leading-7 font-semibold ${selectedCourse === course ? "text-richblack-800" : "text-richblack-25"} `}
               >
                 {course.heading}
               </div>
               <div
-                className={`font-normal leading-normal ${selectedCourse === course ? "text-richblack-500" : "text-richblack-400"} `}
+                className={`pb-3 leading-normal font-normal ${selectedCourse === course ? "text-richblack-500" : "text-richblack-400"} `}
               >
                 {course.description}
               </div>
 
               {/* Footer Section */}
               <section
-                className={`absolute bottom-0 left-0 right-0 flex justify-between border-t ${selectedCourse === course ? "border-richblack-50 text-blue-500" : "border-richblack-600 text-richblack-300"} px-6 py-4`}
+                className={`absolute right-0 bottom-0 left-0 flex justify-between border-t ${selectedCourse === course ? "border-richblack-50 text-blue-500" : "border-richblack-600 text-richblack-300"} px-6 py-4`}
               >
-                <div className="font-medium leading-normal">
+                <div className="leading-normal font-medium">
                   <div className="flex items-center justify-center gap-1">
                     <FaUserGroup />
                     {course.level}
@@ -115,6 +115,6 @@ useEffect(() => {
           </CtaButton>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

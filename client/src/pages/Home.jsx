@@ -13,18 +13,18 @@ import Navbar from "../components/common/Navbar";
 const Home = () => (
   // Wrapper
   <div className="relative flex h-full w-full flex-col">
-  
     {/*Section 1 Black background*/}
     <section className="bg-richblack-900">
       <HeroSection />
-      <section className="mx-auto w-11/12">
+      <section className="mx-auto w-11/12 px-4 py-8">
         <CodeSection
+          smVisibility="flex"
           position="flex-row"
           backgroundGradient={
             <div className="codeblock1-background-gradient absolute"></div>
           }
           heading={
-            <h3 className="text-4xl font-semibold leading-[44px] text-richblack-5">
+            <h3 className="text-richblack-5 text-4xl leading-[44px] font-semibold">
               Unlock your
               <HighlightText text="coding potential " />
               with our online courses.
@@ -37,12 +37,13 @@ const Home = () => (
           codeToAnimate={`<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport"\n<title>\nLet's Make Something Special</title>\n...`}
         />
         <CodeSection
+          smVisibility="hidden"
           position="flex-row-reverse"
           backgroundGradient={
             <div className="codeblock2-background-gradient absolute"></div>
           }
           heading={
-            <h3 className="text-4xl font-semibold leading-[44px] text-richblack-5">
+            <h3 className="text-richblack-5 text-4xl leading-[44px] font-semibold">
               Start
               <HighlightText text="coding in seconds " />
             </h3>
@@ -58,7 +59,8 @@ const Home = () => (
     </section>
 
     {/*Section 2 Grey background*/}
-    <section className="bg-pure-greys-5">
+    {/* !!!!!!!FIXX THIS LATER!!!!!! */}
+    <section className="bg-pure-greys-5 mt-[25rem] md:mt-[15rem] lg:-mt-22">
       <div
         className="mx-auto flex h-80 w-full items-center justify-center gap-6"
         style={{ background: `url(${homeSec2Bg})` }}

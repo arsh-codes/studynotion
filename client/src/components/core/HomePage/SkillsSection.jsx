@@ -32,16 +32,16 @@ const skillBadgesData = [
 
 const SkillsSection = () => {
   return (
-    <section className="mx-auto flex w-11/12 flex-col items-center justify-center gap-12 px-28 py-20">
+    <section className="mx-auto flex w-11/12 flex-col items-center justify-center gap-12 px-4 py-8 md:px-28">
       {/* Heading */}
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         {/* Left part */}
-        <div className="text-4xl font-semibold leading-[44px]">
+        <div className="text-3xl font-semibold md:text-4xl md:leading-[44px]">
           Get the skills you need for a
           <HighlightText text="job that is in demand." />
         </div>
         {/* Right part */}
-        <div className="flex flex-col gap-12 text-base font-medium text-richblack-700">
+        <div className="text-richblack-700 flex flex-col gap-12 text-base font-medium">
           <p>
             The modern StudyNotion dictates its own terms. Today, being a
             competitive specialist requires more than just professional skills.
@@ -53,7 +53,7 @@ const SkillsSection = () => {
       </div>
 
       {/* Skills flex box */}
-      <div className="flex items-center gap-16">
+      <div className="flex flex-col gap-16 md:items-center lg:flex-row">
         {/* Left side skills Badges*/}
         <div className="flex flex-col gap-8">
           {skillBadgesData.map((element, index) => (
@@ -65,16 +65,16 @@ const SkillsSection = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <h4 className="text-lg font-semibold leading-6 text-richblack-800">
+                <h4 className="text-richblack-800 text-lg leading-6 font-semibold">
                   {element.heading}
                 </h4>
-                <p className="text-sm font-normal leading-5 text-richblack-700">
+                <p className="text-richblack-700 text-sm leading-5 font-normal">
                   {element.subHeading}
                 </p>
               </div>
               {/* Add dotted line if not the last element */}
               {index !== skillBadgesData.length - 1 ? (
-                <div className="absolute h-[0px] w-[42px] origin-top-left translate-x-6 translate-y-14 rotate-90 border border-dotted border-richblack-50"></div>
+                <div className="border-richblack-50 absolute h-[0px] w-[42px] origin-top-left translate-x-6 translate-y-14 rotate-90 border border-dotted"></div>
               ) : null}
             </div>
           ))}
@@ -84,25 +84,25 @@ const SkillsSection = () => {
         <div className="relative">
           <img
             src={skillSectionImage}
-            className="h-[30rem] w-[47rem] object-cover"
+            className="hidden h-[30rem] w-[47rem] object-cover md:block"
             alt="Skills Section Image"
           />
 
-          <span className="absolute flex -translate-y-1/2 translate-x-[15%] gap-12 bg-caribbeangreen-700 p-10">
-            <div className="flex items-center justify-center gap-6">
-              <span className="text-4xl font-bold leading-[44px] text-white">
+          <span className="bg-caribbeangreen-700 md:absolute flex -translate-y-1/2 translate-x-[15%] flex-col gap-12 p-10 md:flex-row">
+            <div className="flex flex-row items-center justify-center gap-6">
+              <span className="text-4xl leading-[44px] font-bold text-white">
                 10
               </span>
-              <span className="text-sm font-medium leading-5 text-caribbeangreen-300">
+              <span className="text-caribbeangreen-300 text-sm leading-5 font-medium">
                 <p>YEARS</p> <p>EXPERIENCE</p>
               </span>
             </div>
-            <div className="h-[0px] w-11 origin-top-left rotate-90 border border-caribbeangreen-300"></div>
+            <div className="border-caribbeangreen-300 h-[0px] md:w-11 origin-top-left border md:rotate-90"></div>
             <div className="flex items-center gap-6">
-              <span className="text-center text-4xl font-bold leading-[44px] text-white">
+              <span className="text-center text-4xl leading-[44px] font-bold text-white">
                 250
               </span>
-              <span className="text-sm font-medium leading-5 text-caribbeangreen-300">
+              <span className="text-caribbeangreen-300 text-sm leading-5 font-medium">
                 TYPES OF <p>COURSES</p>
               </span>
             </div>

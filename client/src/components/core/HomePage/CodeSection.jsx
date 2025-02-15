@@ -4,6 +4,7 @@ import { TypeAnimation } from "react-type-animation";
 import PropTypes from "prop-types";
 const CodeSection = ({
   position,
+  smVisibility,
   backgroundGradient,
   heading,
   subHeading,
@@ -13,19 +14,19 @@ const CodeSection = ({
   codeToAnimate,
 }) => {
   // Calculate the number of lines in the code
-  const numberOfLines = codeToAnimate.split("\n").length + 2;
+  const numberOfLines = codeToAnimate.split("\n").length + 6;
 
   return (
     <div
-      className={`flex ${position} h-fit w-full gap-6 py-24 sm:px-6 md:px-12 lg:px-28`}
+      className={`flex flex-col md:${position} ${smVisibility} $ h-fit w-full gap-6 md:py-24 sm:px-6 md:flex md:px-12 lg:px-28`}
     >
       {/* Text Section */}
       <section className="m-auto flex w-full flex-col gap-3 md:w-1/2">
         {heading}
-        <span className="text-balance text-base font-medium text-richblack-300">
+        <span className="text-richblack-300 text-base font-medium text-balance">
           {subHeading}
         </span>
-        <div className="flex gap-6 pt-8">
+        <div className="flex gap-6 pt-8 justify-center">
           <CtaButton primaryButton={ctaButton1.primaryButton} linkTo={"/"}>
             <div className="flex items-center gap-1">
               {ctaButton1.text} <FaArrowRight />
@@ -38,10 +39,10 @@ const CodeSection = ({
       </section>
 
       {/* Animation Section */}
-      <section className="relative flex h-fit w-full p-8 md:w-1/2">
+      <section className="relative flex h-fit w-full pt-4 md:p-8 md:w-1/2">
         {backgroundGradient}
         {/* Numbered Block */}
-        <div className="w-[15%] text-center text-base font-medium text-richblack-300">
+        <div className="text-richblack-300 w-[15%] text-center text-base font-medium">
           {Array.from({ length: numberOfLines }, (_, i) => (
             <p key={i} className="text-xs sm:text-sm">
               {i + 1}

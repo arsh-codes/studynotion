@@ -1,4 +1,6 @@
-import express, { Request, Response } from "express"; // Use TypeScript imports
+import express, { Request, Response } from "express"; // Use TypeScript imports changed
+// TypeScript supports ES module imports with type annotations, unlike JavaScript where you typically use require or ES module imports without type information.
+
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import databaseConnector from "./config/databaseConnector.js";
@@ -19,7 +21,8 @@ dotenv.config();
 const app = express();
 
 // Set up the port to listen on (default to 4000 if not set in .env)
-const PORT = process.env.PORT || 4000;
+const PORT: number = Number(process.env.PORT) || 4000; // TypeScript adds explicit type annotations changed
+// TypeScript allows us to specify that `PORT` is a number. `Number()` is used to safely convert the value from a string (as environment variables are typically strings).
 
 // Middleware setup
 app.use(express.json()); // Parses incoming JSON payloads
@@ -48,13 +51,14 @@ app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/payments", paymentRoutes);
 app.use("/api/v1/auth", userRoutes);
 
-// // Default route to check server status
-// app.get("/", (req: Request, res: Response) => {
-//     return res.json({
-//         success: true,
-//         message: "Server is up and running!",
-//     });
-// });
+// Default route to check server status
+// TypeScript is strongly typed and will throw an error if we don't specify types for request and response. changed
+app.get("/", (req: Request, res: Response): void => {
+    res.json({
+        success: true,
+        message: "Server is up and running!",
+    });
+});
 
 // Start the server and log the success message
 app.listen(PORT, () => {

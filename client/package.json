@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "vite --port 3000",
-    "server": "cd .. && cd server && npm run dev",
+    "server": "cd .. && cd server && npm run server",
     "all": "concurrently -n \"client,server\" -c \"blue,green\" \"npm start\" \"npm run server\""
   },
   "dependencies": {
