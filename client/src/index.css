@@ -1,6 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+SA+Beginner:wght@400..700&display=swap');
 @import "tailwindcss";
 
+
 @theme {
+  --font-edu-sa-beginner: 'Edu SA Beginner', sans-serif;
+
+
   /* White */
   --color-white: #fff;
 

@@ -88,7 +88,7 @@ const SkillsSection = () => {
             alt="Skills Section Image"
           />
 
-          <span className="bg-caribbeangreen-700 md:absolute flex -translate-y-1/2 translate-x-[15%] flex-col gap-12 p-10 md:flex-row">
+          <div className="bg-caribbeangreen-700 md:absolute flex lg:-translate-y-1/2 lg:translate-x-[15%] flex-col gap-12 p-10 md:flex-row">
             <div className="flex flex-row items-center justify-center gap-6">
               <span className="text-4xl leading-[44px] font-bold text-white">
                 10
@@ -97,8 +97,9 @@ const SkillsSection = () => {
                 <p>YEARS</p> <p>EXPERIENCE</p>
               </span>
             </div>
+            {/* Line */}
             <div className="border-caribbeangreen-300 h-[0px] md:w-11 origin-top-left border md:rotate-90"></div>
-            <div className="flex items-center gap-6">
+            <div className="flex justify-center items-center gap-6">
               <span className="text-center text-4xl leading-[44px] font-bold text-white">
                 250
               </span>
@@ -106,7 +107,7 @@ const SkillsSection = () => {
                 TYPES OF <p>COURSES</p>
               </span>
             </div>
-          </span>
+          </div>
         </div>
       </div>
     </section>

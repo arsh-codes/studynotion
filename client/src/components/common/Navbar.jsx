@@ -1,71 +1,166 @@
 import logo from "../../assets/logo/logoFullLight.png";
 import { Link, useLocation } from "react-router-dom";
 import { MdMenuOpen, MdMenu } from "react-icons/md";
-import { useState } from "react"; // Import useState
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  RiShoppingCart2Line,
+  RiShoppingCart2Fill,
+  RiArrowDropDownLine,
+  RiArrowDropUpLine,
+} from "react-icons/ri";
+import ProfileDropDown from "../core/Navbar/ProfileDropDown";
+import { apiConnector } from "../../services/apiConnector";
+import { categories } from "../../services/api";
 
 export default function Navbar() {
-  const location = useLocation(); // Get the current location object
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to track menu open/close
+  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { token, user } = useSelector((state) => state.auth || {});
+  const { totalItems } = useSelector((state) => state.cart || {});
+  // const [catalogLinks, setCatalogLinks] = useState([]);
 
-  const navbarLinks = [
-    {
-      title: "Home",
-      path: "/",
-    },
-    {
-      title: "Catalog",
-      // path: '/catalog',
-    },
-    {
-      title: "About Us",
-      path: "/about",
-    },
-    {
-      title: "Contact Us",
-      path: "/contact",
-    },
+  // // Effect hook to fetch catalog links once the component mounts
+  // useEffect(() => {
+  //   fetchCatalogLinks();
+  // }, []); // Empty dependency array to run the effect only once
+
+  // // Function to fetch catalog links from the API
+  // const fetchCatalogLinks = async () => {
+  //   try {
+  //     const response = await apiConnector("GET", categories.CATEGORIES_API); // Making GET request to categories API
+  //     const data = await response.json(); // Parsing the response data as JSON
+  //     console.log("📝navbar catalog links data =", data); // Logging the fetched catalog data for debugging
+  //     setCatalogLinks(data); // Setting the fetched data to the state
+  //   } catch (error) {
+  //     console.log(error);
+  //     console.log("Error fetching catalog links");
+  //   }
+  // };
+
+  const catalogLinks = [
+    { title: "Python", path: "/category/python" },
+    { title: "Web Development", path: "/category/web-development" },
+    { title: "DSA (Data Structures & Algorithms)", path: "/category/dsa" },
+    { title: "Machine Learning", path: "/category/machine-learning" },
+    { title: "JavaScript", path: "/category/javascript" },
   ];
 
-  // Toggle the menu state
-  const menuClickHandler = () => {
-    setIsMenuOpen((prevState) => !prevState);
-  };
+  const navbarLinks = [
+    { title: "Home", path: "/" },
+    { title: "Catalog" }, // No path to avoid navigation
+    { title: "About Us", path: "/about" },
+    { title: "Contact Us", path: "/contact" },
+  ];
 
   return (
     <section className="border-richblack-700 bg-richblack-900 border-b border-solid select-none">
-      <div className="flex w-full items-center justify-between px-4 py-8 md:mx-auto md:w-11/12 md:justify-evenly md:gap-1 md:px-28 md:py-3">
+      <div className="text-richblack-25 flex w-full items-center justify-between px-4 py-8 md:mx-auto md:w-11/12 md:justify-evenly md:gap-1 md:px-28 md:py-3">
+        {/* Logo */}
         <Link to="/">
-          <img className="h-8" src={logo} alt="Logo" />
+          <img className="h-6" src={logo} alt="Logo" />
         </Link>
         {/* Hamburger for mobile devices */}
         <div
-          onClick={menuClickHandler}
-          className="text-richblack-25 block text-2xl md:hidden"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          className="block text-2xl md:hidden"
         >
           {isMenuOpen ? <MdMenuOpen /> : <MdMenu />}
         </div>
-        {/* Links list */}
+
+        {/* Links list for bigger screens */}
         <nav className="hidden md:block">
-          <ul className="flex items-center justify-center gap-3 px-3 py-1 select-none">
-            {navbarLinks.map((link, index) => (
+          <ul className="flex items-center gap-3 px-3 py-1 select-none">
+            {navbarLinks.map((navLink, index) => (
               <li
                 key={index}
-                className={`text-center text-base font-normal ${
-                  link.path === location.pathname
+                className={`relative ${
+                  navLink.path === location.pathname
                     ? "text-yellow-50"
                     : "text-richblack-25"
                 }`}
               >
-                {link.path ? (
-                  <Link to={link.path}>{link.title}</Link>
+                {/* catalog is a dropdown */}
+                {navLink.title === "Catalog" ? (
+                  <div className="group relative flex items-center">
+                    {navLink.title}
+                    <RiArrowDropDownLine className="h-6 w-6 transition-all duration-200 group-hover:rotate-180" />
+
+                    <div className="invisible absolute top-8 z-100 w-44 cursor-pointer divide-y divide-gray-100 rounded-lg bg-white opacity-0 shadow-sm transition-opacity duration-400 group-hover:visible group-hover:opacity-100 group-focus:opacity-100 dark:bg-gray-700">
+                      <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        {catalogLinks.length == 0 ? (
+                          <li>No categories found</li>
+                        ) : (
+                          catalogLinks.map((catalogLink, index) => (
+                            <Link to={catalogLink.path}>
+                              <li
+                                key={index}
+                                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                              >
+                                {catalogLink.title}
+                              </li>
+                            </Link>
+                          ))
+                        )}
+                      </ul>
+                    </div>
+                  </div>
                 ) : (
-                  link.title
+                  <Link to={navLink.path}>{navLink.title}</Link>
                 )}
               </li>
             ))}
           </ul>
         </nav>
+        {/* Signup and Login if not logged in */}
+        {token == null ? (
+          <div className="hidden items-center gap-3 md:flex">
+            <Link to="/signup">
+              <div class="border-richblack-700 bg-richblack-800 w-fit rounded-lg border px-3 py-2">
+                <div class="text-richblack-100 text-center font-medium">
+                  Sign up
+                </div>
+              </div>
+            </Link>
+            <Link to="/login">
+              <div class="border-richblack-700 bg-richblack-800 w-fit rounded-lg border px-3 py-2">
+                <div class="text-richblack-100 text-center font-medium">
+                  Log In
+                </div>
+              </div>
+            </Link>
+          </div>
+        ) : null}
+        {/* Cart Icon shown if logged in  */}
+        {token != null ? (
+          // Count circle and filled cart icon shown if items in cart
+          totalItems > 0 ? (
+            <div className="relative flex items-center justify-center">
+              <div className="absolute top-0 left-4">
+                <p className="text-richblack-25 bg-richblack-900 flex h-1 w-1 items-center justify-center rounded-full p-2 text-xs">
+                  {totalItems ? totalItems : 0}
+                </p>
+              </div>
+              <Link to="/cart">
+                <RiShoppingCart2Fill className="h-9 w-6" />
+              </Link>
+            </div>
+          ) : (
+            // empty cart icon if no items in cart
+            <Link to="/cart">
+              <RiShoppingCart2Line className="h-9 w-6" />
+            </Link>
+          )
+        ) : null}
+        {/* Profile dropdown shown if logged in  */}
+        {token != null ? (
+          <div>
+            <ProfileDropDown />
+          </div>
+        ) : null} 
       </div>
     </section>
   );
 }
+
+
