@@ -1,10 +1,20 @@
 import axios from "axios";
-
-// Create an Axios instance with default configurations
 export const axiosInstance = axios.create({
-  baseURL: "https://your-api-base-url.com", // Optional: Set a base URL for all requests
-  timeout: 10000, // Optional: Set a request timeout (10 seconds)
+  baseURL: import.meta.env.VITE_BASE_URL, // Correct way to access env variables in Vite
+  timeout: 10000,
 });
+
+/**
+ * API Connector function to make HTTP requests using Axios
+ *
+ * @param {string} method - HTTP method (GET, POST, PUT, DELETE, etc.)
+ * @param {string} url - API endpoint URL
+ * @param {object} [data={}] - Request body data (for POST, PUT, etc.)
+ * @param {object} [headers={}] - Custom headers for the request
+ * @param {object} [params={}] - Query parameters for GET requests
+ * @returns {Promise<object>} - Returns the API response
+ * @throws {Error} - Throws an error if the request fails
+ */
 export const apiConnector = async (
   method,
   url,

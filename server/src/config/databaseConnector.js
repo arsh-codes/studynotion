@@ -17,7 +17,9 @@ if (!URL) {
 async function databaseConnector() {
     try {
         // Attempt to connect to the MongoDB database with additional options for compatibility
-        await mongoose.connect(URL);
+        await mongoose.connect(URL, {
+            dbName: "studynotion",
+        });
 
         // Log success message upon successful connection
         console.log("Connected to the database successfully.");
