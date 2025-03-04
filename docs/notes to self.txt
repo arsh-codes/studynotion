@@ -27,6 +27,8 @@ Add validation for password strength using libraries like validator or custom re
 7. add an ascii art of studynotion to be shown at top in console once it is hosted. 
 8. make sure date of birth doesnt conflict while updating in additional details. this will be done in frontend. until then keeping dob as a string in profile model. 
 
+on the emails sent by the website change the link to the hosted address. 
+
 ### **Completed Tasks**
 
 1. **User Check During Signup**  

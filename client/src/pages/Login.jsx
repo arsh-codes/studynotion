@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux"; // Add this import
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+
+import FormField from "../components/common/Form/FormField";
+import LongCTAButton from "../components/common/Form/LongCTAButton";
+import PasswordField from "../components/common/Form/PasswordField";
+import authPageStrikeText from "../assets/media/authPageStrikeText.svg";
+import { login } from "../services/operations/authAPI";
 import loginImage from "../assets/media/loginImage.webp";
-import loginPageStrikeText from "../assets/media/loginPageStrikeText.svg";
-import { login } from "../services/operations/authAPI"; // Ensure correct import
+import { useDispatch } from "react-redux";
 
 export default function Login() {
   const dispatch = useDispatch(); // Initialize dispatch
@@ -40,7 +44,7 @@ export default function Login() {
                 Build skills for today, tomorrow, and beyond.
                 <img
                   className="absolute top-4 -right-10"
-                  src={loginPageStrikeText}
+                  src={authPageStrikeText}
                   alt="strike design"
                 />
               </span>
@@ -88,50 +92,25 @@ export default function Login() {
 
           <form id="loginForm" onSubmit={handleSubmitButton}>
             <div className="flex flex-col gap-5">
-              <section className="flex flex-col gap-1.5">
-                <p>
-                  Email Address{" "}
-                  <span className="text-sm leading-snug text-pink-200">*</span>
-                </p>
-                <input
-                  type="email"
-                  name="email"
-                  id="emailAddressLogin"
-                  className="bg-richblack-700 overflow-hidden rounded-lg p-3 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.18)]"
-                  placeholder="Enter email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </section>
+              <FormField
+                labelName="Email Address"
+                inputType="email"
+                id="emailAddressLogin"
+                placeholder="Enter email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required={true}
+              />
 
               <section className="relative flex flex-col gap-1.5">
-                <p>
-                  Password{" "}
-                  <span className="text-sm leading-snug text-pink-200">*</span>
-                </p>
-                <input
-                  type={passwordVisibility ? "text" : "password"}
-                  name="password"
+                <PasswordField
                   id="passwordLogin"
-                  className="bg-richblack-700 overflow-hidden rounded-lg p-3 pr-16 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.18)]"
+                  labelName="Password"
                   placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
+                  required={true}
                 />
-
-                {passwordVisibility ? (
-                  <BsEye
-                    onClick={togglePasswordVisibility}
-                    className="absolute top-[2.875rem] right-5 h-4.5 w-4.5 cursor-pointer"
-                  />
-                ) : (
-                  <BsEyeSlash
-                    onClick={togglePasswordVisibility}
-                    className="absolute top-[2.875rem] right-5 h-4.5 w-4.5 cursor-pointer"
-                  />
-                )}
 
                 <div className="text-right text-xs leading-tight text-blue-100">
                   <Link to="/forgot-password">
@@ -141,12 +120,7 @@ export default function Login() {
               </section>
             </div>
 
-            <button
-              type="submit"
-              className="text-richblack-900 flex w-full cursor-pointer items-center justify-center rounded-lg bg-yellow-50 p-3 text-base font-medium shadow-md hover:bg-yellow-100"
-            >
-              <p>Sign in</p>
-            </button>
+            <LongCTAButton type="submit">Login</LongCTAButton>
           </form>
         </section>
 

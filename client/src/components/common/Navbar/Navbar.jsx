@@ -1,16 +1,18 @@
-import logo from "../../../assets/logo/logoFullLight.png";
 import { Link, useLocation } from "react-router-dom";
-import { MdMenuOpen, MdMenu } from "react-icons/md";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { MdMenu, MdMenuOpen } from "react-icons/md";
 import {
-  RiShoppingCart2Line,
-  RiShoppingCart2Fill,
   RiArrowDropDownLine,
+  RiShoppingCart2Fill,
+  RiShoppingCart2Line,
 } from "react-icons/ri";
+import { useEffect, useState } from "react";
+
 import ProfileDropDown from "./ProfileDropDown";
 import { apiConnector } from "../../../services/apiConnector";
 import { categories } from "../../../services/apis";
+import logo from "../../../assets/logo/logoFullLight.png";
+import { useSelector } from "react-redux";
+
 export default function Navbar() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,7 +48,7 @@ export default function Navbar() {
   ];
 
   return (
-    <section className="border-richblack-700 bg-richblack-900 border-b border-solid select-none">
+    <section className="border-richblack-700 bg-richblack-900 border-b border-solid select-none z-10">
       <div className="text-richblack-25 flex w-full items-center justify-between px-4 py-8 md:mx-auto md:w-11/12 md:justify-evenly md:gap-1 md:px-28 md:py-3">
         {/* Logo */}
         <Link to="/">
