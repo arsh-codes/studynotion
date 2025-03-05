@@ -9,7 +9,7 @@ const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const crypto = require("crypto"); // Import crypto module for generating reset tokens
 const passwordResetLinkTemplate = require("../mail/templates/passwordResetLinkTemplate");
-const passwordUpdatedTemplate = require("../mail/templates/passwordUpdatedTemplate")
+const passwordUpdatedTemplate = require("../mail/templates/passwordUpdatedTemplate");
 // Function to send password reset link to the user's email
 exports.resetPasswordTokenMail = async (req, res) => {
     try {
@@ -41,7 +41,7 @@ exports.resetPasswordTokenMail = async (req, res) => {
             {
                 resetPasswordToken,
                 resetPasswordTokenExpires,
-            } 
+            }
         );
 
         // Create the password reset URL
@@ -65,7 +65,7 @@ exports.resetPasswordTokenMail = async (req, res) => {
             success: true,
             message:
                 "Password reset link has been successfully sent to your email.",
-                resetPasswordToken,
+            resetPasswordToken,
         });
     } catch (error) {
         console.error("Error while sending reset password link:", error);
@@ -87,7 +87,9 @@ exports.resetPassword = async (req, res) => {
         if (newPassword !== confirmPassword) {
             return res.status(400).json({
                 success: false,
-                message: "Passwords do not match. Please try again.",
+                message: `Passwords do not match booyah.${
+                    (newPassword, confirmPassword)
+                } Please try again.`,
             });
         }
 

@@ -4,7 +4,7 @@ const HighlightText = ({ text }) => {
   return (
     <span className="bg-gradient-to-b from-[#1fa2ff] via-[#12d8fa] to-[#a6ffcb] bg-clip-text text-transparent">
       {""} {/* Adds a space */}
-      {text}
+      {text||"No text provided"}
     </span>
   );
 };
@@ -15,9 +15,6 @@ HighlightText.propTypes = {
   spaceBefore: PropTypes.bool,
 };
 
-// Define default props
-HighlightText.defaultProps = {
-  text: "No text provided",
-};
+
 
 export default HighlightText;

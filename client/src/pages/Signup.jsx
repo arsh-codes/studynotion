@@ -23,18 +23,19 @@ export default function Signup() {
     useState(false);
 
   const [signupData, setSignupData] = useState({
+    accountType: "",
     firstName: "",
     lastName: "",
     email: "",
+    countryCode: "",
     phoneNumber: "",
-    newPassword: "",
+    password: "",
     confirmPassword: "",
   });
-
+  
   // Handle form field changes
   function handleChange(event) {
-    const { name, value } = event.target;
-    setSignupData((prevData) => ({ ...prevData, [name]: value }));
+    setSignupData((prevData) => ({ ...prevData, [event.name]: event.value }));
   }
 
   // Handle user type toggle

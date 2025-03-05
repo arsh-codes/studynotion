@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL, // Correct way to access env variables in Vite
   timeout: 10000,
@@ -12,8 +13,7 @@ export const axiosInstance = axios.create({
  * @param {object} [data={}] - Request body data (for POST, PUT, etc.)
  * @param {object} [headers={}] - Custom headers for the request
  * @param {object} [params={}] - Query parameters for GET requests
- * @returns {Promise<object>} - Returns the API response
- * @throws {Error} - Throws an error if the request fails
+ * @returns {Promise<object>} - Returns the API response or error response
  */
 export const apiConnector = async (
   method,
@@ -32,18 +32,25 @@ export const apiConnector = async (
       params, // Query parameters (for GET requests)
     });
 
-    return response; // Return the successful response
+    return response; // Return successful response
   } catch (error) {
-    // Log error details for debugging
     console.error(
       "API Connector Error:",
       error?.response?.data || error.message,
     );
 
-    // Throw a meaningful error message
-    throw new Error(
-      error?.response?.data?.message ||
-        "Something went wrong with the API request",
-    );
+    // If error has response, return it instead of throwing
+    if (error.response) {
+      return error.response; // Allows handling 404 or other errors properly
+    }
+
+    // Return a generic error object for unexpected failures
+    return {
+      status: 500,
+      data: {
+        success: false,
+        message: "Something went wrong with the API request",
+      },
+    };
   }
 };

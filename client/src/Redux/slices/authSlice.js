@@ -10,6 +10,7 @@ const initialState = {
   token: localStorage.getItem("token")
     ? JSON.parse(localStorage.getItem("token"))
     : null,
+  isLoggedIn: localStorage.getItem("token") ? true : false,
 };
 
 // Creating an authentication slice using Redux Toolkit
@@ -29,11 +30,16 @@ const authSlice = createSlice({
     setToken(state, value) {
       state.token = value.payload;
     },
+    // Action to update isLoggedIn flag
+    setToken(state, value) {
+      state.isLoggedIn = value.payload;
+    },
   },
 });
 
 // Exporting actions for use in components and thunks
-export const { setSignupData, setLoading, setToken } = authSlice.actions;
+export const { setSignupData, setLoading, setToken, isLoggedIn } =
+  authSlice.actions;
 
 // Exporting the reducer to be included in the store
 export default authSlice.reducer;

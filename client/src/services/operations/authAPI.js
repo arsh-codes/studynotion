@@ -5,7 +5,6 @@ import { endpoints } from "../apis";
 import { resetCart } from "../../Redux/slices/cartSlice";
 import { setUser } from "../../Redux/slices/profileSlice";
 import { toast } from "react-hot-toast";
-import { useSelector } from "react-redux";
 
 const {
   SENDOTP_API,
@@ -45,6 +44,7 @@ export function signup(
   accountType,
   firstName,
   lastName,
+  countryCode,
   email,
   password,
   confirmPassword,
@@ -60,6 +60,7 @@ export function signup(
         firstName,
         lastName,
         email,
+        countryCode,
         password,
         confirmPassword,
         otp,
@@ -126,7 +127,6 @@ export function logout(navigate) {
     navigate("/");
   };
 }
-
 export function getPasswordResetToken(email, setEmailSent) {
   return async (dispatch) => {
     dispatch(setLoading(true));
@@ -137,6 +137,12 @@ export function getPasswordResetToken(email, setEmailSent) {
 
       console.log("RESET PASSWORD TOKEN RESPONSE:", response);
 
+      if (response.status === 404) {
+        toast.error("User not found. Please check the email entered.");
+        dispatch(setLoading(false));
+        return;
+      }
+
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
@@ -145,20 +151,23 @@ export function getPasswordResetToken(email, setEmailSent) {
       setEmailSent(true);
     } catch (error) {
       console.log("RESET PASSWORD TOKEN ERROR:", error);
-      toast.error("Failed to send reset email. Please try again.");
+
+      toast.error(
+        error.message || "Failed to send reset email. Please try again.",
+      );
     }
     dispatch(setLoading(false));
   };
 }
 
-export function resetPassword(password, confirmPassword, token) {
+export function resetPassword(password, confirmPassword, resetPasswordToken) {
   return async (dispatch) => {
     dispatch(setLoading(true));
     try {
       const response = await apiConnector("POST", RESETPASSWORD_API, {
         password,
         confirmPassword,
-        token,
+        resetPasswordToken,
       });
 
       console.log("RESET PASSWORD RESPONSE:", response);

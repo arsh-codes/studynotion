@@ -1,75 +1,73 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { BsArrowLeft } from "react-icons/bs";
+import { BsArrowLeft } from "react-icons/bs"; // ✅ FIXED: Added missing icon import
 import FormField from "../components/common/Form/FormField";
 import { Link } from "react-router-dom";
 import LongCTAButton from "../components/common/Form/LongCTAButton";
 import { getPasswordResetToken } from "../services/operations/authAPI";
 import { useState } from "react";
 
-export default function forgotPassword() {
-  const dispatch = useDispatch(); // Initialize dispatch
+export default function ForgotPassword() {
+  // ✅ FIXED: Renamed function to start with an uppercase letter (React component naming convention)
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  const { loading } = useSelector((state) => state.auth);
-  function handleResetPassword() {
-    console.log("BUTTON ");
+  const [emailSent, setEmailSent] = useState(false);
+  const loading = useSelector((state) => state.auth.loading); // ✅ FIXED: Corrected useSelector syntax to properly retrieve loading state
+
+  function handleResetPassword(e) {
+    e.preventDefault(); // ✅ FIXED: Prevents form from reloading the page when submitted
+    console.log("BUTTON CLICKED");
     console.log("📝 -> handleResetPassword -> email=", email);
-    if (email) dispatch(getPasswordResetToken(email));
+    if (email) dispatch(getPasswordResetToken(email, setEmailSent));
   }
 
   return (
-    // wrapper
-    <div className="bg-richblack-900 text-richblack-5 relative flex h-screen w-screen flex-1 items-center justify-center select-none">
-      <section className="flex w-1/3 flex-col items-start justify-center gap-9 rounded-lg p-8">
-        <div className="flex flex-col gap-3">
-          <h1 className="text-richblack-5 text-3xl leading-9">
-            Check Your Inbox
-          </h1>
-          <p className="text-richblack-100 leading-relaxed">
-            We've sent a password reset link to {email?email:"your email"}. Please check your
-            inbox and follow the instructions to reset your password.
-          </p>
-        </div>
-        <div className="flex w-full flex-col gap-3">
-          <LongCTAButton onClick={handleResetPassword}>
-            Resend Email
-          </LongCTAButton>
-          <Link to="/login">
-            <div className="flex items-center justify-start gap-2 rounded-lg p-3">
-              <BsArrowLeft />
-              <p>Back to login</p>
-            </div>
-          </Link>
-        </div>
-      </section>
-
-      <section className="flex w-1/3 flex-col items-start justify-center gap-9 rounded-lg p-8">
-        <div className="flex flex-col gap-3">
-          <h1 className="text-richblack-5 text-3xl leading-9">
-            Forgot Your Password?
-          </h1>
-          <p className="text-richblack-100 leading-relaxed">
-            No worries! Enter your email, and we'll send you instructions to
-            reset your password. If you can’t access your email, we can help
-            with account recovery.
-          </p>
-        </div>
-
-        {/* Email Field */}
-        <FormField
-          labelName="Email Address"
-          inputType="email"
-          id="email"
-          name="email"
-          placeholder="Enter email address"
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <LongCTAButton onClick={handleResetPassword}>
-          Reset Password
-        </LongCTAButton>
-      </section>
-    </div>
+    <section className="bg-richblack-900 text-richblack-5 flex h-screen w-screen items-center justify-center select-none">
+      {emailSent ? (
+        <section className="flex w-1/3 flex-col items-start justify-center gap-6 rounded-lg p-8">
+          <div className="flex flex-col gap-3">
+            <h1 className="text-3xl">Check Your Inbox</h1>
+            <p className="text-richblack-100">
+              We've sent a password reset link to <strong>{email}</strong>.
+              Please check your inbox and follow the instructions to reset your
+              password.
+            </p>
+          </div>
+          <div className="flex w-full flex-col gap-3">
+            <LongCTAButton onClick={handleResetPassword}>
+              Resend Email
+            </LongCTAButton>
+            <Link to="/login">
+              <div className="flex items-center gap-2 p-3">
+                <BsArrowLeft />
+                <p>Back to login</p>
+              </div>
+            </Link>
+          </div>
+        </section>
+      ) : (
+        <section className="flex w-1/3 flex-col items-start justify-center gap-6 rounded-lg p-8">
+          <div className="flex flex-col gap-3">
+            <h1 className="text-3xl">Forgot Your Password?</h1>
+            <p className="text-richblack-100">
+              No worries! Enter your email, and we'll send you instructions to
+              reset your password.
+            </p>
+          </div>
+          <form onSubmit={handleResetPassword} className="w-full">
+            <FormField
+              labelName="Email Address"
+              inputType="email"
+              id="email"
+              name="email"
+              placeholder="Enter email address"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <LongCTAButton type="submit">Reset Password</LongCTAButton>
+          </form>
+        </section>
+      )}
+    </section>
   );
 }

@@ -19,7 +19,7 @@ export default function Navbar() {
   const { token, user } = useSelector((state) => state.auth || {});
   const { totalItems } = useSelector((state) => state.cart || {});
   const [catalogLinks, setCatalogLinks] = useState([]);
-
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   // Function to fetch catalog links from the API
   const fetchCatalogLinks = async () => {
     try {
@@ -48,7 +48,7 @@ export default function Navbar() {
   ];
 
   return (
-    <section className="border-richblack-700 bg-richblack-900 border-b border-solid select-none z-10">
+    <section className="border-richblack-700 bg-richblack-900 z-10 border-b border-solid select-none">
       <div className="text-richblack-25 flex w-full items-center justify-between px-4 py-8 md:mx-auto md:w-11/12 md:justify-evenly md:gap-1 md:px-28 md:py-3">
         {/* Logo */}
         <Link to="/">
@@ -104,28 +104,29 @@ export default function Navbar() {
           </ul>
         </nav>
         {/* Signup and Login if not logged in */}
-        {token == null ? (
+        {!isLoggedIn && (
           <div className="hidden items-center gap-3 md:flex">
             <Link to="/signup">
-              <div className="border-richblack-700 bg-richblack-800 w-fit rounded-lg border px-3 py-2">
+              <div className="border-richblack-700 bg-richblack-800 w-fit rounded-lg border px-3 py-2 active:scale-[97%]">
                 <div className="text-richblack-100 text-center font-medium">
                   Sign up
                 </div>
               </div>
             </Link>
             <Link to="/login">
-              <div className="border-richblack-700 bg-richblack-800 w-fit rounded-lg border px-3 py-2">
+              <div className="border-richblack-700 bg-richblack-800 w-fit rounded-lg border px-3 py-2 active:scale-[97%]">
                 <div className="text-richblack-100 text-center font-medium">
                   Log In
                 </div>
               </div>
             </Link>
           </div>
-        ) : null}
+        )}
+
         {/* Cart Icon shown if logged in  */}
-        {token != null ? (
+        {isLoggedIn &&
           // Count circle and filled cart icon shown if items in cart
-          totalItems > 0 ? (
+          (totalItems > 0 ? (
             <div className="relative flex items-center justify-center">
               <div className="absolute top-0 left-4">
                 <p className="text-richblack-25 bg-richblack-900 flex h-1 w-1 items-center justify-center rounded-full p-2 text-xs">
@@ -141,14 +142,10 @@ export default function Navbar() {
             <Link to="/cart">
               <RiShoppingCart2Line className="h-9 w-6" />
             </Link>
-          )
-        ) : null}
+          ))}
+
         {/* Profile dropdown shown if logged in  */}
-        {token != null ? (
-          <div>
-            <ProfileDropDown />
-          </div>
-        ) : null}
+        {isLoggedIn && <ProfileDropDown />}
       </div>
     </section>
   );

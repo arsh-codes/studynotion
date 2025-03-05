@@ -77,9 +77,9 @@ const passwordResetLinkTemplate = (url) => {
     <body>
         <div class="container">
             <a href="https://studynotion-edtech-project.vercel.app">
-                <img class="logo" src=https://res.cloudinary.com/dqhsaqbys/image/upload/v1741016843/studyNotion/logos/fullLight.png" alt="StudyNotion Logo">
+                <img class="logo" src="https://res.cloudinary.com/dqhsaqbys/image/upload/v1741016843/studyNotion/logos/ijtgffa1jns9dhxbm7b1.png" alt="StudyNotion Logo">
             </a>
-            <div class="message">Password Reset Request</div>
+            <div class="message">Password Reset Request booyahhh</div>
             <div class="body">
                 <p>Dear User,</p>
                 <p>We received a request to reset your password. To reset your password, please click the link below:</p>
