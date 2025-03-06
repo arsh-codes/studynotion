@@ -9,7 +9,7 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-
+import otpGenerator from "otp-generator" ;
 // Load environment variables
 dotenv.config();
 
@@ -91,6 +91,8 @@ export const signup = async (req, res) => {
             contactNumber,
             otp,
         } = req.body;
+            console.log("📝 -> signup -> accountType=", accountType)
+
         // Check if All Details are there or not
         if (
             !firstName ||
@@ -100,6 +102,18 @@ export const signup = async (req, res) => {
             !confirmPassword ||
             !otp
         ) {
+            console.log("📝 -> signup -> otp=", otp)
+
+            console.log("📝 -> signup -> confirmPassword=", confirmPassword)
+
+            console.log("📝 -> signup -> password=", password)
+
+            console.log("📝 -> signup -> email=", email)
+
+            console.log("📝 -> signup -> lastName=", lastName)
+
+            console.log("📝 -> signup -> firstName=", firstName)
+
             return res.status(403).send({
                 success: false,
                 message: "All Fields are required",

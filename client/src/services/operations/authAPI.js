@@ -1,11 +1,11 @@
 import { setLoading, setToken } from "../../Redux/slices/authSlice";
-
 import { apiConnector } from "../apiConnector";
 import { endpoints } from "../apis";
 import { resetCart } from "../../Redux/slices/cartSlice";
 import { setUser } from "../../Redux/slices/profileSlice";
 import { toast } from "react-hot-toast";
 
+// Extract API endpoints from the endpoints object
 const {
   SENDOTP_API,
   SIGNUP_API,
@@ -14,15 +14,23 @@ const {
   RESETPASSWORD_API,
 } = endpoints;
 
+/**
+ * Sends an OTP to the given email for verification.
+ * @param {string} email - The user's email address.
+ * @param {function} navigate - React Router's navigate function to redirect pages.
+ */
 export function sendOtp(email, navigate) {
+  // ✅ Pass navigate as an argument
   return async (dispatch) => {
     const toastId = toast.loading("Sending OTP...");
     dispatch(setLoading(true));
+
     try {
       const response = await apiConnector("POST", SENDOTP_API, {
         email,
         checkUserPresent: true,
       });
+
       console.log("SEND OTP API RESPONSE:", response);
 
       if (!response.data.success) {
@@ -30,30 +38,38 @@ export function sendOtp(email, navigate) {
       }
 
       toast.success("OTP sent successfully! Check your email.");
-      navigate("/verify-email");
+      if (navigate) navigate("/verify-email");
     } catch (error) {
       console.log("SEND OTP API ERROR:", error);
       toast.error("Failed to send OTP. Please try again.");
     }
+
     dispatch(setLoading(false));
     toast.dismiss(toastId);
   };
 }
 
-export function signup(
-  accountType,
-  firstName,
-  lastName,
-  countryCode,
-  email,
-  password,
-  confirmPassword,
-  otp,
-  navigate,
-) {
+/**
+ * Handles user signup.
+ * @param {object} signupData - The signup data entered by the user.
+ * @param {function} navigate - React Router's navigate function for redirection.
+ */
+export function signup(signupData, navigate) {
   return async (dispatch) => {
+    const {
+      accountType,
+      firstName,
+      lastName,
+      countryCode,
+      email,
+      password,
+      confirmPassword,
+      otp,
+    } = signupData;
+
     const toastId = toast.loading("Creating your account...");
     dispatch(setLoading(true));
+
     try {
       const response = await apiConnector("POST", SIGNUP_API, {
         accountType,
@@ -71,22 +87,35 @@ export function signup(
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
       toast.success("Account created successfully! You can now log in.");
-      navigate("/login");
+      if (navigate) navigate("/login");
     } catch (error) {
       console.log("SIGNUP API ERROR:", error);
       toast.error("Signup failed. Please check your details and try again.");
-      navigate("/signup");
+
+      if (navigate) navigate("/signup");
     }
+
     dispatch(setLoading(false));
     toast.dismiss(toastId);
   };
 }
 
+/**
+ * Handles user login.
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @param {function} navigate - React Router's navigate function for redirection.
+ */
 export function login(email, password, navigate) {
+  // ✅ Pass navigate properly
   return async (dispatch) => {
     const toastId = toast.loading("Logging in...");
     dispatch(setLoading(true));
+
     try {
       const response = await apiConnector("POST", LOGIN_API, {
         email,
@@ -101,22 +130,32 @@ export function login(email, password, navigate) {
 
       toast.success(`Welcome back, ${response.data.user.firstName}!`);
       dispatch(setToken(response.data.token));
+
+      // Set user image, use a placeholder if not provided
       const userImage = response.data?.user?.image
         ? response.data.user.image
         : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`;
+
       dispatch(setUser({ ...response.data.user, image: userImage }));
       localStorage.setItem("token", JSON.stringify(response.data.token));
-      navigate("/dashboard/my-profile");
+
+      if (navigate) navigate("/dashboard/my-profile"); // ✅ Ensure navigate exists
     } catch (error) {
       console.log("LOGIN API ERROR:", error);
       toast.error("Login failed. Please check your credentials and try again.");
     }
+
     dispatch(setLoading(false));
     toast.dismiss(toastId);
   };
 }
 
+/**
+ * Logs the user out by clearing authentication state and redirecting to the homepage.
+ * @param {function} navigate - React Router's navigate function.
+ */
 export function logout(navigate) {
+  // ✅ Pass navigate from components
   return (dispatch) => {
     dispatch(setToken(null));
     dispatch(setUser(null));
@@ -124,12 +163,20 @@ export function logout(navigate) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     toast.success("You have been logged out.");
-    navigate("/");
+
+    if (navigate) navigate("/"); // ✅ Ensure navigate exists
   };
 }
+
+/**
+ * Sends a password reset token to the user's email.
+ * @param {string} email - The user's email address.
+ * @param {function} setEmailSent - A function to update the UI when the email is sent.
+ */
 export function getPasswordResetToken(email, setEmailSent) {
   return async (dispatch) => {
     dispatch(setLoading(true));
+
     try {
       const response = await apiConnector("POST", RESETPASSTOKEN_API, {
         email,
@@ -151,15 +198,21 @@ export function getPasswordResetToken(email, setEmailSent) {
       setEmailSent(true);
     } catch (error) {
       console.log("RESET PASSWORD TOKEN ERROR:", error);
-
       toast.error(
         error.message || "Failed to send reset email. Please try again.",
       );
     }
+
     dispatch(setLoading(false));
   };
 }
 
+/**
+ * Resets the user's password using a reset token.
+ * @param {string} newPassword - The new password.
+ * @param {string} confirmPassword - The confirmation of the new password.
+ * @param {string} resetPasswordToken - The token received via email.
+ */
 export function resetPassword(
   newPassword,
   confirmPassword,
@@ -167,6 +220,7 @@ export function resetPassword(
 ) {
   return async (dispatch) => {
     dispatch(setLoading(true));
+
     try {
       const response = await apiConnector("POST", RESETPASSWORD_API, {
         newPassword,
@@ -181,12 +235,11 @@ export function resetPassword(
       }
 
       toast.success("Your password has been reset successfully!");
-      
-      
     } catch (error) {
       console.log("RESET PASSWORD ERROR:", error);
       toast.error("Password reset failed. Please try again.");
     }
+
     dispatch(setLoading(false));
   };
 }

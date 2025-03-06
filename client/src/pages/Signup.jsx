@@ -1,7 +1,6 @@
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import FormField from "../components/common/Form/FormField";
 import PasswordField from "../components/common/Form/PasswordField";
 import PhoneNumberInput from "../components/core/signupPage/PhoneNumberInput";
@@ -18,17 +17,32 @@ export default function Signup() {
   const navigate = useNavigate();
   const signupData = useSelector((state) => state.auth.signupData);
 
+  // Handle input field changes
   function handleChange(event) {
     const { name, value } = event.target;
-    dispatch(setSignupData({ [name]: value })); // Update Redux state
+    dispatch(setSignupData({ ...signupData, [name]: value })); //
   }
 
   const handleSubmitButton = (event) => {
     event.preventDefault();
-    const { firstName, lastName, email, password, confirmPassword } =
-      signupData;
+    const {
+      accountType,
+      firstName,
+      lastName,
+      countryCode,
+      email,
+      password,
+      confirmPassword,
+    } = signupData;
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !accountType
+    ) {
       toast.error("All fields are required!");
       return;
     }
@@ -38,8 +52,7 @@ export default function Signup() {
       return;
     }
 
-    dispatch(sendOtp(email));
-    navigate("/verify-email");
+    dispatch(sendOtp(email,navigate));
   };
 
   return (
@@ -75,7 +88,11 @@ export default function Signup() {
                   className="hidden"
                 />
                 <div
-                  className={`rounded-full px-4 py-1.5 ${signupData.accountType === type ? "bg-richblack-900" : "bg-richblack-700"}`}
+                  className={`rounded-full px-4 py-1.5 ${
+                    signupData.accountType === type
+                      ? "bg-richblack-900"
+                      : "bg-richblack-700"
+                  }`}
                 >
                   {type.charAt(0).toUpperCase() + type.slice(1)}
                 </div>
@@ -94,7 +111,7 @@ export default function Signup() {
                   placeholder="Enter first name"
                   required
                   name="firstName"
-                  value={signupData.firstName}
+                  value={signupData.firstName || ""}
                   onChange={handleChange}
                 />
                 <FormField
@@ -104,7 +121,7 @@ export default function Signup() {
                   placeholder="Enter last name"
                   required
                   name="lastName"
-                  value={signupData.lastName}
+                  value={signupData.lastName || ""}
                   onChange={handleChange}
                 />
               </section>
@@ -116,24 +133,26 @@ export default function Signup() {
                 placeholder="Enter email address"
                 required
                 name="email"
-                value={signupData.email}
+                value={signupData.email || ""}
                 onChange={handleChange}
               />
+
+              {/* Fixed Phone Number Input Handling */}
               <PhoneNumberInput
                 id="phoneNumber"
-                placeholder="Enter phone number"
                 required
                 name="phoneNumber"
-                value={signupData.phoneNumber}
+                value={signupData.phoneNumber || ""}
                 onChange={handleChange}
               />
+
               <PasswordField
                 id="password"
                 labelName="Password"
                 placeholder="Enter password"
                 required
                 name="password"
-                value={signupData.password}
+                value={signupData.password || ""}
                 onChange={handleChange}
               />
               <PasswordField
@@ -142,7 +161,7 @@ export default function Signup() {
                 placeholder="Re-enter password"
                 required
                 name="confirmPassword"
-                value={signupData.confirmPassword}
+                value={signupData.confirmPassword || ""}
                 onChange={handleChange}
               />
             </div>
@@ -154,18 +173,19 @@ export default function Signup() {
               Sign Up
             </button>
 
-            <div className="my-4 flex w-5/6 items-center">
+            <div className="my-4 flex w-full items-center">
               <hr className="flex-grow border-gray-500" />
               <span className="mx-2 text-sm text-gray-500">OR</span>
               <hr className="flex-grow border-gray-500" />
             </div>
 
+            {/* Fixed Button Width */}
             <button
-              className="w-5/6 rounded-lg border border-slate-700 bg-transparent p-2"
+              className="w-full rounded-lg border border-slate-700 bg-transparent p-2"
               aria-label="Sign in with Google"
             >
               <div className="flex justify-center gap-2">
-                <img src={googleLogo} className="w-[5%]" alt="Google logo" />
+                <img src={googleLogo} className="w-5" alt="Google logo" />
                 <span>Sign in with Google</span>
               </div>
             </button>
