@@ -1,14 +1,16 @@
+import Course from "../models/Course.js";
 // This file includes the following controllers:
 //
-// 1. createSection 
+// 1. createSection
 // 2. updateSection
 // 3. deleteSection
+// Import required models
+import Section from "../models/Section.js";
 
-
-const Section = require("../models/Section");
-const Course = require("../models/Course");
-
-exports.createSection = async (req, res) => {
+/**
+ * Controller to create a new section and add it to a course.
+ */
+export const createSection = async (req, res) => {
     try {
         const { sectionName, courseId } = req.body;
 
@@ -32,11 +34,11 @@ exports.createSection = async (req, res) => {
         // Create a new section
         const newSection = await Section.create({ sectionName });
 
-        // Add the new section to the course
+        // Add the new section to the course's content list
         course.courseContent.push(newSection._id);
         const updatedCourse = await course.save();
 
-        // Populate the course with the new section and any sub-sections
+        // Populate the course with its updated content and subsections
         await updatedCourse
             .populate("courseContent")
             .populate({ path: "courseContent.subSection" })
@@ -61,7 +63,10 @@ exports.createSection = async (req, res) => {
     }
 };
 
-exports.updateSection = async (req, res) => {
+/**
+ * Controller to update an existing section.
+ */
+export const updateSection = async (req, res) => {
     try {
         const { sectionName, sectionId } = req.body;
 
@@ -73,13 +78,14 @@ exports.updateSection = async (req, res) => {
             });
         }
 
-        // Update the section by its ID
+        // Update the section name by its ID
         const updatedSection = await Section.findByIdAndUpdate(
             sectionId,
             { sectionName },
-            { new: true }
+            { new: true } // Return the updated document
         );
 
+        // If the section does not exist
         if (!updatedSection) {
             return res.status(404).json({
                 success: false,
@@ -106,7 +112,10 @@ exports.updateSection = async (req, res) => {
     }
 };
 
-exports.deleteSection = async (req, res) => {
+/**
+ * Controller to delete a section from a course.
+ */
+export const deleteSection = async (req, res) => {
     try {
         const { sectionId, courseId } = req.body;
 
@@ -136,14 +145,14 @@ exports.deleteSection = async (req, res) => {
             });
         }
 
-        // Remove the section from the course's courseContent array
+        // Remove the section from the course's content array
         course.courseContent.pull(sectionId);
         const updatedCourse = await course.save();
 
-        // Delete the section itself
+        // Delete the section document from the database
         await Section.findByIdAndDelete(sectionId);
 
-        // Populate the course with updated sections
+        // Populate the updated course with sections and subsections
         await updatedCourse
             .populate("courseContent")
             .populate({ path: "courseContent.subSection" })

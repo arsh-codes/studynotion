@@ -1,8 +1,9 @@
-// Import the mongoose library for MongoDB object modeling
-const mongoose = require("mongoose");
-
 // Load environment variables from the .env file
-require("dotenv").config();
+import dotenv from "dotenv";
+// Import the mongoose library for MongoDB object modeling
+import mongoose from "mongoose";
+
+dotenv.config();
 
 // Retrieve the MongoDB connection URL from environment variables
 const URL = process.env.MONGO_DATABASE_URL;
@@ -14,7 +15,7 @@ if (!URL) {
 }
 
 // Define an asynchronous function to connect to the MongoDB database
-async function databaseConnector() {
+const databaseConnector = async () => {
     try {
         // Attempt to connect to the MongoDB database with additional options for compatibility
         await mongoose.connect(URL, {
@@ -22,17 +23,15 @@ async function databaseConnector() {
         });
 
         // Log success message upon successful connection
-        console.log("Connected to the database successfully.");
+        console.log("✅ Connected to the database successfully.");
     } catch (error) {
         // Log detailed error information for debugging
-        console.error(
-            `Error occurred while connecting to the database: ${error.message}`
-        );
+        console.error(`❌ Error connecting to the database: ${error.message}`);
 
         // Exit the process with a failure code to prevent further execution
         process.exit(1);
     }
-}
+};
 
 // Export the databaseConnector function for use in other modules
-module.exports = databaseConnector;
+export default databaseConnector;

@@ -1,45 +1,47 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Initial state for authentication
 const initialState = {
-  // Stores user signup data temporarily
-  signupData: null,
-  // Loading state to manage async operations
+  signupData: {
+    accountType: "student",
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    password: "",
+    confirmPassword: "",
+  },
   loading: false,
-  // Retrieves token from localStorage if available, otherwise sets it to null
-  token: localStorage.getItem("token")
-    ? JSON.parse(localStorage.getItem("token"))
-    : null,
-  isLoggedIn: localStorage.getItem("token") ? true : false,
+  token: null, 
+  isLoggedIn: false,
 };
 
-// Creating an authentication slice using Redux Toolkit
 const authSlice = createSlice({
-  name: "auth", // Slice name
-  initialState: initialState, // Initial state object
+  name: "auth",
+  initialState,
   reducers: {
-    // Action to set signup data
-    setSignupData(state, value) {
-      state.signupData = value.payload;
+    setSignupData: (state, action) => {
+      state.signupData = { ...state.signupData, ...action.payload };
     },
-    // Action to set loading state
-    setLoading(state, value) {
-      state.loading = value.payload;
+    setLoading: (state, action) => {
+      state.loading = action.payload;
     },
-    // Action to update authentication token
-    setToken(state, value) {
-      state.token = value.payload;
+    setToken: (state, action) => {
+      state.token = action.payload;
+      if (action.payload) {
+        localStorage.setItem("token", action.payload);
+        state.isLoggedIn = true;
+      } else {
+        localStorage.removeItem("token");
+        state.isLoggedIn = false;
+      }
     },
-    // Action to update isLoggedIn flag
-    setToken(state, value) {
-      state.isLoggedIn = value.payload;
+    setIsLoggedIn: (state, action) => {
+      state.isLoggedIn = action.payload;
     },
   },
 });
 
-// Exporting actions for use in components and thunks
-export const { setSignupData, setLoading, setToken, isLoggedIn } =
+export const { setSignupData, setLoading, setToken, setIsLoggedIn } =
   authSlice.actions;
-
-// Exporting the reducer to be included in the store
 export default authSlice.reducer;

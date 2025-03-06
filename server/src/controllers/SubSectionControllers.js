@@ -1,16 +1,21 @@
+import Section from "../models/Section.js";
 // This file includes the following controllers:
 //
 // 1. createSubSection
-// 2. updateSubSection 
-// 3. deleteSubSection 
+// 2. updateSubSection
+// 3. deleteSubSection
+// Import required models and utilities
+import SubSection from "../models/SubSection.js";
+import cloudinaryUploader from "../utils/cloudinaryUploader.js";
+import dotenv from "dotenv";
 
-const SubSection = require("../models/SubSection");
-const Section = require("../models/Section");
-const { uploadImageToCloudinary } = require("../utils/cloudinaryUploader");
-require("dotenv").config();
+// Load environment variables
+dotenv.config();
 
-// Create SubSection
-exports.createSubSection = async (req, res) => {
+/**
+ * Controller to create a new SubSection and associate it with a Section.
+ */
+export const createSubSection = async (req, res) => {
     try {
         const { sectionId, title, timeDuration, description } = req.body;
         const { videoFile } = req.files;
@@ -30,7 +35,7 @@ exports.createSubSection = async (req, res) => {
             });
         }
 
-        // Check if section exists
+        // Check if the section exists
         const section = await Section.findById(sectionId);
         if (!section) {
             return res.status(404).json({
@@ -45,6 +50,7 @@ exports.createSubSection = async (req, res) => {
             process.env.CLOUDINARY_FOLDER_NAME
         );
 
+        // Validate Cloudinary upload
         if (!uploadResult || !uploadResult.secure_url) {
             return res.status(500).json({
                 success: false,
@@ -84,12 +90,14 @@ exports.createSubSection = async (req, res) => {
     }
 };
 
-// Update SubSection
-exports.updateSubSection = async (req, res) => {
+/**
+ * Controller to update an existing SubSection.
+ */
+export const updateSubSection = async (req, res) => {
     try {
         const { subSectionId, title, timeDuration, description } = req.body;
 
-        // Validate inputs
+        // Validate inputs - At least one field should be provided for update
         if (!subSectionId || (!title && !timeDuration && !description)) {
             return res.status(400).json({
                 success: false,
@@ -98,12 +106,12 @@ exports.updateSubSection = async (req, res) => {
             });
         }
 
-        // Update the SubSection
+        // Update the SubSection by its ID
         const updatedSubSection = await SubSection.findByIdAndUpdate(
             subSectionId,
             { title, timeDuration, description },
-            { new: true }
-        ).exec();
+            { new: true } // Return the updated document
+        );
 
         if (!updatedSubSection) {
             return res.status(404).json({
@@ -112,6 +120,7 @@ exports.updateSubSection = async (req, res) => {
             });
         }
 
+        // Respond with success
         return res.status(200).json({
             success: true,
             message: "SubSection updated successfully.",
@@ -127,8 +136,10 @@ exports.updateSubSection = async (req, res) => {
     }
 };
 
-// Delete SubSection
-exports.deleteSubSection = async (req, res) => {
+/**
+ * Controller to delete a SubSection from a Section.
+ */
+export const deleteSubSection = async (req, res) => {
     try {
         const { sectionId, subSectionId } = req.body;
 
@@ -140,7 +151,7 @@ exports.deleteSubSection = async (req, res) => {
             });
         }
 
-        // Check if section exists
+        // Check if the section exists
         const section = await Section.findById(sectionId);
         if (!section) {
             return res.status(404).json({
@@ -149,7 +160,7 @@ exports.deleteSubSection = async (req, res) => {
             });
         }
 
-        // Check if subSection exists
+        // Check if the subSection exists
         const subSection = await SubSection.findById(subSectionId);
         if (!subSection) {
             return res.status(404).json({
@@ -158,13 +169,14 @@ exports.deleteSubSection = async (req, res) => {
             });
         }
 
-        // Remove the SubSection from the Section
+        // Remove the SubSection reference from the Section
         section.subSections.pull(subSectionId);
         await section.save();
 
-        // Delete the SubSection
+        // Delete the SubSection document from the database
         await SubSection.findByIdAndDelete(subSectionId);
 
+        // Respond with success
         return res.status(200).json({
             success: true,
             message: "SubSection deleted successfully.",

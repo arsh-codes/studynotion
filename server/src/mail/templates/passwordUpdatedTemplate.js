@@ -81,4 +81,4 @@ const passwordUpdatedTemplate = (email, name) => {
     
     </html>`;
 };
-module.exports = passwordUpdatedTemplate;
+export default passwordUpdatedTemplate;

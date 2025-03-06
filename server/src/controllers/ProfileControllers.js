@@ -5,15 +5,17 @@
 // 4. updateDisplayPicture
 // 5. getEnrolledCourses
 
-const Profile = require("../models/Profile");
-const User = require("../models/User");
-const Course = require("../models/Course");
-const cloudinaryUploader = require("../utils/cloudinaryUploader");
+import Course from "../models/Course.js";
+// Import necessary modules and models using ESM syntax
+import Profile from "../models/Profile.js";
+import User from "../models/User.js";
+import cloudinaryUploader from "../utils/cloudinaryUploader.js";
 
-exports.updateProfile = async (req, res) => {
+// Update user profile details
+export const updateProfile = async (req, res) => {
     try {
         const { gender, dateOfBirth, about, contactNumber } = req.body;
-        const userId = req.user.id; // Assuming userId is added by authentication middleware
+        const userId = req.user.id; // Extract user ID from authentication middleware
 
         // Validate required inputs
         if (!gender || !contactNumber) {
@@ -33,7 +35,7 @@ exports.updateProfile = async (req, res) => {
             });
         }
 
-        // Find and update additional details
+        // Find and update additional profile details
         const profile = await Profile.findById(user.additionalDetails);
         if (!profile) {
             return res.status(404).json({
@@ -53,19 +55,20 @@ exports.updateProfile = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Your profile has been updated successfully.",
-            profile: updatedDetails, // Fixed: Changed key 'Profile' to lowercase 'profile' for consistency with convention
+            profile: updatedDetails,
         });
     } catch (error) {
         console.error(`Error in updateProfile: ${error.message}`);
         return res.status(500).json({
             success: false,
             message:
-                "We encountered an issue while updating your profile. Please try again later.",
+                "An error occurred while updating your profile. Please try again later.",
         });
     }
 };
 
-exports.deleteAccount = async (req, res) => {
+// Delete user account and associated details
+export const deleteAccount = async (req, res) => {
     try {
         const userId = req.user.id;
 
@@ -76,16 +79,17 @@ exports.deleteAccount = async (req, res) => {
                 message: "The requested user account was not found.",
             });
         }
-        // Remove user from courses
+
+        // Remove user from all enrolled courses
         if (Array.isArray(user.courses) && user.courses.length > 0) {
-            // Loop through each courseId in the user's courses array.
             for (const courseId of user.courses) {
-                // The $pull operator removes the specified value (userId) from the array field 'userId' in the course document.
-                await Course.findByIdAndUpdate(courseId, { $pull: { userId } });
+                await Course.findByIdAndUpdate(courseId, {
+                    $pull: { studentsEnrolled: userId },
+                });
             }
         }
 
-        // Delete associated additional details
+        // Delete associated profile details
         if (user.additionalDetails) {
             await Profile.findByIdAndDelete(user.additionalDetails);
         }
@@ -95,39 +99,37 @@ exports.deleteAccount = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message:
-                "Your account has been deleted successfully. We hope to see you again!",
+            message: "Your account has been deleted successfully.",
         });
     } catch (error) {
         console.error(`Error in deleteAccount: ${error.message}`);
         return res.status(500).json({
             success: false,
             message:
-                "We encountered an error while trying to delete your account. Please try again later.",
+                "An error occurred while deleting your account. Please try again later.",
         });
     }
 };
 
-exports.getUserDetails = async (req, res) => {
+// Fetch user details, including enrolled courses and progress
+export const getUserDetails = async (req, res) => {
     try {
         const userId = req.user.id;
 
-        // Attempt to retrieve the user and populate necessary fields
+        // Retrieve user details and populate references
         const user = await User.findById(userId)
             .populate("additionalDetails")
-            .populate("courses") // Populate enrolled courses
+            .populate("courses")
             .populate("courseProgress");
 
-        // Check if the user exists
         if (!user) {
             return res.status(404).json({
                 success: false,
-                message:
-                    "The requested user does not exist. Please verify the user ID.",
+                message: "User not found.",
             });
         }
-        //Explicitly omitting the password for security purposes
-        user.password = undefined;
+
+        user.password = undefined; // Omit password for security
 
         return res.status(200).json({
             success: true,
@@ -142,12 +144,13 @@ exports.getUserDetails = async (req, res) => {
         });
     }
 };
-exports.updateDisplayPicture = async (req, res) => {
+
+// Update user display picture
+export const updateDisplayPicture = async (req, res) => {
     try {
         const { displayPicture } = req.files;
         const userId = req.user.id;
 
-        // Ensure display picture is provided
         if (!displayPicture) {
             return res.status(400).json({
                 success: false,
@@ -155,7 +158,6 @@ exports.updateDisplayPicture = async (req, res) => {
             });
         }
 
-        // Fetch the user by ID
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({
@@ -164,15 +166,14 @@ exports.updateDisplayPicture = async (req, res) => {
             });
         }
 
-        // Use the temporary file path for uploading to Cloudinary
+        // Upload image to Cloudinary
         const imageUploadResponse = await cloudinaryUploader(
-            displayPicture.tempFilePath, // File is in tempFilePath
-            process.env.CLOUDINARY_FOLDER_NAME, // Folder name in Cloudinary
-            1000, // Height
-            80 // Quality
+            displayPicture.tempFilePath,
+            process.env.CLOUDINARY_FOLDER_NAME,
+            1000,
+            80
         );
 
-        // Update the user's image URL in the database
         user.image = imageUploadResponse.secure_url;
         await user.save();
 
@@ -190,7 +191,8 @@ exports.updateDisplayPicture = async (req, res) => {
     }
 };
 
-exports.getEnrolledCourses = async (req, res) => {
+// Get all courses a user is enrolled in
+export const getEnrolledCourses = async (req, res) => {
     try {
         const userId = req.user.id;
 

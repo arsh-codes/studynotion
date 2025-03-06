@@ -1,7 +1,7 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useState } from "react";
 
-export default function PhoneNumberInput() {
+export default function PhoneNumberInput(onChange, id, ...rest) {
   const countries = [
     "India (+91)",
     "France (+33)",
@@ -23,7 +23,7 @@ export default function PhoneNumberInput() {
       <div className="flex flex-row items-center gap-2">
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="bg-richblack-700 overflow-hidden rounded-lg p-3 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.18)] flex flex-row gap-1 items-center justify-center"
+          className="bg-richblack-700 flex flex-row items-center justify-center gap-1 overflow-hidden rounded-lg p-3 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.18)]"
         >
           {countryCode[country]}
           <RiArrowDropDownLine className="h-6 w-6 transition-all duration-200 group-hover:rotate-180" />
@@ -46,11 +46,14 @@ export default function PhoneNumberInput() {
         ) : null}
 
         <input
-          name="phoneNumberSignup"
-          id="phoneNumberSignup"
+          type="tel"
+          name={id}
+          id={id}
           className="bg-richblack-700 overflow-hidden rounded-lg p-3 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.18)]"
           placeholder="Enter phone number"
           required
+          value={signupData.email}
+          onChange={handleChange}
         />
       </div>
     </div>

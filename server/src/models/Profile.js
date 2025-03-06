@@ -1,23 +1,31 @@
-const mongoose = require("mongoose"); // Fixed incorrect "required" import
+import mongoose from "mongoose";
 
-// Define the schema for additional details
+// Define the schema for user profile details
 const profileSchema = new mongoose.Schema({
+    // Gender field with predefined options
     gender: {
         type: String,
         trim: true,
-        enum: ["male", "female", "other"], // Restricts values to predefined options
+        enum: ["male", "female", "other"], // Restricts values to these options
     },
+
+    // Date of birth as a string (can be stored in various formats)
     dateOfBirth: {
         type: String,
     },
+
+    // Short bio or description about the user
     about: {
         type: String,
         trim: true,
     },
+
+    // Contact number stored as a string to allow different formats
     contactNumber: {
-        type: String, // String for better formatting (e.g., international numbers)
+        type: String,
     },
 });
 
-// Export the schema as a Mongoose model
-module.exports = mongoose.model("Profile", profileSchema); // Corrected model name to a string
+// Create and export the Profile model
+const Profile = mongoose.model("Profile", profileSchema);
+export default Profile;

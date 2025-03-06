@@ -14,6 +14,7 @@ export default function ResetPassword() {
   const { token } = useParams(); // Extract token from URL
 
   const [newPassword, setNewPassword] = useState(""); // State for new password
+
   const [confirmPassword, setConfirmPassword] = useState(""); // State for confirm password
 
   // Function to handle password reset
@@ -34,8 +35,6 @@ export default function ResetPassword() {
 
     // Dispatch password reset action
     dispatch(resetPassword(newPassword, confirmPassword, token));
-
-    toast.success("Password reset request sent! ✅");
   }
 
   return (

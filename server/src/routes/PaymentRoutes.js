@@ -1,27 +1,24 @@
-// Import the required modules
-const express = require("express");
-const router = express.Router();
-
-// Import Payment Controllers
-const {
+import { auth, isStudent } from "../middlewares/authorizationMiddleware.js";
+import {
     capturePayment,
     verifySignature,
-} = require("../controllers/PaymentControllers");
+} from "../controllers/PaymentControllers.js";
 
-// Import Middlewares
-const {
-    auth,
-    isStudent,
-} = require("../middlewares/authorizationMiddleware");
+// Import required modules
+import express from "express";
 
-// ********************************************************************************************************
-//                                      Payment routes
-// ********************************************************************************************************
+// Create an Express router
+const router = express.Router();
 
-// Capture payment (accessible only to students)
-router.post("/capturePayment", auth, isStudent, capturePayment); 
+// ********************************************************************
+//                           Payment Routes
+// ********************************************************************
 
-// Verify payment signature (no authentication required for this action)
-router.post("/verifySignature", verifySignature); 
- 
-module.exports = router;
+// 1. Capture payment (Only students can make payments)
+router.post("/capturePayment", auth, isStudent, capturePayment);
+
+// 2. Verify payment signature (No authentication required)
+router.post("/verifySignature", verifySignature);
+
+// Export the router
+export default router;

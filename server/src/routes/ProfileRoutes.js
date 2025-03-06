@@ -1,37 +1,36 @@
-// Import the required modules
-const express = require("express");
-const router = express.Router();
-
-// Import Middleware
-const { auth } = require("../middlewares/authorizationMiddleware");
-
-// Import Profile Controllers
-const {
+import {
     deleteAccount,
-    updateProfile,
+    getEnrolledCourses,
     getUserDetails,
     updateDisplayPicture,
-    getEnrolledCourses,
-} = require("../controllers/ProfileControllers");
+    updateProfile,
+} from "../controllers/ProfileControllers.js";
 
-// ********************************************************************************************************
-//                                      Profile Routes
-// ********************************************************************************************************
+import { auth } from "../middlewares/authorizationMiddleware.js";
+// Import required modules
+import express from "express";
 
-// Delete user account
+// Create an Express router
+const router = express.Router();
+
+// ********************************************************************
+//                           Profile Routes
+// ********************************************************************
+
+// 1. Delete user account
 router.delete("/deleteAccount", auth, deleteAccount);
 
-// Update user profile details
+// 2. Update user profile details
 router.put("/updateProfile", auth, updateProfile);
 
-// Fetch all user details
+// 3. Fetch user details
 router.get("/getUserDetails", auth, getUserDetails);
 
-// Get the list of enrolled courses
+// 4. Get enrolled courses
 router.get("/getEnrolledCourses", auth, getEnrolledCourses);
 
-// Update the user's display picture
+// 5. Update user's display picture
 router.put("/updateDisplayPicture", auth, updateDisplayPicture);
 
-// Export the router to be used in the main application
-module.exports = router;
+// Export the router
+export default router;

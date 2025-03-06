@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 // Define the schema for the Course model
 const CourseSchema = new mongoose.Schema(
@@ -52,7 +52,7 @@ const CourseSchema = new mongoose.Schema(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Tag",
             },
-        ], // Updated to store multiple tags as ObjectIds referencing the Tag model
+        ], // Stores multiple tags as ObjectIds referencing the Tag model
         studentsEnrolled: [
             { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         ],
@@ -71,5 +71,6 @@ const CourseSchema = new mongoose.Schema(
     }
 );
 
-// Export the Course model based on the schema
-module.exports = mongoose.model("Course", CourseSchema);
+// Export the Course model using ESM
+const Course = mongoose.model("Course", CourseSchema);
+export default Course;

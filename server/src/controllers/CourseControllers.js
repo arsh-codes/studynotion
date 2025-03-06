@@ -4,13 +4,13 @@
 // 2. getAllCourses
 // 3. getCourseDetails
 
-const Course = require("../models/Course");
-const Category = require("../models/Category");
-const Tag = require("../models/Tag");
-const User = require("../models/User");
-const cloudinaryUploader = require("../utils/cloudinaryUploader");
+import Category from "../models/Category.js";
+import Course from "../models/Course.js";
+import Tag from "../models/Tag.js";
+import User from "../models/User.js";
+import cloudinaryUploader from "../utils/cloudinaryUploader.js";
 
-exports.createCourse = async (req, res) => {
+export const createCourse = async (req, res) => {
     try {
         const userId = req.user.id;
         const {
@@ -128,7 +128,7 @@ exports.createCourse = async (req, res) => {
 };
 
 // Controller function to retrieve all Courses
-exports.getAllCourses = async (req, res) => {
+export const getAllCourses = async (req, res) => {
     try {
         // Fetch all Courses
         const allCourses = await Course.find({})
@@ -154,7 +154,7 @@ exports.getAllCourses = async (req, res) => {
 };
 
 // Controller function to retrieve details of a single course
-exports.getCourseDetails = async (req, res) => {
+export const getCourseDetails = async (req, res) => {
     try {
         const { courseId } = req.body;
 

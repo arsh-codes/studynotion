@@ -1,8 +1,8 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import User from "../models/User.js";
+import jwt from "jsonwebtoken";
 
 // Middleware for token authorization
-exports.auth = async (req, res, next) => {
+export const auth = async (req, res, next) => {
     try {
         // Retrieve the token from request body, cookies, or Authorization header
         const token =
@@ -20,16 +20,14 @@ exports.auth = async (req, res, next) => {
 
         // Verify and decode the token
         try {
-            // jwt.verify() checks validity of token using key and returns the payload of the JWT.
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-            //Decoded data is kept in req.user to allow access to user information directly from the request.
+            // Store decoded user data in req.user for access in other middleware
             req.user = decodedToken;
 
             // Passing control to the next middleware or route handler.
             next();
         } catch (error) {
-            // Handle invalid or expired token error
             return res.status(401).json({
                 success: false,
                 message: "Access denied. Invalid or expired token.",
@@ -46,7 +44,7 @@ exports.auth = async (req, res, next) => {
 };
 
 // Middleware to restrict access to students
-exports.isStudent = (req, res, next) => {
+export const isStudent = (req, res, next) => {
     if (req.user.accountType !== "student") {
         return res.status(403).json({
             success: false,
@@ -57,7 +55,7 @@ exports.isStudent = (req, res, next) => {
 };
 
 // Middleware to restrict access to admins
-exports.isAdmin = (req, res, next) => {
+export const isAdmin = (req, res, next) => {
     if (req.user.accountType !== "admin") {
         return res.status(403).json({
             success: false,
@@ -68,7 +66,7 @@ exports.isAdmin = (req, res, next) => {
 };
 
 // Middleware to restrict access to instructors
-exports.isInstructor = (req, res, next) => {
+export const isInstructor = (req, res, next) => {
     if (req.user.accountType !== "instructor") {
         return res.status(403).json({
             success: false,

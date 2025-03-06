@@ -1,21 +1,20 @@
 // This file includes the following controllers:
-// 1. sendOtp  
-// 2. signup  
+// 1. sendOtp
+// 2. signup
 // 3. login
 
+import Otp from "../models/Otp.js";
+import Profile from "../models/Profile.js";
+import User from "../models/User.js";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
-//External Dependencies
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const otpGenerator = require("otp-generator");
-require("dotenv").config(); // Load environment variables
-//Internal Modules
-const User = require("../models/User");
-const Otp = require("../models/Otp");
-const Profile = require("../models/Profile");
+// Load environment variables
+dotenv.config();
 
 // Send OTP For Email Verification
-exports.sendOtp = async (req, res) => {
+export const sendOtp = async (req, res) => {
     try {
         const { email } = req.body;
 
@@ -79,7 +78,7 @@ exports.sendOtp = async (req, res) => {
 };
 
 // Signup Controller for Registering Users
-exports.signup = async (req, res) => {
+export const signup = async (req, res) => {
     try {
         // Destructure fields from the request body
         const {
@@ -187,7 +186,7 @@ exports.signup = async (req, res) => {
 };
 
 // Login controller for authenticating users
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
     try {
         // Get email and password from request body
         const { email, password } = req.body;

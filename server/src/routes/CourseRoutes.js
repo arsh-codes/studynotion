@@ -1,95 +1,86 @@
-// Import the required modules
-const express = require("express");
-const router = express.Router();
-
-// Import Controllers
-
-// Course Controllers Import
-const {
+// Import middleware for authorization
+import {
+    auth,
+    isAdmin,
+    isInstructor,
+    isStudent,
+} from "../middlewares/authorizationMiddleware.js";
+// Import controllers
+import {
+    createCategory,
+    getCategoryPageDetails,
+    showAllCategories,
+} from "../controllers/CategoryControllers.js";
+import {
     createCourse,
     getAllCourses,
     getCourseDetails,
-} = require("../controllers/CourseControllers");
-
-// Categories Controllers Import
-const {
-    showAllCategories,
-    createCategory,
-    getCategoryPageDetails,
-} = require("../controllers/CategoryControllers");
-
-// Tags Controllers Import
-const { createTag, showAllTags } = require("../controllers/TagControllers");
-
-// Sections Controllers Import
-const {
-    createSection,
-    updateSection,
-    deleteSection,
-} = require("../controllers/SectionControllers");
-
-// Sub-Sections Controllers Import
-const {
-    createSubSection,
-    updateSubSection,
-    deleteSubSection,
-} = require("../controllers/SubSectionControllers");
-
-// Rating Controllers Import
-const {
+} from "../controllers/CourseControllers.js";
+import {
     createRatingAndReview,
-    getAverageRating,
     getAllRatingsAndReviews,
-} = require("../controllers/RatingAndReviewControllers");
+    getAverageRating,
+} from "../controllers/RatingAndReviewControllers.js";
+import {
+    createSection,
+    deleteSection,
+    updateSection,
+} from "../controllers/SectionControllers.js";
+import {
+    createSubSection,
+    deleteSubSection,
+    updateSubSection,
+} from "../controllers/SubSectionControllers.js";
+import { createTag, showAllTags } from "../controllers/TagControllers.js";
 
-// Import Middlewares
-const {
-    auth,
-    isInstructor,
-    isStudent,
-    isAdmin,
-} = require("../middlewares/authorizationMiddleware");
+// Import necessary modules
+import express from "express";
 
-// ********************************************************************************************************
-//                                      Course routes
-// ********************************************************************************************************
+// Create an Express router
+const router = express.Router();
 
-// Courses can only be created by instructors
-router.post("/createCourse", auth, isInstructor, createCourse); // Endpoint to create a course
+// ********************************************************************
+//                          Course Routes
+// ********************************************************************
 
-// Section management for instructors
-router.post("/addSection", auth, isInstructor, createSection); // Add a section
-router.post("/updateSection", auth, isInstructor, updateSection); // Update a section
-router.post("/deleteSection", auth, isInstructor, deleteSection); // Delete a section
+// Course management (only instructors can create courses)
+router.post("/createCourse", auth, isInstructor, createCourse);
 
-// Sub-section management for instructors
-router.post("/addSubSection", auth, isInstructor, createSubSection); // Add a sub-section
-router.post("/updateSubSection", auth, isInstructor, updateSubSection); // Edit a sub-section
-router.post("/deleteSubSection", auth, isInstructor, deleteSubSection); // Delete a sub-section
+// Section management (only instructors)
+router.post("/addSection", auth, isInstructor, createSection);
+router.put("/updateSection", auth, isInstructor, updateSection);
+router.delete("/deleteSection", auth, isInstructor, deleteSection);
 
-// Course details and listing
-router.get("/getAllCourses", getAllCourses); // Retrieve all registered courses
-router.post("/getCourseDetails", getCourseDetails); // Get details for a specific course
+// Sub-section management (only instructors)
+router.post("/addSubSection", auth, isInstructor, createSubSection);
+router.put("/updateSubSection", auth, isInstructor, updateSubSection);
+router.delete("/deleteSubSection", auth, isInstructor, deleteSubSection);
 
-// ********************************************************************************************************
-//                                      Category and tag routes
-// ********************************************************************************************************
+// Course details and listings
+router.get("/getAllCourses", getAllCourses);
+router.post("/getCourseDetails", getCourseDetails);
 
-// Category management by admin
-router.post("/createCategory", auth, isAdmin, createCategory); // Create a category
-router.get("/showAllCategories", showAllCategories); // List all categories
-router.post("/createTag", auth, isAdmin, createTag); // Create a tag
-router.get("/showAllTags", showAllTags); // List all Tags
-router.get("/getCategoryPageDetails", getCategoryPageDetails); // Get details for a category page
+// ********************************************************************
+//                        Category & Tag Routes
+// ********************************************************************
 
-// ********************************************************************************************************
-//                                      Rating and Review routes
-// ********************************************************************************************************
+// Category management (only admins)
+router.post("/createCategory", auth, isAdmin, createCategory);
+router.get("/showAllCategories", showAllCategories);
+router.get("/getCategoryPageDetails", getCategoryPageDetails);
 
-// Students can create ratings and reviews
-router.post("/createRating", auth, isStudent, createRatingAndReview); // Add a rating
-router.get("/getAverageRating", getAverageRating); // Fetch the average rating
-router.get("/getReviews", getAllRatingsAndReviews); // Get all reviews
+// Tag management (only admins)
+router.post("/createTag", auth, isAdmin, createTag);
+router.get("/showAllTags", showAllTags);
+
+// ********************************************************************
+//                     Rating & Review Routes
+// ********************************************************************
+
+// Only students can add ratings & reviews
+router.post("/createRating", auth, isStudent, createRatingAndReview);
+router.get("/getAverageRating", getAverageRating);
+router.get("/getReviews", getAllRatingsAndReviews);
 
 // Export the router
-module.exports = router;
+export default router;

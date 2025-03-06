@@ -5,6 +5,8 @@ export const axiosInstance = axios.create({
   timeout: 10000,
 });
 
+
+
 /**
  * API Connector function to make HTTP requests using Axios
  *

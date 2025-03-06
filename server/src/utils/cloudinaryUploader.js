@@ -1,33 +1,42 @@
-const cloudinary = require("cloudinary").v2;
-const fs = require("fs"); // File System module for handling files
+import cloudinary from "cloudinary";
+import fs from "fs/promises"; // Use promises directly for cleaner async file handling
+
+// Configure Cloudinary to use v2 API
+const cloudinaryV2 = cloudinary.v2;
 
 // Function to upload a file to Cloudinary with customizable options
-const cloudinaryUploader = async (file, folderName, height, quality) => {
+const cloudinaryUploader = async (filePath, folderName, height, quality) => {
     try {
-        // Initialize the options object with the provided folder
+        // Validate file existence before upload
+        await fs.access(filePath);
+
+        // Set Cloudinary upload options
         const options = {
             folder: folderName,
-            resource_type: "auto", // Automatically determine resource type (image, video, etc.)
+            resource_type: "auto", // Automatically detects the file type
+            ...(height && !isNaN(height) && { height }),
+            ...(quality && !isNaN(quality) && { quality }),
         };
 
-        // Add height and quality to options if provided, ensuring that they are numbers
-        if (height && !isNaN(height)) options.height = height;
-        if (quality && !isNaN(quality)) options.quality = quality;
-
         // Upload the file to Cloudinary
-        const uploadResponse = await cloudinary.uploader.upload(file, options);
+        const uploadResponse = await cloudinaryV2.uploader.upload(filePath, options);
 
-        // Delete the temp file after upload
-        await fs.promises.unlink(file);
+        // Delete the temporary file after upload
+        await fs.unlink(filePath);
 
-        // Return the upload result (contains URL, public_id, etc.)
-        return uploadResponse;
+        return uploadResponse; // Return Cloudinary upload response
     } catch (error) {
-        console.error("Error uploading file to Cloudinary:", error.message);
-        throw new Error(
-            "File upload failed: Please check the file and try again."
-        );
+        console.error("Cloudinary Upload Error:", error.message);
+
+        // Ensure temp file is deleted even if upload fails
+        try {
+            await fs.unlink(filePath);
+        } catch (unlinkError) {
+            console.warn("Failed to delete temp file:", unlinkError.message);
+        }
+
+        throw new Error("File upload failed: Please check the file and try again.");
     }
 };
 
-module.exports = cloudinaryUploader;
+export default cloudinaryUploader;

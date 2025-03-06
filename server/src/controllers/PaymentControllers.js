@@ -1,18 +1,19 @@
 // This file includes the following controllers:
-//
-// 1. capturePayment 
-// 2. verifySignature 
+// 1. capturePayment
+// 2. verifySignature
 
-const { instance } = require("../utils/razorpay");
-const mailsender = require("../utils/mailSender");
-const Course = require("../models/Course");
-const User = require("../models/User");
-const courseEnrollmentTemplate = require("../mail/templates/courseEnrollmentTemplate");
-const crypto = require("crypto"); // Ensure to import the crypto module
-require("dotenv").config();
+import Course from "../models/Course.js";
+import User from "../models/User.js";
+import courseEnrollmentTemplate from "../mail/templates/courseEnrollmentTemplate.js";
+import crypto from "crypto"; // Import crypto module
+import dotenv from "dotenv";
+import { instance } from "../utils/razorpay.js";
+import mailsender from "../utils/mailSender.js";
+
+dotenv.config(); // Load environment variables
 
 // Capture Payment and Create Razorpay Payment Link
-exports.capturePayment = async (req, res) => {
+export const capturePayment = async (req, res) => {
     try {
         const { courseId } = req.body;
         const userId = req.user.id;
@@ -91,7 +92,7 @@ exports.capturePayment = async (req, res) => {
 };
 
 // Verify Razorpay Payment and Enroll User in Course
-exports.verifySignature = async (req, res) => {
+export const verifySignature = async (req, res) => {
     try {
         const razorpaySignature = req.headers["x-razorpay-signature"];
 

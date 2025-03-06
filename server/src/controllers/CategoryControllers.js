@@ -4,9 +4,11 @@
 // 2. showAllCategories
 // 3. getCategoryPageDetails
 
-const Category = require("../models/Category");
+// Import necessary modules
+import Category from "../models/Category.js";
 
-exports.createCategory = async (req, res) => {
+// Controller to create a new category
+export const createCategory = async (req, res) => {
     try {
         const { name, description } = req.body;
 
@@ -17,14 +19,16 @@ exports.createCategory = async (req, res) => {
                 message: "Category name is required to create a new category.",
             });
         }
+
         // Check if the category already exists
         const existingCategory = await Category.findOne({ categoryName: name });
         if (existingCategory) {
             return res.status(409).json({
                 success: true,
-                message: "This category already exists in database.",
+                message: "This category already exists in the database.",
             });
         }
+
         // Create category in the database with the provided details
         const newCategory = {
             categoryName: name,
@@ -49,7 +53,8 @@ exports.createCategory = async (req, res) => {
     }
 };
 
-exports.showAllCategories = async (req, res) => {
+// Controller to fetch all categories
+export const showAllCategories = async (req, res) => {
     try {
         // Fetch all categories, selecting only their name and description fields
         const allCategories = await Category.find(
@@ -76,7 +81,7 @@ exports.showAllCategories = async (req, res) => {
  * This function retrieves details about a specific category, including its courses,
  * courses from other categories, and top-selling courses across all categories.
  */
-exports.getCategoryPageDetails = async (req, res) => {
+export const getCategoryPageDetails = async (req, res) => {
     try {
         const { categoryId } = req.body;
 

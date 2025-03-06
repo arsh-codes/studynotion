@@ -94,4 +94,4 @@ const courseEnrollmentTemplate = (userName, courseName) => {
     </html>`;
 };
 
-module.exports = courseEnrollmentTemplate;
+export default courseEnrollmentTemplate;

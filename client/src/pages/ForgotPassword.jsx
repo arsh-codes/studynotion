@@ -8,16 +8,13 @@ import { getPasswordResetToken } from "../services/operations/authAPI";
 import { useState } from "react";
 
 export default function ForgotPassword() {
-  // ✅ FIXED: Renamed function to start with an uppercase letter (React component naming convention)
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [emailSent, setEmailSent] = useState(false);
-  const loading = useSelector((state) => state.auth.loading); // ✅ FIXED: Corrected useSelector syntax to properly retrieve loading state
+  const loading = useSelector((state) => state.auth.loading);
 
   function handleResetPassword(e) {
-    e.preventDefault(); // ✅ FIXED: Prevents form from reloading the page when submitted
-    console.log("BUTTON CLICKED");
-    console.log("📝 -> handleResetPassword -> email=", email);
+    e.preventDefault();
     if (email) dispatch(getPasswordResetToken(email, setEmailSent));
   }
 

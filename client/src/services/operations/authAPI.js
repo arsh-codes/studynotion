@@ -160,12 +160,16 @@ export function getPasswordResetToken(email, setEmailSent) {
   };
 }
 
-export function resetPassword(password, confirmPassword, resetPasswordToken) {
+export function resetPassword(
+  newPassword,
+  confirmPassword,
+  resetPasswordToken,
+) {
   return async (dispatch) => {
     dispatch(setLoading(true));
     try {
       const response = await apiConnector("POST", RESETPASSWORD_API, {
-        password,
+        newPassword,
         confirmPassword,
         resetPasswordToken,
       });
@@ -177,6 +181,8 @@ export function resetPassword(password, confirmPassword, resetPasswordToken) {
       }
 
       toast.success("Your password has been reset successfully!");
+      
+      
     } catch (error) {
       console.log("RESET PASSWORD ERROR:", error);
       toast.error("Password reset failed. Please try again.");
