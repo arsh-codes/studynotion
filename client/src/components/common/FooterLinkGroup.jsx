@@ -1,4 +1,4 @@
-import footerLinks from "../../../data/footerLinks";
+import footerLinks from "../../data/footerLinks";
 import { Link } from "react-router-dom";
 export default function FooterLinkGroup({ title }) {
   return (

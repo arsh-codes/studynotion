@@ -9,7 +9,7 @@ const ProfileDropDown = () => {
   const navigate = useNavigate(); // useNavigate should be called at the top
 
   const profileDropDownLinks = [
-    { title: "My Profile", path: "/user/profile" },
+    { title: "My Dashboard", path: "/dashboard/my-profile" },
     { title: "My Orders", path: "/user/orders" },
     { title: "Logout" },
   ];

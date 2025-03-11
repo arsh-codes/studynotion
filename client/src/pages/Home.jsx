@@ -8,7 +8,7 @@ import SkillsSection from "../components/core/HomePage/SkillsSection";
 import SwissKnifeSection from "../components/core/HomePage/SwissKnifeSection";
 import InstructorSection from "../components/core/HomePage/InstructorSection";
 import ReviewsSection from "../components/core/HomePage/ReviewsSection";
-import Footer from "../components/core/HomePage/Footer";
+import Footer from "../components/common/Footer";
 const Home = () => (
   // Wrapper
   <div className="relative flex h-full w-full flex-col">
@@ -25,7 +25,7 @@ const Home = () => (
           heading={
             <h3 className="text-richblack-5 text-4xl leading-[44px] font-semibold">
               Unlock your
-              <HighlightText text="coding potential " />
+              <HighlightText text="coding potential" gradient="orange" />
               with our online courses.
             </h3>
           }

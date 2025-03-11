@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // Initial state with a `user` property, initially set to null
 const initialState = {
   user: null,
+  loading: false,
 };
 
 // Creating a Redux slice for managing user profile data
@@ -13,6 +14,9 @@ const profileSlice = createSlice({
     // Action to update user details in the state
     setUser(state, value) {
       state.user = value.payload; // Updates the `user` with the provided value
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
     },
   },
 });

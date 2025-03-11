@@ -1,16 +1,18 @@
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import FormField from "../components/common/Form/FormField";
-import PasswordField from "../components/common/Form/PasswordField";
-import PhoneNumberInput from "../components/core/signupPage/PhoneNumberInput";
+import FormField from "../../components/common/Form/FormField";
+import PasswordField from "../../components/common/Form/PasswordField";
+import PhoneNumberInput from "../../components/core/SignupPage/PhoneNumberInput";
 import React from "react";
-import authPageStrikeText from "../assets/media/authPageStrikeText.svg";
-import googleLogo from "../assets/media/googleLogo.svg";
-import { sendOtp } from "../services/operations/authAPI";
-import { setSignupData } from "../Redux/slices/authSlice";
-import signupImage from "../assets/media/signupImage.jpg";
+import authPageStrikeText from "../../assets/media/authPageStrikeText.svg";
+import googleLogo from "../../assets/media/googleLogo.svg";
+import { sendOtp } from "../../services/operations/authAPI";
+import { setSignupData } from "../../Redux/slices/authSlice";
 import toast from "react-hot-toast";
+import signupStudent from "../../assets/media/signupStudent.jpg";
+import signupInstructor from "../../assets/media/signupInstructor.jpg";
+import LongCTAButton from "../../components/common/Form/LongCTAButton";
 
 export default function Signup() {
   const dispatch = useDispatch();
@@ -22,18 +24,18 @@ export default function Signup() {
     const { name, value } = event.target;
     dispatch(setSignupData({ ...signupData, [name]: value })); //
   }
+  const {
+    accountType,
+    firstName,
+    lastName,
+    countryCode,
+    email,
+    password,
+    confirmPassword,
+  } = signupData;
 
   const handleSubmitButton = (event) => {
     event.preventDefault();
-    const {
-      accountType,
-      firstName,
-      lastName,
-      countryCode,
-      email,
-      password,
-      confirmPassword,
-    } = signupData;
 
     if (
       !firstName ||
@@ -52,7 +54,7 @@ export default function Signup() {
       return;
     }
 
-    dispatch(sendOtp(email,navigate));
+    dispatch(sendOtp(email, navigate));
   };
 
   return (
@@ -166,12 +168,7 @@ export default function Signup() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="text-richblack-900 w-full rounded-lg bg-yellow-50 p-3 text-base font-medium shadow-md hover:bg-yellow-100"
-            >
-              Sign Up
-            </button>
+            <LongCTAButton type="submit">Sign Up</LongCTAButton>
 
             <div className="my-4 flex w-full items-center">
               <hr className="flex-grow border-gray-500" />
@@ -193,12 +190,20 @@ export default function Signup() {
         </section>
 
         {/* Signup Image */}
-        <section className="col-span-12 md:col-span-6">
-          <img
-            src={signupImage}
-            className="max-h-full place-self-center"
-            alt="Signup Illustration"
-          />
+        <section className="col-span-12 grid md:col-span-6">
+          {accountType == "student" ? (
+            <img
+              src={signupStudent}
+              className="max-h-full place-self-center justify-self-end"
+              alt="Login Illustration"
+            />
+          ) : (
+            <img
+              src={signupInstructor}
+              className="max-h-full place-self-center justify-self-end"
+              alt="Login Illustration"
+            />
+          )}
         </section>
       </section>
     </div>

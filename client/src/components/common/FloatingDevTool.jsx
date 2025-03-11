@@ -1,16 +1,18 @@
+import React, { useState } from "react";
+import { setAuthLoading, setIsLoggedIn } from "../../Redux/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 import { FaTools } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
-import { setIsLoggedIn, setLoading } from "../Redux/slices/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import React, { useState } from "react";
 
 const FloatingDevTool = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const { loading, isLoggedIn } = useSelector((state) => state.auth);
+  const { authLoading, isLoggedIn } = useSelector((state) => state.auth);
 
   function handleLoadingSwitch() {
-    dispatch(setLoading(!loading));
+    dispatch(setAuthLoading(!authLoading));
+    console.log("Auth loading toggled:", !authLoading);
   }
 
   function handleAuthToggle() {
@@ -60,7 +62,7 @@ const FloatingDevTool = () => {
             onClick={handleLoadingSwitch}
             className="bg-richblack-800 hover:bg-richblack-700 border-richblack-700 block w-full rounded border px-4 py-2 text-center font-medium transition-transform duration-300 active:scale-[97%]"
           >
-            {loading ? "Stop Loading" : "Start Loading"}
+            {authLoading ? "Stop Auth Loading" : "Start Auth Loading"}
           </button>
           <button
             onClick={handleAuthToggle}

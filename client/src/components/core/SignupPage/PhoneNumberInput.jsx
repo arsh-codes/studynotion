@@ -1,18 +1,10 @@
+import { countries, countryCodes } from "../../../data/countryCodes";
+
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 export default function PhoneNumberInput({ onChange, id, ...rest }) {
-  // Country options and their corresponding codes
-  const countries = [
-    "India (+91)",
-    "France (+33)",
-    "Germany (+49)",
-    "Spain (+34)",
-    "USA (+1)",
-  ];
-  const countryCode = ["+91", "+33", "+49", "+34", "+1"];
-
   // Fetch signup data from Redux store
   const signupData = useSelector((state) => state.auth.signupData);
 
@@ -35,7 +27,7 @@ export default function PhoneNumberInput({ onChange, id, ...rest }) {
           onClick={() => setMenuOpen(!menuOpen)}
           className="bg-richblack-700 flex flex-row items-center justify-center gap-1 rounded-lg p-3 shadow-[inset_0px_-1px_0px_0px_rgba(255,255,255,0.18)]"
         >
-          {countryCode[country]}
+          {countryCodes[country]}
           <RiArrowDropDownLine
             className={`h-6 w-6 transition-transform duration-200 ${menuOpen ? "rotate-180" : "rotate-0"}`}
           />

@@ -3,9 +3,9 @@ import { Link, useParams } from "react-router-dom"; // For extracting token & na
 import React, { useState } from "react";
 
 import { BsArrowLeft } from "react-icons/bs"; // Back arrow icon
-import LongCTAButton from "../components/common/Form/LongCTAButton"; // Button component
-import PasswordField from "../components/common/Form/PasswordField"; // Password input component
-import { resetPassword } from "../services/operations/authAPI"; // API function for password reset
+import LongCTAButton from "../../components/common/Form/LongCTAButton"; // Button component
+import PasswordField from "../../components/common/Form/PasswordField"; // Password input component
+import { resetPassword } from "../../services/operations/authAPI"; // API function for password reset
 import toast from "react-hot-toast"; // Toast notifications
 import { useDispatch } from "react-redux"; // Redux hooks
 

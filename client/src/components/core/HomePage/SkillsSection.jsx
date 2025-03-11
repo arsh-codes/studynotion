@@ -1,5 +1,5 @@
-import HighlightText from "./HighlightText";
 import CtaButton from "./CtaButton";
+import HighlightText from "./HighlightText";
 import Logo1 from "../../../assets/homePageSkillsSectionLogos/Logo1.svg";
 import Logo2 from "../../../assets/homePageSkillsSectionLogos/Logo2.svg";
 import Logo3 from "../../../assets/homePageSkillsSectionLogos/Logo3.svg";
@@ -46,9 +46,11 @@ const SkillsSection = () => {
             The modern StudyNotion dictates its own terms. Today, being a
             competitive specialist requires more than just professional skills.
           </p>
-          <CtaButton primaryButton={true} linkTo="/signup">
-            Learn More
-          </CtaButton>
+          <CtaButton
+            primaryButton={true}
+            linkTo="/signup"
+            text={"Learn More"}
+          />
         </div>
       </div>
 
@@ -88,7 +90,7 @@ const SkillsSection = () => {
             alt="Skills Section Image"
           />
 
-          <div className="bg-caribbeangreen-700 md:absolute flex lg:-translate-y-1/2 lg:translate-x-[15%] flex-col gap-12 p-10 md:flex-row">
+          <div className="bg-caribbeangreen-700 flex flex-col gap-12 p-10 md:absolute md:flex-row lg:translate-x-[15%] lg:-translate-y-1/2">
             <div className="flex flex-row items-center justify-center gap-6">
               <span className="text-4xl leading-[44px] font-bold text-white">
                 10
@@ -98,8 +100,8 @@ const SkillsSection = () => {
               </span>
             </div>
             {/* Line */}
-            <div className="border-caribbeangreen-300 h-[0px] md:w-11 origin-top-left border md:rotate-90"></div>
-            <div className="flex justify-center items-center gap-6">
+            <div className="border-caribbeangreen-300 h-[0px] origin-top-left border md:w-11 md:rotate-90"></div>
+            <div className="flex items-center justify-center gap-6">
               <span className="text-center text-4xl leading-[44px] font-bold text-white">
                 250
               </span>

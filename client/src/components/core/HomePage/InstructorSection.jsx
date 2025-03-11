@@ -1,7 +1,7 @@
 import CtaButton from "./CtaButton";
-import HighlightText from "./HighlightText";
 import { FaArrowRight } from "react-icons/fa";
-import instructorImage from "../../../assets/media/instructorImage.png";
+import HighlightText from "./HighlightText";
+import homepageInstructor from "../../../assets/media/homepageInstructor.jpg";
 
 const InstructorSection = () => {
   return (
@@ -28,7 +28,7 @@ const InstructorSection = () => {
       <div className="md:w-1/2">
         <img
           className="relative object-cover"
-          src={instructorImage}
+          src={homepageInstructor}
           alt="Instructor teaching students"
         />
       </div>

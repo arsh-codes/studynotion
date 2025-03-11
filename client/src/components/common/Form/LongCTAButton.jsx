@@ -7,7 +7,13 @@ import { useSelector } from "react-redux";
  * @param {string} linkTo - URL to navigate when clicked.
  * @param {React.ReactNode} children - Button content.
  */
-export default function LongCTAButton({ type, children, linkTo, ...rest }) {
+export default function LongCTAButton({
+  type,
+  text,
+  children,
+  linkTo,
+  ...rest
+}) {
   const { loading } = useSelector((state) => state.auth);
 
   return loading ? (
@@ -41,7 +47,7 @@ export default function LongCTAButton({ type, children, linkTo, ...rest }) {
       className="text-richblack-900 flex w-full cursor-pointer items-center justify-center rounded-lg bg-yellow-50 p-3 text-base font-medium shadow-md hover:bg-yellow-100 active:scale-[98%]"
       {...rest}
     >
-      {children}
+      {text ? text : children}
     </button>
   );
 }

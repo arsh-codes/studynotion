@@ -1,10 +1,11 @@
-import Logo from "../../../assets/logo/logoFullLight.png";
-import FooterLinkGroup from "./FooterLinkGroup";
 import { FaFacebook, FaGoogle, FaTwitter, FaYoutube } from "react-icons/fa";
+
+import FooterLinkGroup from "./FooterLinkGroup";
+import Logo from "../../assets/logo/logoFullLight.png";
 
 export default function MyFooter() {
   return (
-    <section className="bg-richblack-800 flex flex-col items-center justify-center">
+    <section className="bg-richblack-800 flex flex-col items-center justify-center w-full">
       {/* wrapper */}
       <div className="mx-auto flex w-11/12 flex-col gap-8 px-4 py-8 md:px-28 md:py-12">
         {/* top container */}

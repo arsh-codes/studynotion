@@ -21,7 +21,7 @@ export default function FormField({
   return (
     <section className="flex w-full flex-col gap-1.5">
       {/* Label for the input field */}
-      <label htmlFor={id} className="text-white">
+      <label htmlFor={id} className="text-richblack-5">
         {labelName}
         {requiredAsterisk && <sup className="text-sm text-pink-200">*</sup>}
       </label>

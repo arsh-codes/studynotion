@@ -1,7 +1,8 @@
 import CtaButton from "./CtaButton";
 import { FaArrowRight } from "react-icons/fa";
-import { TypeAnimation } from "react-type-animation";
 import PropTypes from "prop-types";
+import { TypeAnimation } from "react-type-animation";
+
 const CodeSection = ({
   position,
   smVisibility,
@@ -18,7 +19,7 @@ const CodeSection = ({
 
   return (
     <div
-      className={`flex flex-col md:${position} ${smVisibility} $ h-fit w-full gap-6 md:py-24 sm:px-6 md:flex md:px-12 lg:px-28`}
+      className={`flex flex-col md:${position} ${smVisibility} h-fit w-full gap-6 sm:px-6 md:flex md:px-12 md:py-24 lg:px-28`}
     >
       {/* Text Section */}
       <section className="m-auto flex w-full flex-col gap-3 md:w-1/2">
@@ -26,20 +27,20 @@ const CodeSection = ({
         <span className="text-richblack-300 text-base font-medium text-balance">
           {subHeading}
         </span>
-        <div className="flex gap-6 pt-8 justify-center">
-          <CtaButton primaryButton={ctaButton1.primaryButton} linkTo={"/"}>
-            <div className="flex items-center gap-1">
-              {ctaButton1.text} <FaArrowRight />
-            </div>
-          </CtaButton>
-          <CtaButton primaryButton={ctaButton2.primaryButton} linkTo={"/"}>
-            {ctaButton2.text}
-          </CtaButton>
+        <div className="flex justify-center gap-6 pt-8">
+          <CtaButton
+            text={ctaButton1.text}
+            primaryButton={ctaButton1.primaryButton}
+          />
+          <CtaButton
+            text={ctaButton2.text}
+            primaryButton={ctaButton2.primaryButton}
+          />
         </div>
       </section>
 
       {/* Animation Section */}
-      <section className="relative flex h-fit w-full pt-4 md:p-8 md:w-1/2">
+      <section className="relative flex h-fit w-full pt-4 md:w-1/2 md:p-8">
         {backgroundGradient}
         {/* Numbered Block */}
         <div className="text-richblack-300 w-[15%] text-center text-base font-medium">
@@ -75,6 +76,7 @@ const CodeSection = ({
     </div>
   );
 };
+
 CodeSection.propTypes = {
   position: PropTypes.string,
   backgroundGradient: PropTypes.node,

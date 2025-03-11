@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { BsArrowLeft } from "react-icons/bs"; // ✅ FIXED: Added missing icon import
-import FormField from "../components/common/Form/FormField";
+import FormField from "../../components/common/Form/FormField";
 import { Link } from "react-router-dom";
-import LongCTAButton from "../components/common/Form/LongCTAButton";
-import { getPasswordResetToken } from "../services/operations/authAPI";
+import LongCTAButton from "../../components/common/Form/LongCTAButton";
+import { getPasswordResetToken } from "../../services/operations/authAPI";
 import { useState } from "react";
 
 export default function ForgotPassword() {

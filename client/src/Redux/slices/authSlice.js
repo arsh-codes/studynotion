@@ -11,8 +11,8 @@ const initialState = {
     password: "",
     confirmPassword: "",
   },
-  loading: false,
-  token: null, 
+  authLoading: false,
+  token: null,
   isLoggedIn: false,
 };
 
@@ -23,8 +23,8 @@ const authSlice = createSlice({
     setSignupData: (state, action) => {
       state.signupData = { ...state.signupData, ...action.payload };
     },
-    setLoading: (state, action) => {
-      state.loading = action.payload;
+    setAuthLoading: (state, action) => {
+      state.authLoading = action.payload;
     },
     setToken: (state, action) => {
       state.token = action.payload;
@@ -42,6 +42,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setSignupData, setLoading, setToken, setIsLoggedIn } =
+export const { setSignupData, setAuthLoading, setToken, setIsLoggedIn } =
   authSlice.actions;
 export default authSlice.reducer;

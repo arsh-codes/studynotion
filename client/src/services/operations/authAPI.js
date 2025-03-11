@@ -1,4 +1,5 @@
-import { setLoading, setToken } from "../../Redux/slices/authSlice";
+import { setAuthLoading, setToken } from "../../Redux/slices/authSlice";
+
 import { apiConnector } from "../apiConnector";
 import { endpoints } from "../apis";
 import { resetCart } from "../../Redux/slices/cartSlice";
@@ -23,7 +24,7 @@ export function sendOtp(email, navigate) {
   // ✅ Pass navigate as an argument
   return async (dispatch) => {
     const toastId = toast.loading("Sending OTP...");
-    dispatch(setLoading(true));
+    dispatch(setAuthLoading(true));
 
     try {
       const response = await apiConnector("POST", SENDOTP_API, {
@@ -44,7 +45,7 @@ export function sendOtp(email, navigate) {
       toast.error("Failed to send OTP. Please try again.");
     }
 
-    dispatch(setLoading(false));
+    dispatch(setAuthLoading(false));
     toast.dismiss(toastId);
   };
 }
@@ -68,7 +69,7 @@ export function signup(signupData, navigate) {
     } = signupData;
 
     const toastId = toast.loading("Creating your account...");
-    dispatch(setLoading(true));
+    dispatch(setAuthLoading(true));
 
     try {
       const response = await apiConnector("POST", SIGNUP_API, {
@@ -99,7 +100,7 @@ export function signup(signupData, navigate) {
       if (navigate) navigate("/signup");
     }
 
-    dispatch(setLoading(false));
+    dispatch(setAuthLoading(false));
     toast.dismiss(toastId);
   };
 }
@@ -114,7 +115,7 @@ export function login(email, password, navigate) {
   // ✅ Pass navigate properly
   return async (dispatch) => {
     const toastId = toast.loading("Logging in...");
-    dispatch(setLoading(true));
+    dispatch(setAuthLoading(true));
 
     try {
       const response = await apiConnector("POST", LOGIN_API, {
@@ -145,7 +146,7 @@ export function login(email, password, navigate) {
       toast.error("Login failed. Please check your credentials and try again.");
     }
 
-    dispatch(setLoading(false));
+    dispatch(setAuthLoading(false));
     toast.dismiss(toastId);
   };
 }
@@ -175,7 +176,7 @@ export function logout(navigate) {
  */
 export function getPasswordResetToken(email, setEmailSent) {
   return async (dispatch) => {
-    dispatch(setLoading(true));
+    dispatch(setAuthLoading(true));
 
     try {
       const response = await apiConnector("POST", RESETPASSTOKEN_API, {
@@ -186,7 +187,7 @@ export function getPasswordResetToken(email, setEmailSent) {
 
       if (response.status === 404) {
         toast.error("User not found. Please check the email entered.");
-        dispatch(setLoading(false));
+        dispatch(setAuthLoading(false));
         return;
       }
 
@@ -203,7 +204,7 @@ export function getPasswordResetToken(email, setEmailSent) {
       );
     }
 
-    dispatch(setLoading(false));
+    dispatch(setAuthLoading(false));
   };
 }
 
@@ -219,7 +220,7 @@ export function resetPassword(
   resetPasswordToken,
 ) {
   return async (dispatch) => {
-    dispatch(setLoading(true));
+    dispatch(setAuthLoading(true));
 
     try {
       const response = await apiConnector("POST", RESETPASSWORD_API, {
@@ -240,6 +241,6 @@ export function resetPassword(
       toast.error("Password reset failed. Please try again.");
     }
 
-    dispatch(setLoading(false));
+    dispatch(setAuthLoading(false));
   };
 }
