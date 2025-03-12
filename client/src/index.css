@@ -1,6 +1,10 @@
+/* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Edu+SA+Beginner:wght@400..700&display=swap');
+
+/* Import Tailwind CSS */
 @import "tailwindcss";
 
+/* Set the height for the entire viewport and remove default margin & padding */
 html,
 body,
 #root {
@@ -9,21 +13,19 @@ body,
   padding: 0;
 }
 
-
+/* Define custom theme variables */
 @theme {
+  /* Font */
   --font-edu-sa-beginner: 'Edu SA Beginner', sans-serif;
 
-
-  /* White */
+  /* White and Black Colors */
   --color-white: #fff;
-
-  /* Black */
   --color-black: #000;
 
-  /* Transparent */
+  /* Transparent Color */
   --color-transparent: #ffffff00;
 
-  /* Rich Black */
+  /* Rich Black Shades */
   --color-richblack-5: #F1F2FF;
   --color-richblack-25: #DBDDEA;
   --color-richblack-50: #C5C7D4;
@@ -37,7 +39,7 @@ body,
   --color-richblack-800: #161D29;
   --color-richblack-900: #000814;
 
-  /* Rich Blue */
+  /* Rich Blue Shades */
   --color-richblue-5: #ECF5FF;
   --color-richblue-25: #C6D6E1;
   --color-richblue-50: #A0B7C3;
@@ -51,7 +53,7 @@ body,
   --color-richblue-800: #01212A;
   --color-richblue-900: #001B22;
 
-  /* Blue */
+  /* Blue Shades */
   --color-blue-5: #EAF5FF;
   --color-blue-25: #B4DAEC;
   --color-blue-50: #7EC0D9;
@@ -65,7 +67,7 @@ body,
   --color-blue-800: #022B32;
   --color-blue-900: #001B1D;
 
-  /* Caribbean Green */
+  /* Caribbean Green Shades */
   --color-caribbeangreen-5: #C1FFFD;
   --color-caribbeangreen-25: #83F1DE;
   --color-caribbeangreen-50: #44E4BF;
@@ -79,7 +81,7 @@ body,
   --color-caribbeangreen-800: #01321F;
   --color-caribbeangreen-900: #001B0D;
 
-  /* Brown */
+  /* Brown Shades */
   --color-brown-5: #FFF4C4;
   --color-brown-25: #FFE395;
   --color-brown-50: #FFD166;
@@ -93,7 +95,7 @@ body,
   --color-brown-800: #41260B;
   --color-brown-900: #291100;
 
-  /* Pink */
+  /* Pink Shades */
   --color-pink-5: #FFF1F1;
   --color-pink-25: #FBC7D1;
   --color-pink-50: #F79CB0;
@@ -107,7 +109,7 @@ body,
   --color-pink-800: #4F0A25;
   --color-pink-900: #340019;
 
-  /* Yellow */
+  /* Yellow Shades */
   --color-yellow-5: #FFF970;
   --color-yellow-25: #FFE83D;
   --color-yellow-50: #FFD60A;
@@ -121,7 +123,7 @@ body,
   --color-yellow-800: #3D2A01;
   --color-yellow-900: #251400;
 
-  /* Pure Greys */
+  /* Pure Grey Shades */
   --color-pure-grey-5: #F9F9F9;
   --color-pure-grey-25: #E2E2E2;
   --color-pure-grey-50: #CCCCCC;
@@ -136,7 +138,9 @@ body,
   --color-pure-grey-900: #141414;
 }
 
-/* Gradients */
+/* Gradient Background Styles */
+
+/* First Code Block Background Gradient */
 .codeblock1-background-gradient {
   width: 372.95px;
   height: 257.05px;
@@ -152,6 +156,7 @@ body,
   transform: matrix(1, 0, -0.03, 1, 0, 0);
 }
 
+/* Second Code Block Background Gradient */
 .codeblock2-background-gradient {
   position: absolute;
   width: 372.95px;

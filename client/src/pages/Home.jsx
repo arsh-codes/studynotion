@@ -1,15 +1,16 @@
-import HighlightText from "../components/core/HomePage/HighlightText";
-import homeSec2Bg from "../assets/media/homeSec2Bg.svg";
+import CodeSection from "@components/core/HomePage/CodeSection";
+import ExploreCoursesSection from "@components/core/HomePage/ExploreCoursesSection";
+import Footer from "@components/common/Footer";
+import HeroSection from "@components/core/HomePage/HeroSection";
+import HighlightText from "@components/core/HomePage/HighlightText";
+import InstructorSection from "@components/core/HomePage/InstructorSection";
+import ReviewsSection from "@components/core/HomePage/ReviewsSection";
+import SkillsSection from "@components/core/HomePage/SkillsSection";
+import SwissKnifeSection from "@components/core/HomePage/SwissKnifeSection";
+import homeSec2Bg from "@assets/media/homeSec2Bg.svg";
 
-import HeroSection from "../components/core/HomePage/HeroSection";
-import CodeSection from "../components/core/HomePage/CodeSection";
-import ExploreCoursesSection from "../components/core/HomePage/ExploreCoursesSection";
-import SkillsSection from "../components/core/HomePage/SkillsSection";
-import SwissKnifeSection from "../components/core/HomePage/SwissKnifeSection";
-import InstructorSection from "../components/core/HomePage/InstructorSection";
-import ReviewsSection from "../components/core/HomePage/ReviewsSection";
-import Footer from "../components/common/Footer";
 const Home = () => (
+
   // Wrapper
   <div className="relative flex h-full w-full flex-col">
     {/*Section 1 Black background*/}

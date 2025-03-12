@@ -1,18 +1,19 @@
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import FormField from "../../components/common/Form/FormField";
-import PasswordField from "../../components/common/Form/PasswordField";
-import PhoneNumberInput from "../../components/core/SignupPage/PhoneNumberInput";
+
+import FormField from "@components/common/Form/FormField";
+import LongCTAButton from "@components/common/Form/LongCTAButton";
+import PasswordField from "@components/common/Form/PasswordField";
+import PhoneNumberInput from "@components/core/SignupPage/PhoneNumberInput";
 import React from "react";
-import authPageStrikeText from "../../assets/media/authPageStrikeText.svg";
-import googleLogo from "../../assets/media/googleLogo.svg";
-import { sendOtp } from "../../services/operations/authAPI";
-import { setSignupData } from "../../Redux/slices/authSlice";
+import authPageStrikeText from "@assets/media/authPageStrikeText.svg";
+import googleLogo from "@assets/media/googleLogo.svg";
+import { sendOtp } from "@services/operations/authAPI";
+import { setSignupData } from "@redux/slices/authSlice";
+import signupInstructor from "@assets/media/signupInstructor.jpg";
+import signupStudent from "@assets/media/signupStudent.jpg";
 import toast from "react-hot-toast";
-import signupStudent from "../../assets/media/signupStudent.jpg";
-import signupInstructor from "../../assets/media/signupInstructor.jpg";
-import LongCTAButton from "../../components/common/Form/LongCTAButton";
 
 export default function Signup() {
   const dispatch = useDispatch();

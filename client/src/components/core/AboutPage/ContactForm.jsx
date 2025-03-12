@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import PhoneNumberInput from "./PhoneNumberInput";
-import { contactUs } from "../../../services/operations/contactAPI";
+import PhoneNumberInput from "@components/core/SignupPage/PhoneNumberInput";
+import { contactUs } from "@services/operations/contactAPI";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 

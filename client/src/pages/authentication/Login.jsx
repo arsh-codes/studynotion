@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 
-import authPageStrikeText from "../../assets/media/authPageStrikeText.svg";
-import { login } from "/src/services/operations/authAPI";
-import loginInstructor from "../../assets/media/loginInstructor.jpg";
-import loginStudent from "../../assets/media/loginStudent.webp";
+import authPageStrikeText from "@assets/media/authPageStrikeText.svg";
+import { login } from "@services/operations/authAPI";
+import loginInstructor from "@assets/media/loginInstructor.jpg";
+import loginStudent from "@assets/media/loginStudent.webp";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 

@@ -1,4 +1,4 @@
-import { countries, countryCodes } from "../../../data/countryCodes";
+import { countries, countryCodes } from "@data/countryCodes";
 
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useSelector } from "react-redux";

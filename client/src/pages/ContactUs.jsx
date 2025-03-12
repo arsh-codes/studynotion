@@ -1,6 +1,6 @@
-import ContactForm from "../components/core/AboutPage/ContactForm";
+import ContactForm from "@components/core/AboutPage/ContactForm";
 import { FaMapLocationDot } from "react-icons/fa6";
-import Footer from "../components/common/Footer";
+import Footer from "@components/common/Footer";
 import { IoMdChatbubbles } from "react-icons/io";
 import { MdCall } from "react-icons/md";
 import React from "react";

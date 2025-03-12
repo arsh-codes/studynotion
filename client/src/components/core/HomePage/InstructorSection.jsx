@@ -1,7 +1,7 @@
-import CtaButton from "./CtaButton";
+import CtaButton from "@components/core/HomePage/CtaButton";
 import { FaArrowRight } from "react-icons/fa";
-import HighlightText from "./HighlightText";
-import homepageInstructor from "../../../assets/media/homepageInstructor.jpg";
+import HighlightText from "@components/core/HomePage/HighlightText";
+import homepageInstructor from "@assets/media/homepageInstructor.jpg";
 
 const InstructorSection = () => {
   return (

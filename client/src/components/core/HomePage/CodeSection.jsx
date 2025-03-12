@@ -1,5 +1,4 @@
-import CtaButton from "./CtaButton";
-import { FaArrowRight } from "react-icons/fa";
+import CtaButton from "@components/core/HomePage/CtaButton";
 import PropTypes from "prop-types";
 import { TypeAnimation } from "react-type-animation";
 

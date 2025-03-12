@@ -1,5 +1,5 @@
-import { apiConnector } from "../apiConnector";
-import { contactusEndpoint } from "../apis";
+import { apiConnector } from "@services/apiConnector";
+import { contactusEndpoint } from "@services/apis";
 import toast from "react-hot-toast";
 
 export async function contactUs(data, setLoading) {

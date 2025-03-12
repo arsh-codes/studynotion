@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setAuthLoading, setIsLoggedIn } from "../../Redux/slices/authSlice";
+import { setAuthLoading, setIsLoggedIn } from "@redux/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FaTools } from "react-icons/fa";

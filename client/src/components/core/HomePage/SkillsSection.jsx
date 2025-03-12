@@ -1,10 +1,10 @@
-import CtaButton from "./CtaButton";
-import HighlightText from "./HighlightText";
-import Logo1 from "../../../assets/homePageSkillsSectionLogos/Logo1.svg";
-import Logo2 from "../../../assets/homePageSkillsSectionLogos/Logo2.svg";
-import Logo3 from "../../../assets/homePageSkillsSectionLogos/Logo3.svg";
-import Logo4 from "../../../assets/homePageSkillsSectionLogos/Logo4.svg";
-import skillSectionImage from "../../../assets/media/skillsSectionImage.png";
+import CtaButton from "@components/core/HomePage/CtaButton";
+import HighlightText from "@components/core/HomePage/HighlightText";
+import Logo1 from "@assets/homePageSkillsSectionLogos/Logo1.svg";
+import Logo2 from "@assets/homePageSkillsSectionLogos/Logo2.svg";
+import Logo3 from "@assets/homePageSkillsSectionLogos/Logo3.svg";
+import Logo4 from "@assets/homePageSkillsSectionLogos/Logo4.svg";
+import skillSectionImage from "@assets/media/skillsSectionImage.png";
 
 // Skill data array for easy management and scalability
 const skillBadgesData = [

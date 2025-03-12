@@ -1,9 +1,8 @@
 import React from "react";
-import {logout} from "../../../"
-import { sidebarLinks } from "../../../data/dashboard-links"
+import { logout } from "@services/operations/authAPI";
+import { sidebarLinks } from "@data/dashboard-links";
+
 export default function Sidebar() {
-  return <div>
-    
-  </div>;
+  return <div></div>;
 }
-client/src/services/operations/authAPI.js
+client / src / services / operations / authAPI.js;

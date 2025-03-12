@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import { sendOtp, signup } from "@services/operations/authAPI";
+import { useDispatch, useSelector } from "react-redux";
+
 import { BsArrowLeft } from "react-icons/bs";
 import { FaClockRotateLeft } from "react-icons/fa6";
-import LongCTAButton from "../../components/common/Form/LongCTAButton";
+import LongCTAButton from "@components/common/Form/LongCTAButton";
 import OtpInput from "react-otp-input";
-import { sendOtp, signup } from "../../services/operations/authAPI";
-import { useSelector, useDispatch } from "react-redux";
-import { setSignupData } from "../../Redux/slices/authSlice";
+import { setSignupData } from "@redux/slices/authSlice";
 import toast from "react-hot-toast";
 
 export default function VerifyEmail() {

@@ -1,9 +1,9 @@
-import { setAuthLoading, setToken } from "../../Redux/slices/authSlice";
+import { setAuthLoading, setToken } from "@redux/slices/authSlice";
 
-import { apiConnector } from "../apiConnector";
-import { endpoints } from "../apis";
-import { resetCart } from "../../Redux/slices/cartSlice";
-import { setUser } from "../../Redux/slices/profileSlice";
+import { apiConnector } from "@services/apiConnector";
+import { endpoints } from "@services/apis";
+import { resetCart } from "@redux/slices/cartSlice";
+import { setUser } from "@redux/slices/profileSlice";
 import { toast } from "react-hot-toast";
 
 // Extract API endpoints from the endpoints object

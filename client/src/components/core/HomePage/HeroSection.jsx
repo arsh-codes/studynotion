@@ -1,9 +1,9 @@
-import CtaButton from "../../../components/core/HomePage/CtaButton";
+import CtaButton from "@components/core/HomePage/CtaButton";
 import { FaArrowRight } from "react-icons/fa";
-import HighlightText from "../../../components/core/HomePage/HighlightText";
+import HighlightText from "@components/core/HomePage/HighlightText";
 import { Link } from "react-router-dom";
-import Video1Eclipse from "../../../assets/media/homepageVideo1Eclipse.svg";
-import homeSection1Video from "../../../assets/media/homeSection1Video.mp4";
+import Video1Eclipse from "@assets/media/homepageVideo1Eclipse.svg";
+import homeSection1Video from "@assets/media/homeSection1Video.mp4";
 
 const HeroSection = () => {
   return (

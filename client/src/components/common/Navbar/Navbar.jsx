@@ -7,10 +7,10 @@ import {
 } from "react-icons/ri";
 import { useEffect, useState } from "react";
 
-import ProfileDropDown from "./ProfileDropDown";
-import { apiConnector } from "../../../services/apiConnector";
-import { categories } from "../../../services/apis";
-import logo from "../../../assets/logo/logoFullLight.png";
+import ProfileDropDown from "@components/common/Navbar/ProfileDropDown";
+import { apiConnector } from "@services/apiConnector";
+import { categories } from "@services/apis";
+import logo from "@assets/logo/logoFullLight.png";
 import { useSelector } from "react-redux";
 
 export default function Navbar() {

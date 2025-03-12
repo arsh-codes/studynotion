@@ -1,5 +1,6 @@
-import footerLinks from "../../data/footerLinks";
 import { Link } from "react-router-dom";
+import footerLinks from "@data/footerLinks";
+;
 export default function FooterLinkGroup({ title }) {
   return (
     <div className="flex flex-col gap-3">

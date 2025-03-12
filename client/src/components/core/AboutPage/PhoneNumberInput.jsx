@@ -1,4 +1,4 @@
-import { countries, countryCodes } from "../../../data/countryCodes";
+import { countries, countryCodes } from "@data/countryCodes";
 import { useEffect, useRef, useState } from "react";
 
 import { RiArrowDropDownLine } from "react-icons/ri";

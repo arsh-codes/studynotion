@@ -1,14 +1,14 @@
-import ContactForm from "../components/core/AboutPage/ContactForm";
-import Footer from "../components/common/Footer";
-import HighlightText from "../components/core/HomePage/HighlightText";
+import ContactForm from "@components/core/AboutPage/ContactForm";
+import Footer from "@components/common/Footer";
+import HighlightText from "@components/core/HomePage/HighlightText";
 import React from "react";
-import ReviewSlider from "../components/core/AboutPage/ReviewSlider";
-import WorldClassLearningSection from "../components/core/AboutPage/WorldClassLearningSection";
-import { aboutPageMetrics } from "../data/aboutPageData";
-import aboutUs1 from "../assets/media/aboutUs1.webp";
-import aboutUs2 from "../assets/media/aboutUs2.webp";
-import aboutUs3 from "../assets/media/aboutUs3.webp";
-import aboutUsFoundingStory from "../assets/media/aboutUsFoundingStory.png";
+import ReviewSlider from "@components/core/AboutPage/ReviewSlider";
+import WorldClassLearningSection from "@components/core/AboutPage/WorldClassLearningSection";
+import { aboutPageMetrics } from "@data/aboutPageData";
+import aboutUs1 from "@assets/media/aboutUs1.webp";
+import aboutUs2 from "@assets/media/aboutUs2.webp";
+import aboutUs3 from "@assets/media/aboutUs3.webp";
+import aboutUsFoundingStory from "@assets/media/aboutUsFoundingStory.png";
 
 export default function About() {
   return (

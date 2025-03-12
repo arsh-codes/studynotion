@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 
 import React from "react";
-import logoSmallLight from "../../../assets/logo/logoSmallLight.png";
-import { logout } from "../../../services/operations/authAPI";
+import logoSmallLight from "@assets/logo/logoSmallLight.png";
+import { logout } from "@services/operations/authAPI";
 import { useDispatch } from "react-redux";
 
 const ProfileDropDown = () => {

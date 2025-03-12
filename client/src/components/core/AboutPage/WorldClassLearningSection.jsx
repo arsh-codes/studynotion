@@ -1,7 +1,8 @@
-import CtaButton from "../../core/HomePage/CtaButton";
-import HighlightText from "../HomePage/HighlightText";
+import CtaButton from "@components/core/HomePage/CtaButton";
+import HighlightText from "@components/core/HomePage/HighlightText";
 import React from "react";
-import { aboutPageLearningGrid } from "../../../data/aboutPageData";
+import { aboutPageLearningGrid } from "@data/aboutPageData";
+
 export default function WorldClassLearningSection() {
   return (
     <section className="mx-auto grid w-11/12 grid-cols-4 grid-rows-2 py-20">

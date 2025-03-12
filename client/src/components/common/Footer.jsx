@@ -1,7 +1,7 @@
 import { FaFacebook, FaGoogle, FaTwitter, FaYoutube } from "react-icons/fa";
 
-import FooterLinkGroup from "./FooterLinkGroup";
-import Logo from "../../assets/logo/logoFullLight.png";
+import FooterLinkGroup from "@components/common/FooterLinkGroup";
+import Logo from "@assets/logo/logoFullLight.png";
 
 export default function MyFooter() {
   return (

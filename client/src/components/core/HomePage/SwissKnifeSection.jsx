@@ -1,8 +1,8 @@
-import CtaButton from "./CtaButton";
-import HighlightText from "./HighlightText";
-import compareWithOthersImage from "../../../assets/media/compareWithOthersImage.png";
-import knowYourProgressImage from "../../../assets/media/knowYourProgressImage.png";
-import planYourLessonsImage from "../../../assets/media/planYourLessonsImage.png";
+import CtaButton from "@components/core/HomePage/CtaButton";
+import HighlightText from "@components/core/HomePage/HighlightText";
+import compareWithOthersImage from "@assets/media/compareWithOthersImage.png";
+import knowYourProgressImage from "@assets/media/knowYourProgressImage.png";
+import planYourLessonsImage from "@assets/media/planYourLessonsImage.png";
 
 const SwissKnifeSection = () => {
   return (

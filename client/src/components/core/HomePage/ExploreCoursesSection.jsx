@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import CtaButton from "./CtaButton";
+import CtaButton from "@components/core/HomePage/CtaButton";
 import { FaArrowRight } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
-import HighlightText from "./HighlightText";
-import { HomePageExploreCourses } from "../../../data/homePageExploreCourses";
+import HighlightText from "@components/core/HomePage/HighlightText";
+import { HomePageExploreCourses } from "@data/homePageExploreCourses";
 import { PiTreeStructureFill } from "react-icons/pi";
 
 const tabNames = [
