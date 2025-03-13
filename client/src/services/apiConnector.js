@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL, // Correct way to access env variables in Vite
+  baseURL: import.meta.env.VITE_BACKEND_BASE_URL, // Correct way to access env variables in Vite
   timeout: 10000,
 });
 

@@ -1,3 +1,4 @@
+import checkConnectionRoute from "./src/routes/CheckConnectionRoute.js";
 import cloudinaryConnector from "./src/config/cloudinaryConnector.js"; // Cloudinary setup function
 import cookieParser from "cookie-parser"; // Middleware for handling cookies
 import cors from "cors"; // Middleware to handle Cross-Origin Resource Sharing (CORS)
@@ -12,7 +13,6 @@ import paymentRoutes from "./src/routes/PaymentRoutes.js";
 // Import routes
 import profileRoutes from "./src/routes/ProfileRoutes.js";
 import userRoutes from "./src/routes/UserRoutes.js";
-
 // Load environment variables
 dotenv.config();
 
@@ -49,6 +49,7 @@ app.use("/api/v1/profile", profileRoutes); // Routes for user profile operations
 app.use("/api/v1/courses", courseRoutes); // Routes for course-related operations
 app.use("/api/v1/payments", paymentRoutes); // Routes for payment-related operations
 app.use("/api/v1/auth", userRoutes); // Routes for authentication (signup, login, etc.)
+app.use("/api/v1/check", checkConnectionRoute); // Routes for payment-related operations
 
 // Default route - Health check
 app.get("/", (req, res) => {

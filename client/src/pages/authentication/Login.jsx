@@ -6,7 +6,9 @@ import { login } from "@services/operations/authAPI";
 import loginInstructor from "@assets/media/loginInstructor.jpg";
 import loginStudent from "@assets/media/loginStudent.webp";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 export default function Login() {
   const dispatch = useDispatch(); // Initialize Redux dispatch
@@ -16,9 +18,8 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm(); // React Hook Form setup with error handling
-
   const [accountType, setAccountType] = useState("student"); // State for account type selection
-
+  const { isLoggedIn } = useSelector((state) => state.auth);
   function handleAccountTypeChange(type) {
     setAccountType(type);
   }
@@ -30,7 +31,11 @@ export default function Login() {
     dispatch(login(data.email, data.password, navigate)) // Dispatch login action
       .catch((error) => console.error("Login failed:", error)); // Handle login errors
   };
-
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard/my-profile");
+    }
+  }, [isLoggedIn, navigate]); // Runs when `isLoggedIn` changes
   return (
     <div className="bg-richblack-900 text-richblack-5 relative flex h-screen w-screen flex-col select-none">
       <section className="mx-auto grid w-11/12 grid-cols-12 px-6 pt-16">

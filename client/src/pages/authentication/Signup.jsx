@@ -14,6 +14,7 @@ import { setSignupData } from "@redux/slices/authSlice";
 import signupInstructor from "@assets/media/signupInstructor.jpg";
 import signupStudent from "@assets/media/signupStudent.jpg";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 export default function Signup() {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export default function Signup() {
     password,
     confirmPassword,
   } = signupData;
-
+  const { isLoggedIn } = useSelector((state) => state.auth);
   const handleSubmitButton = (event) => {
     event.preventDefault();
 
@@ -57,6 +58,11 @@ export default function Signup() {
 
     dispatch(sendOtp(email, navigate));
   };
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard/my-profile");
+    }
+  }, [isLoggedIn, navigate]); // Runs when `isLoggedIn` changes
 
   return (
     <div className="bg-richblack-900 text-richblack-5 flex h-screen w-screen flex-col select-none">
