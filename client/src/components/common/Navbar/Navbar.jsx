@@ -48,7 +48,7 @@ export default function Navbar() {
   ];
 
   return (
-    <section className="border-richblack-700 bg-richblack-900 z-10 border-b border-solid select-none">
+    <section className="border-richblack-700 bg-richblack-800 z-10 border-b border-solid select-none">
       <div className="text-richblack-25 flex w-full items-center justify-between px-4 py-8 md:mx-auto md:w-11/12 md:justify-evenly md:gap-1 md:px-28 md:py-3">
         {/* Logo */}
         <Link to="/">

@@ -1,4 +1,8 @@
-import { setAuthLoading, setToken } from "@redux/slices/authSlice";
+import {
+  setAuthLoading,
+  setIsLoggedIn,
+  setToken,
+} from "@redux/slices/authSlice";
 
 import { apiConnector } from "@services/apiConnector";
 import { endpoints } from "@services/apis";
@@ -139,8 +143,11 @@ export function login(email, password, navigate) {
 
       dispatch(setUser({ ...response.data.user, image: userImage }));
       localStorage.setItem("token", JSON.stringify(response.data.token));
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       if (navigate) navigate("/dashboard/my-profile"); // ✅ Ensure navigate exists
+
+      setIsLoggedIn(true);
     } catch (error) {
       console.log("LOGIN API ERROR:", error);
       toast.error("Login failed. Please check your credentials and try again.");
@@ -158,14 +165,19 @@ export function login(email, password, navigate) {
 export function logout(navigate) {
   // ✅ Pass navigate from components
   return (dispatch) => {
-    dispatch(setToken(null));
-    dispatch(setUser(null));
-    dispatch(resetCart());
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    toast.success("You have been logged out.");
+    try {
+      toast.success("You have been logged out.");
+      dispatch(setToken(null));
+      dispatch(setUser(null));
+      dispatch(resetCart());
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
-    if (navigate) navigate("/"); // ✅ Ensure navigate exists
+      if (navigate) navigate("/");
+    } catch (error) {
+      console.log("LOGOUT ERROR:", error);
+      toast.error("Logout failed. Please try again.");
+    }
   };
 }
 

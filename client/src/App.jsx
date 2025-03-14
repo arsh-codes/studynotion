@@ -1,4 +1,4 @@
-import AppRoutes from "@client/AppRoutes.jsx"; // Import the separate routes file
+import AppRoutes from "./AppRoutes";
 import FloatingDevTool from "@components/common/FloatingDevTool";
 import Navbar from "@components/common/Navbar/Navbar";
 import { Toaster } from "react-hot-toast";
@@ -10,7 +10,6 @@ export default function App() {
       <Toaster />
       <Navbar />
       <FloatingDevTool />
-      {/* App Routes */}
       <AppRoutes />
     </div>
   );

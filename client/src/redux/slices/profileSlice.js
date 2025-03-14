@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Initial state with a `user` property, initially set to null
 const initialState = {
-  user: null,
+  user: localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null,
   profileLoading: false,
 };
 

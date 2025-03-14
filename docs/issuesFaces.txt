@@ -1,0 +1,11 @@
+user state gets filled in redux and works great but when i moved to another page, it is showing logged in but user is null
+
+how i found the issue cleared local and session storage and it logged out showing the option to log in again
+
+solution save the user data to localstorage not only redux as it moves to its initial  stage when the app is refreshed thus loosing data. 
+user: localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null,
+learnt what is the use of localstorarge
+
+

@@ -6,7 +6,6 @@ import {
 
 import { CiBookmark } from "react-icons/ci";
 import { FaChalkboardTeacher } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LiaBookSolid } from "react-icons/lia";
 import { MdOutlineLibraryBooks } from "react-icons/md";
@@ -14,63 +13,57 @@ import { MdOutlineLibraryBooks } from "react-icons/md";
 const dashboardSidebarLinks = [
   {
     id: 1,
-    name: "My Profile",
+    title: "My Profile",
     path: "/dashboard/my-profile",
-    Icon: RiUserLine, // ✅ No JSX
+    Icon: RiUserLine,
   },
   {
     id: 2,
-    name: "Enrolled Courses",
+    title: "Enrolled Courses",
     path: "/dashboard/enrolled-courses",
     accountType: "student",
     Icon: LiaBookSolid,
   },
   {
     id: 3,
-    name: "Wishlist",
+    title: "Wishlist",
     path: "/dashboard/wishlist",
     accountType: "student",
     Icon: CiBookmark,
   },
   {
     id: 4,
-    name: "Purchase History",
+    title: "Purchase History",
     path: "/dashboard/purchase-history",
     accountType: "student",
     Icon: RiHistoryFill,
   },
   {
     id: 5,
-    name: "Add Course",
+    title: "Add Course",
     path: "/dashboard/add-course",
     accountType: "instructor",
     Icon: FaChalkboardTeacher,
   },
   {
     id: 6,
-    name: "My Courses",
+    title: "My Courses",
     path: "/dashboard/my-courses",
     accountType: "instructor",
     Icon: MdOutlineLibraryBooks,
   },
   {
     id: 7,
-    name: "Earnings & Payouts",
+    title: "Earnings & Payouts",
     path: "/dashboard/earnings",
     accountType: "instructor",
     Icon: RiMoneyDollarCircleLine,
   },
   {
     id: 8,
-    name: "Settings",
+    title: "Settings",
     path: "/dashboard/settings",
     Icon: IoSettingsOutline,
-  },
-  {
-    id: 9,
-    name: "Log Out",
-    path: "/logout",
-    Icon: FiLogOut,
   },
 ];
 
