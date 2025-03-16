@@ -13,7 +13,7 @@ export default function PhoneNumberInput({ onChange, id, ...rest }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="relative flex flex-col gap-1.5">
+    <div className="relative flex flex-col gap-1.5 text-richblack-5">
       {/* Label for input */}
       <label htmlFor={id}>
         Phone Number{" "}
@@ -43,7 +43,7 @@ export default function PhoneNumberInput({ onChange, id, ...rest }) {
                   setCountry(index);
                   setMenuOpen(false);
                 }}
-                className="cursor-pointer px-3 py-2 text-white hover:bg-gray-700"
+                className="cursor-pointer px-3 py-2 text-richblack-5 hover:bg-gray-700"
               >
                 {country}
               </li>

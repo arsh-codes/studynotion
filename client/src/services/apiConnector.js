@@ -5,8 +5,6 @@ export const axiosInstance = axios.create({
   timeout: 10000,
 });
 
-
-
 /**
  * API Connector function to make HTTP requests using Axios
  *
@@ -25,13 +23,21 @@ export const apiConnector = async (
   params = {},
 ) => {
   try {
+    console.log("API connector request details:", {
+      method,
+      url,
+      data,
+      headers,
+      params,
+    });
+
     // Make the API request using the Axios instance
     const response = await axiosInstance({
-      method, // HTTP method (e.g., GET, POST)
-      url, // API endpoint
-      data, // Request body data
-      headers, // Custom headers (e.g., Authorization)
-      params, // Query parameters (for GET requests)
+      method,
+      url,
+      data,
+      headers,
+      params,
     });
 
     return response; // Return successful response

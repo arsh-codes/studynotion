@@ -4,11 +4,13 @@ import jwt from "jsonwebtoken";
 // Middleware for token authorization
 export const auth = async (req, res, next) => {
     try {
+        console.log("Headers received in backend:", req.headers);
+
         // Retrieve the token from request body, cookies, or Authorization header
         const token =
             req.body.token ||
             req.cookies.token ||
-            req.header("Authorization")?.replace("Bearer ", "");
+            req.headers["authorization"]?.split(" ")[1];
 
         // Check if a token is provided
         if (!token) {

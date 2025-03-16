@@ -10,6 +10,7 @@ import Course from "../models/Course.js";
 import Profile from "../models/Profile.js";
 import User from "../models/User.js";
 import cloudinaryUploader from "../utils/cloudinaryUploader.js";
+import fs from "fs";
 
 // Update user profile details
 export const updateProfile = async (req, res) => {
@@ -148,13 +149,22 @@ export const getUserDetails = async (req, res) => {
 // Update user display picture
 export const updateDisplayPicture = async (req, res) => {
     try {
-        const { displayPicture } = req.files;
-        const userId = req.user.id;
-
-        if (!displayPicture) {
+        if (!req.files || !req.files.displayPicture) {
             return res.status(400).json({
                 success: false,
                 message: "Display picture is required.",
+            });
+        }
+        const userId = req.user.id;
+        const { displayPicture } = req.files;
+
+        // Validate file type
+        const allowedMimeTypes = ["image/jpeg", "image/png", "image/jpg"];
+        if (!allowedMimeTypes.includes(displayPicture.mimetype)) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Invalid file type. Only JPG, JPEG, and PNG are allowed.",
             });
         }
 
@@ -175,11 +185,19 @@ export const updateDisplayPicture = async (req, res) => {
         );
 
         user.image = imageUploadResponse.secure_url;
+        console.log("📝 -> updateDisplayPicture -> user.image=", user.image);
+
         await user.save();
 
         return res.status(200).json({
             success: true,
             message: "Display picture updated successfully.",
+            updatedUser: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                image: user.image,
+            },
         });
     } catch (error) {
         console.error("Error in updateDisplayPicture:", error);
@@ -187,8 +205,11 @@ export const updateDisplayPicture = async (req, res) => {
             success: false,
             message:
                 "Unable to update display picture. Please try again later.",
+            err: ("somthing", error.message),
+            err2: error,
         });
     }
+    console.log("📝 -> updateDisplayPicture -> tempFilePath=", tempFilePath);
 };
 
 // Get all courses a user is enrolled in

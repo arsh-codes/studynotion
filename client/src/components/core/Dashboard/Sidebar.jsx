@@ -16,7 +16,7 @@ export default function Sidebar() {
     setModalIsOpen(true);
   }
   return (
-    <section className="text-richblack-300 bg-richblack-800 h-flex-1 w-fit py-7">
+    <section className="text-richblack-300 bg-richblack-800 h-flex-1 min-w-fit py-7">
       <ConfirmationModal
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
