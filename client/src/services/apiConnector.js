@@ -36,8 +36,11 @@ export const apiConnector = async (
       method,
       url,
       data,
-      headers,
       params,
+      headers: {
+        ...axiosInstance.defaults.headers.common, // Preserve default headers
+        ...headers, // Merge custom headers
+      },
     });
 
     return response; // Return successful response
@@ -54,10 +57,11 @@ export const apiConnector = async (
 
     // Return a generic error object for unexpected failures
     return {
-      status: 500,
+      status: error.response?.status || 500,
       data: {
         success: false,
-        message: "Something went wrong with the API request",
+        message:
+          error.response?.data?.message || error.message || "Network error",
       },
     };
   }

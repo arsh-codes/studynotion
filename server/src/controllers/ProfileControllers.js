@@ -15,20 +15,23 @@ import fs from "fs";
 // Update user profile details
 export const updateProfile = async (req, res) => {
     try {
-        const { gender, dateOfBirth, about, contactNumber } = req.body;
+        const { gender, dateOfBirth, about, contactNumber,profession } = req.body;
+        console.log("📝 -> updateProfile -> gender=", gender);
+        console.log("📝 -> updateProfile -> req=", req);
+
         const userId = req.user.id; // Extract user ID from authentication middleware
 
         // Validate required inputs
-        if (!gender || !contactNumber) {
-            return res.status(400).json({
-                success: false,
-                message:
-                    "Gender and contact number are required to update your profile.",
-            });
-        }
+        // if (!gender || !contactNumber) {
+        //     return res.status(400).json({
+        //         success: false,
+        //         message:
+        //             "Gender and contact number are required to update your profile.",
+        //     });
+        // }
 
         // Find the user by ID
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).populate("additionalDetails");
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -38,6 +41,8 @@ export const updateProfile = async (req, res) => {
 
         // Find and update additional profile details
         const profile = await Profile.findById(user.additionalDetails);
+        console.log("📝 -> updateProfile -> profile=", profile)
+
         if (!profile) {
             return res.status(404).json({
                 success: false,
@@ -48,15 +53,19 @@ export const updateProfile = async (req, res) => {
         // Update profile fields with provided values
         profile.contactNumber = contactNumber;
         profile.gender = gender;
+        profile.profession = profession;
         if (dateOfBirth) profile.dateOfBirth = dateOfBirth;
         if (about) profile.about = about;
 
-        const updatedDetails = await profile.save();
-
+        await profile.save();
+        // Re-populate the updated user data
+        const updatedUser = await User.findById(userId).populate(
+            "additionalDetails"
+        );
         return res.status(200).json({
             success: true,
             message: "Your profile has been updated successfully.",
-            profile: updatedDetails,
+            updatedUser: user,
         });
     } catch (error) {
         console.error(`Error in updateProfile: ${error.message}`);
@@ -185,7 +194,6 @@ export const updateDisplayPicture = async (req, res) => {
         );
 
         user.image = imageUploadResponse.secure_url;
-        console.log("📝 -> updateDisplayPicture -> user.image=", user.image);
 
         await user.save();
 
@@ -210,6 +218,48 @@ export const updateDisplayPicture = async (req, res) => {
         });
     }
     console.log("📝 -> updateDisplayPicture -> tempFilePath=", tempFilePath);
+};
+
+// Remove user display picture
+export const removeDisplayPicture = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found.",
+            });
+        }
+
+        // Generate DiceBear avatar URL
+        const displayPicture = `https://api.dicebear.com/5.x/initials/svg?seed=${encodeURIComponent(
+            user.firstName
+        )} ${encodeURIComponent(user.lastName)}`;
+
+        // Update user's profile picture with default avatar
+        user.image = displayPicture;
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Display picture reset successfully.",
+            updatedUser: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                image: user.image,
+            },
+        });
+    } catch (error) {
+        console.error("Error in removeDisplayPicture:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Unable to reset display picture. Please try again later.",
+            error: error.message,
+        });
+    }
 };
 
 // Get all courses a user is enrolled in

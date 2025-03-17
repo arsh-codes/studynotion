@@ -1,13 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import React from "react";
-import logoSmallLight from "@assets/logo/logoSmallLight.png";
 import { logout } from "@services/operations/authAPI";
-import { useDispatch } from "react-redux";
 
 const ProfileDropDown = () => {
   const navigate = useNavigate(); // useNavigate should be called at the top
-
+  const { user } = useSelector((state) => state.profile);
   const profileDropDownLinks = [
     { title: "My Dashboard", path: "/dashboard/my-profile" },
     { title: "My Orders", path: "/user/orders" },
@@ -20,7 +19,11 @@ const ProfileDropDown = () => {
   const dispatch = useDispatch();
   return (
     <div className="group flex cursor-pointer items-center justify-center p-1">
-      <img src={logoSmallLight} className="h-7 rounded-full" alt="Profile" />
+      <img
+        src={user?.image}
+        className="h-7 w-7 rounded-full object-cover"
+        alt={`${user?.name || "User"}'s Profile Picture`}
+      />
       <div className="invisible absolute top-8 z-100 w-44 cursor-pointer divide-y divide-gray-100 rounded-lg bg-white opacity-0 shadow-sm transition-opacity duration-400 group-hover:visible group-hover:opacity-100 group-focus:opacity-100 dark:bg-gray-700">
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
           {profileDropDownLinks.length === 0 ? (

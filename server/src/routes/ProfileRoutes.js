@@ -2,6 +2,7 @@ import {
     deleteAccount,
     getEnrolledCourses,
     getUserDetails,
+    removeDisplayPicture,
     updateDisplayPicture,
     updateProfile,
 } from "../controllers/ProfileControllers.js";
@@ -31,6 +32,9 @@ router.get("/getEnrolledCourses", auth, getEnrolledCourses);
 
 // 5. Update user's display picture
 router.put("/updateDisplayPicture", auth, updateDisplayPicture);
+
+// 6. Remove user's display picture
+router.put("/removeDisplayPicture", auth, removeDisplayPicture);
 
 // Export the router
 export default router;

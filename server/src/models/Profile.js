@@ -1,28 +1,28 @@
 import mongoose from "mongoose";
 
-// Define the schema for user profile details
 const profileSchema = new mongoose.Schema({
-    // Gender field with predefined options
     gender: {
         type: String,
         trim: true,
-        enum: ["male", "female", "other"], // Restricts values to these options
     },
 
-    // Date of birth as a string (can be stored in various formats)
     dateOfBirth: {
-        type: String,
+        type: Date, // Changed from String to Date
     },
 
-    // Short bio or description about the user
     about: {
         type: String,
         trim: true,
+        default: "", // Default empty string to avoid undefined values
     },
 
-    // Contact number stored as a string to allow different formats
     contactNumber: {
         type: String,
+    },
+
+    profession: {
+        type: String,
+        default: "Student", // Default profession
     },
 });
 

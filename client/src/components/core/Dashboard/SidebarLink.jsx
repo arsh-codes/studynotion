@@ -6,7 +6,7 @@ export default function SidebarLink({ linkDetails }) {
   const userAccountType = "student";
   const { user } = useSelector((state) => state.profile);
 
-  if (accountType && accountType !== user.accountType) return null;
+  if (accountType && accountType !== user?.accountType) return null;
 
   return (
     <div>

@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 
 export default function App() {
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    <div className="flex min-h-screen w-full flex-col select-none">
       {/* Notification Toast */}
       <Toaster />
       <Navbar />
