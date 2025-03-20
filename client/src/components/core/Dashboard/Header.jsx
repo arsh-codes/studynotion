@@ -10,7 +10,7 @@ export default function Header({ pageName }) {
         <span>/</span>
         <span className="text-yellow-100"> {pageName}</span>
       </div>
-      <h1 className="text-richblack-5 text-3xl font-medium">{pageName}</h1>
+      <h1 className="text-richblack-5 text-2xl font-medium">{pageName}</h1>
     </section>
   );
 }

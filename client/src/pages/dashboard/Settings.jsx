@@ -34,7 +34,8 @@ export default function Settings() {
   return (
     <section className="bg-richblack-900 flex flex-1 flex-row gap-1">
       <Sidebar />
-      <div className="text-richblack-300 w-full">
+      <div className="text-richblack-300 w-full pb-20">
+        
         <Header pageName="Settings" />
         <ChangeProfilePicture />
         <EditProfile />

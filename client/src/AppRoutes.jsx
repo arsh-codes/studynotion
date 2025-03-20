@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import About from "@pages/About";
 import AddCourse from "@pages/dashboard/AddCourse";
+import Cart from "./pages/dashboard/Cart";
 import ContactUs from "@pages/ContactUs";
 import Earnings from "@pages/dashboard/Earnings";
 import EnrolledCourses from "@pages/dashboard/EnrolledCourses";
@@ -20,7 +21,6 @@ import Settings from "@pages/dashboard/Settings";
 import Signup from "@pages/authentication/Signup";
 import VerifyEmail from "@pages/authentication/VerifyEmail";
 import Wishlist from "@pages/dashboard/Wishlist";
-import { useSelector } from "react-redux";
 
 export default function AppRoutes() {
   return (
@@ -51,6 +51,14 @@ export default function AppRoutes() {
         element={
           <PrivateRoute>
             <AddCourse />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/dashboard/cart"
+        element={
+          <PrivateRoute>
+            <Cart />
           </PrivateRoute>
         }
       />

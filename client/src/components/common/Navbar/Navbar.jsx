@@ -133,13 +133,13 @@ export default function Navbar() {
                   {totalItems || 0}{" "}
                 </p>
               </div>
-              <Link to="/cart">
+              <Link to="/dashboard/cart">
                 <RiShoppingCart2Fill className="h-9 w-6" />
               </Link>
             </div>
           ) : (
             // empty cart icon if no items in cart
-            <Link to="/cart">
+            <Link to="/dashboard/cart">
               <RiShoppingCart2Line className="h-9 w-6" />
             </Link>
           ))}

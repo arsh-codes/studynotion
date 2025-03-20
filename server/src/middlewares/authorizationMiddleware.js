@@ -54,9 +54,10 @@ export const isStudent = (req, res, next) => {
     next();
 };
 
-// Middleware to restrict access to admins
 export const isAdmin = (req, res, next) => {
+    console.log("📝 -> isAdmin -> req.user.accountType=", req.user.accountType)
     if (req.user.accountType !== "admin") {
+
         return res.status(403).json({
             success: false,
             message: "Access restricted to admins only.",
