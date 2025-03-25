@@ -1,12 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import React from "react";
 import { logout } from "@services/operations/authAPI";
 
 const ProfileDropDown = () => {
-  const navigate = useNavigate(); // useNavigate should be called at the top
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.profile);
+  const [isDropDownActive, setIsDropDownActive] = useState(false);
+  const dropdownRef = useRef(null); // Create a ref for the dropdown
+
   const profileDropDownLinks = [
     { title: "My Dashboard", path: "/dashboard/my-profile" },
     { title: "My Orders", path: "/user/orders" },
@@ -16,25 +20,48 @@ const ProfileDropDown = () => {
   function handleLogout() {
     dispatch(logout(navigate));
   }
-  const dispatch = useDispatch();
+
+  // Effect to handle clicks outside the dropdown
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropDownActive(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="group flex cursor-pointer items-center justify-center p-1">
+    <div
+      className="group text-richblack-5 relative flex cursor-pointer items-center justify-center p-1"
+      onMouseEnter={() => setIsDropDownActive(true)}
+      onMouseLeave={() => setIsDropDownActive(false)}
+    >
       <img
         src={user?.image}
-        className="h-7 w-7 rounded-full object-cover"
-        alt={`${user?.name || "User"}'s Profile Picture`}
+        className="border-richblack-600 h-8 w-8 rounded-full border-2 object-cover"
+        alt={`${user?.name || "User  "}'s Profile Picture`}
+        onClick={() => setIsDropDownActive((prev) => !prev)}
       />
-      <div className="invisible absolute top-8 z-100 w-44 cursor-pointer divide-y divide-gray-100 rounded-lg bg-white opacity-0 shadow-sm transition-opacity duration-400 group-hover:visible group-hover:opacity-100 group-focus:opacity-100 dark:bg-gray-700">
-        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+      <div
+        ref={dropdownRef} // Attach the ref to the dropdown
+        className={`bg-richblack-800 border-richblack-700 absolute top-10 right-1 z-50 cursor-pointer rounded-md border text-sm shadow-lg transition-opacity duration-300 md:-right-12 ${isDropDownActive ? "visible opacity-100" : "invisible opacity-0"}`}
+        aria-hidden={!isDropDownActive}
+      >
+        <ul className="relative flex flex-col gap-1 p-2">
           {profileDropDownLinks.length === 0 ? (
-            <li>Error getting data</li>
+            <li className="px-4 py-2 text-red-500">Error getting data</li>
           ) : (
             profileDropDownLinks.map((profileDropDownLink, index) =>
               profileDropDownLink.title === "Logout" ? (
                 <li
                   key={index}
                   onClick={handleLogout}
-                  className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="hover:bg-richblack-700 flex cursor-pointer items-center rounded px-4 py-2 md:whitespace-nowrap"
                 >
                   {profileDropDownLink.title}
                 </li>
@@ -42,7 +69,7 @@ const ProfileDropDown = () => {
                 <li key={index}>
                   <Link
                     to={profileDropDownLink.path}
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="hover:bg-richblack-700 no-wrap flex cursor-pointer items-center rounded px-4 py-2 md:whitespace-nowrap"
                   >
                     {profileDropDownLink.title}
                   </Link>

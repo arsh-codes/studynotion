@@ -1,6 +1,7 @@
 import { GrFormNext } from "react-icons/gr";
 import { LuIndianRupee } from "react-icons/lu";
 import React from "react";
+import RequirementsField from "./RequirementsField";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 export default function CourseInformation() {
@@ -11,7 +12,7 @@ export default function CourseInformation() {
   } = useForm();
 
   const [thumbnail, setThumbnail] = useState(null);
-
+  const [value, setValue] = useState("");
   const onSubmit = (data) => {
     console.log(data);
   };
@@ -181,25 +182,13 @@ export default function CourseInformation() {
       </div>
 
       {/* Requirements */}
-      <div className="flex flex-col gap-1.5">
-        <label className="text-richblack-5 text-sm">
-          Requirements
-          <span className="text-sm leading-snug text-pink-200"> *</span>
-        </label>
-        <input
-          type="text"
-          {...register("requirements", {
-            required: "Requirements are required",
-          })}
-          className="bg-richblack-700 outline-richblack-700 text-richblack-5 rounded-lg p-3"
-          placeholder="List course requirements"
-        />
-        {errors.requirements && (
-          <span className="text-xs text-pink-200">
-            {errors.requirements.message}
-          </span>
-        )}
-      </div>
+      {/* Requirements/Instructions */}
+      <RequirementsField
+        name="courseRequirements"
+        label="Requirements/Instructions"
+  
+      />
+    
 
       {/* Submit Button */}
       <button

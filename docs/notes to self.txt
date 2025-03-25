@@ -29,6 +29,8 @@ Add validation for password strength using libraries like validator or custom re
 
 on the emails sent by the website change the link to the hosted address. 
 
+navbar doesnt route to category pages
+
 ### **Completed Tasks**
 
 1. **User Check During Signup**  

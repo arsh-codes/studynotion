@@ -1,7 +1,7 @@
 // This file includes the following controllers:
 //
 // 1. createCategory
-// 2. showAllCategories
+// 2.getAllCategories
 // 3. getCategoryPageDetails
 
 // Import necessary modules
@@ -54,7 +54,7 @@ export const createCategory = async (req, res) => {
 };
 
 // Controller to fetch all categories
-export const showAllCategories = async (req, res) => {
+export const getAllCategories = async (req, res) => {
     try {
         // Fetch all categories, selecting only their name and description fields
         const allCategories = await Category.find(

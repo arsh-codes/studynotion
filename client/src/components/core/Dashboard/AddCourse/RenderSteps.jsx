@@ -1,7 +1,7 @@
 import { PiNumberOne, PiNumberThree, PiNumberTwo } from "react-icons/pi";
 
 import CourseBuilder from "@components/core/Dashboard/AddCourse/CourseBuilder";
-import CourseInformation from "@components/core/Dashboard/AddCourse/CourseInformation";
+import CourseInformation from "@client/components/core/Dashboard/AddCourse/CourseInformation/CourseInformation";
 import { FaCheck } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
 import { Link } from "react-router-dom";

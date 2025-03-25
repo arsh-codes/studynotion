@@ -1,44 +1,52 @@
 import { Link, useLocation } from "react-router-dom";
-import { MdMenu, MdMenuOpen } from "react-icons/md";
 import {
   RiArrowDropDownLine,
   RiShoppingCart2Fill,
   RiShoppingCart2Line,
 } from "react-icons/ri";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import Menu from "./Menu";
 import ProfileDropDown from "@components/common/Navbar/ProfileDropDown";
-import { apiConnector } from "@services/apiConnector";
-import { categories } from "@services/apis";
+import { getAllCategories } from "@client/services/operations/courseDetailsAPI"; // Import the function to fetch categories
 import logo from "@assets/logo/logoFullLight.png";
 import { useSelector } from "react-redux";
 
 export default function Navbar() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { token, user } = useSelector((state) => state.auth || {});
+  const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const { totalItems } = useSelector((state) => state.cart || {});
   const [catalogLinks, setCatalogLinks] = useState([]);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  // Function to fetch catalog links from the API
-  const fetchCatalogLinks = async () => {
-    try {
-      const response = await apiConnector(
-        "GET",
-        categories.SHOW_ALL_CATEGORIES_API,
-      ); // Making GET request
 
-      const data = response?.data?.data || [];
-      setCatalogLinks(data);
-    } catch (error) {
-      console.error("Error fetching catalog links:", error);
-    }
-  };
+  // Create a ref for the catalog dropdown to manage its visibility
+  const catalogRef = useRef(null);
 
   // Fetch catalog links when the component mounts
   useEffect(() => {
-    fetchCatalogLinks();
+    const fetchCategories = async () => {
+      const categories = await getAllCategories(); // Fetch categories
+      setCatalogLinks(categories); // Set the fetched categories
+    };
+
+    fetchCategories(); // Call the function to fetch categories
   }, []); // Empty dependency array ensures it runs once
+
+  // Close catalog dropdown when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click is outside the catalog dropdown
+      if (catalogRef.current && !catalogRef.current.contains(event.target)) {
+        setIsCatalogOpen(false); // Close the dropdown
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside); // Add event listener for clicks
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); // Cleanup listener on unmount
+    };
+  }, [catalogRef]); // Dependency on catalogRef
 
   const navbarLinks = [
     { title: "Home", path: "/" },
@@ -49,18 +57,21 @@ export default function Navbar() {
 
   return (
     <section className="border-richblack-700 bg-richblack-800 z-10 border-b border-solid select-none">
-      <div className="text-richblack-25 flex w-full items-center justify-between px-4 py-8 md:mx-auto md:w-11/12 md:justify-evenly md:gap-1 md:px-28 md:py-3">
+      <div className="text-richblack-25 flex w-full flex-row items-center justify-between p-4 md:mx-auto md:w-11/12">
         {/* Logo */}
         <Link to="/">
-          <img className="h-6" src={logo} alt="Logo" />
+          <img className="h-7 pl-10 md:p-0" src={logo} alt="Logo" />
         </Link>
-        {/* Hamburger for mobile devices */}
-        <div
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="block text-2xl md:hidden"
-        >
-          {isMenuOpen ? <MdMenuOpen /> : <MdMenu />}
-        </div>
+
+        {/* Hamburger menu for smaller screens */}
+        <Menu
+          isMenuOpen={isMenuOpen}
+          isCatalogOpen={isCatalogOpen}
+          setIsMenuOpen={setIsMenuOpen}
+          setIsCatalogOpen={setIsCatalogOpen}
+          navbarLinks={navbarLinks}
+          catalogLinks={catalogLinks}
+        />
 
         {/* Links list for bigger screens */}
         <nav className="hidden md:block">
@@ -70,24 +81,34 @@ export default function Navbar() {
                 key={index}
                 className={`relative ${
                   navLink.path === location.pathname
-                    ? "text-yellow-50"
+                    ? "text-yellow-50" // Highlight active link
                     : "text-richblack-25"
                 }`}
               >
-                {/* catalog is a dropdown */}
+                {/* Catalog is a dropdown */}
                 {navLink.title === "Catalog" ? (
-                  <div className="group relative flex items-center">
+                  <div
+                    className="group relative flex cursor-pointer items-center"
+                    onClick={() => setIsCatalogOpen((prev) => !prev)} // Toggle catalog dropdown on click
+                    ref={catalogRef} // Attach the ref here for outside click detection
+                  >
                     {navLink.title}
-                    <RiArrowDropDownLine className="h-6 w-6 transition-all duration-200 group-hover:rotate-180" />
+                    <RiArrowDropDownLine
+                      className={`h-6 w-6 transition-all duration-200 ${isCatalogOpen && "rotate-180"}`} // Rotate icon based on dropdown state
+                    />
 
-                    <div className="invisible absolute top-8 z-100 w-44 cursor-pointer divide-y divide-gray-100 rounded-lg bg-white opacity-0 shadow-sm transition-opacity duration-400 group-hover:visible group-hover:opacity-100 group-focus:opacity-100 dark:bg-gray-700">
-                      <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                    <div
+                      className={`bg-richblack-800 border-richblack-700 absolute top-10 -right-10 z-50 w-fit cursor-pointer rounded-md border p-2 text-sm shadow-sm transition-opacity duration-300 ${isCatalogOpen ? "visible opacity-100" : "invisible opacity-0"}`} // Control visibility and opacity of dropdown
+                    >
+                      <ul className="text-richblack-5 text-sm">
                         {catalogLinks.length === 0 ? (
-                          <li>No categories found</li>
+                          <li className="hover:bg-richblack-700 flex cursor-pointer items-center rounded px-4 py-2 md:whitespace-nowrap">
+                            No categories found
+                          </li>
                         ) : (
                           catalogLinks.map((category, index) => (
                             <Link to={category.path} key={index}>
-                              <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                              <li className="hover:bg-richblack-700 flex cursor-pointer items-center rounded px-4 py-2 md:whitespace-nowrap">
                                 {category.categoryName}
                               </li>
                             </Link>
@@ -97,12 +118,13 @@ export default function Navbar() {
                     </div>
                   </div>
                 ) : (
-                  <Link to={navLink.path}>{navLink.title}</Link>
+                  <Link to={navLink.path}>{navLink.title}</Link> // Regular link for other navbar items
                 )}
               </li>
             ))}
           </ul>
         </nav>
+
         {/* Signup and Login if not logged in */}
         {!isLoggedIn && (
           <div className="hidden items-center gap-3 md:flex">
@@ -124,28 +146,27 @@ export default function Navbar() {
         )}
 
         {/* Cart Icon shown if logged in  */}
-        {isLoggedIn &&
-          // Count circle and filled cart icon shown if items in cart
-          (totalItems > 0 ? (
-            <div className="relative flex items-center justify-center">
-              <div className="absolute top-0 left-4">
-                <p className="text-richblack-25 bg-richblack-900 flex h-1 w-1 items-center justify-center rounded-full p-2 text-xs">
-                  {totalItems || 0}{" "}
-                </p>
+        <div className="flex flex-row gap-3">
+          {isLoggedIn &&
+            (totalItems > 0 ? (
+              <div className="relative hidden items-center justify-center md:flex">
+                <div className="absolute top-0 left-4">
+                  <p className="text-richblack-25 bg-richblack-900 flex h-1 w-1 items-center justify-center rounded-full p-2 text-xs">
+                    {totalItems || 0}{" "}
+                  </p>
+                </div>
+                <Link to="/dashboard/cart">
+                  <RiShoppingCart2Fill className="h-9 w-6" />
+                </Link>
               </div>
-              <Link to="/dashboard/cart">
-                <RiShoppingCart2Fill className="h-9 w-6" />
+            ) : (
+              <Link to="/dashboard/cart" className="hidden md:flex">
+                <RiShoppingCart2Line className="h-9 w-6" />
               </Link>
-            </div>
-          ) : (
-            // empty cart icon if no items in cart
-            <Link to="/dashboard/cart">
-              <RiShoppingCart2Line className="h-9 w-6" />
-            </Link>
-          ))}
-
-        {/* Profile dropdown shown if logged in  */}
-        {isLoggedIn && <ProfileDropDown />}
+            ))}
+          {/* Profile dropdown shown if logged in  */}
+          {isLoggedIn && <ProfileDropDown />}
+        </div>
       </div>
     </section>
   );

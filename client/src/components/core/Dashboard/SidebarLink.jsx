@@ -5,11 +5,10 @@ import { useSelector } from "react-redux";
 export default function SidebarLink({ linkDetails }) {
   const { title, path, Icon, accountType } = linkDetails;
   const { user } = useSelector((state) => state.profile);
-  const location = useLocation(); // ✅ Get the current path properly
-  const isActive = location.pathname === path; // ✅ Store active condition
+  const location = useLocation();
+  const isActive = location.pathname === path; //
 
-  if (accountType && accountType !== user?.accountType) return null; // ✅ Check user account type
-
+  if (accountType && accountType !== user?.accountType) return null;
   return (
     <div>
       {/* Divider above Settings */}

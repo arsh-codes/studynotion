@@ -1,4 +1,4 @@
-import CourseInformation from "@client/components/core/Dashboard/AddCourse/CourseInformation";
+import CourseInformation from "@client/components/core/Dashboard/AddCourse/CourseInformation/CourseInformation";
 import { Link } from "react-router-dom";
 import React from "react";
 import RenderSteps from "@client/components/core/Dashboard/AddCourse/RenderSteps";

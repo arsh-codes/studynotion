@@ -1,17 +1,13 @@
 import ConfirmationModal from "@client/components/common/ConfirmationModal";
 import { FiLogOut } from "react-icons/fi";
-import { NavLink } from "react-router";
 import SidebarLink from "@components/core/Dashboard/SidebarLink";
 import dashboardSidebarLinks from "@data/dashboardSidebarLinks";
-import { logout } from "@services/operations/authAPI";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 
 export default function Sidebar() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const dispatch = useDispatch();
-  const { user, profileLoading } = useSelector((state) => state.profile);
   function handleLogoutButton() {
     setModalIsOpen(true);
   }
@@ -25,9 +21,9 @@ export default function Sidebar() {
         {dashboardSidebarLinks.map((link) => (
           <SidebarLink key={link.id} linkDetails={link} />
         ))}
-        <li>
+        <li className="cursor-pointer">
           <button
-            className={`text-richblack-300 flex h-fit items-center gap-3 px-6 py-2`}
+            className={`text-richblack-300 flex h-fit cursor-pointer items-center gap-3 px-6 py-2`}
             onClick={handleLogoutButton}
           >
             <FiLogOut />

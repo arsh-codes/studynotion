@@ -8,8 +8,8 @@ import {
 // Import controllers
 import {
     createCategory,
+    getAllCategories,
     getCategoryPageDetails,
-    showAllCategories,
 } from "../controllers/CategoryControllers.js";
 import {
     createCourse,
@@ -66,7 +66,7 @@ router.post("/getCourseDetails", getCourseDetails);
 
 // Category management (only admins)
 router.post("/createCategory", auth, isAdmin, createCategory);
-router.get("/showAllCategories", showAllCategories);
+router.get("/getAllCategories", getAllCategories);
 router.get("/getCategoryPageDetails", getCategoryPageDetails);
 
 // Tag management (only admins)

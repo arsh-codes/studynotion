@@ -21,7 +21,29 @@ const {
   GET_FULL_COURSE_DETAILS_AUTHENTICATED,
   CREATE_RATING_API,
   LECTURE_COMPLETION_API,
+  GET_ALL_CATEGORIES_API,
 } = courseEndpoints;
+
+// Function to fetch all categories
+export const getAllCategories = async () => {
+  let result = []; // Initialize result array
+  try {
+    const response = await apiConnector("GET", GET_ALL_CATEGORIES_API); // Make GET request to fetch categories
+    console.log("GET_ALL_CATEGORIES_API API RESPONSE............", response); // Log the response
+
+    // Check if the response indicates success
+    if (!response?.data?.success) {
+      throw new Error("Could Not Fetch Categories"); // Throw an error if not successful
+    }
+    result = response?.data?.data; // Extract the categories from the response
+
+
+  } catch (error) {
+    console.log("GET_ALL_CATEGORIES_API API ERROR............", error); // Log any errors
+  }
+
+  return result; // Return the fetched categories
+};
 
 export const getAllCourses = async () => {
   const toastId = toast.loading("Loading...");
